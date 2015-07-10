@@ -1,6 +1,8 @@
 Symfony Standard Edition Upgrade
 ================================
 
+fichier completemnt breakdance again from space around the world that stinks in my dude
+
 From Symfony 2.0 to Symfony 2.1
 -------------------------------
 
