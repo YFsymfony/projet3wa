@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{% block balise_title %} Mon super site {% endblock %}</title>
+
+    {% block stylesheet %}
+    <link rel="stylesheet" href="{{ asset("assets/css/style.css",absolute=true) }}"/>
+    {% endblock %}
+
+    {% block javascript %}
+    <script src="{{ asset('assets/js/app.js',absolute=true) }}"></script>
+    {% endblock %}
+
+</head>
+
+<body>
+
+{% set menu = "mon super menu" %}
+
+{% include "troiswaBackBundle:Static:navigation.html.twig" with {"menu":menu} only %}
+
+{% block title %}
+    <h1>Titre de la page</h1>
+{% endblock title %}
+
+{% block contenu %}
+{% endblock contenu %}
+
+    <p>du super contenu {% block contenu_en_plus %} {% endblock %}</p>
+
+
+</body>
+
+</html>

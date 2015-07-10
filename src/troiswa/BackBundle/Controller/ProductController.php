@@ -1,0 +1,307 @@
+<?php
+
+namespace troiswa\BackBundle\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use troiswa\BackBundle\Entity\Product;
+use Symfony\Component\HttpFoundation\Request;
+use troiswa\BackBundle\Form\ProductType;
+
+
+class ProductController extends Controller
+{
+
+
+
+    public function addProductAction(Request $request) // ne pas oublier l'objet request sinon on ne peu pas utiliser POST
+    {
+        $product = new Product();
+
+        //$product->setTitle("titre de l'article");
+
+
+ ////////////// Formulaire entré en dur dans le controlleur pour comprendre les add ///////////////////////////////////////////////////////////////////////////
+ //
+ //       $formProduct=$this->createFormBuilder($product,["attr"=>["novalidate"=>"novalidate"]]) // en attribut , $product lie l'entitée product au formulaire
+ //                         ->add("title","text")
+ //                         ->add("description","textarea")
+ //                         ->add("price","money")
+ //                         ->add("active","choice",
+ //                                   [
+ //                                       "choices"=>
+ //                                           [
+ //                                               'true'=>" Produit disponible ",
+ //                                               'false'=>" Produit indisponible "
+ //                                           ],
+ //                                       'expanded'=>true,
+ //                                   ]
+ //                               )
+ //                         ->add("quantity","number")
+ //                         ->add("envoyer","submit")
+ //                         ->getForm();
+ //       //dump($product);
+ //
+ ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        // appel du form type grace à $this->createForm
+        $formProduct=$this->createForm(new ProductType(),$product,["attr"=>["novalidate"=>"novalidate"]]);
+
+        // handleRequest récupère les info de $_POST , ce qu'a rentrer l'utilisateur , c'est pourquoi on a besoin de l'objet request
+        $formProduct->handleRequest($request);
+        if($formProduct->isValid())
+        {
+
+            //dump($product);
+            //die;
+
+            $this->get("session")->getFlashBag()->add("success","Votre article est bien enregistré");
+
+            $em = $this->getDoctrine()->getManager();
+
+            $em->persist($product);
+
+            //modification apres le persist
+            //$product->setTitle("modification");
+
+            $em->flush();
+
+            return $this->redirectToRoute("troiswa_back_product_add");
+
+        }
+
+        // ATTENTION : ne pas oublier de passer l'objet form à la vue et d'utiliser ->createView
+        return $this->render('troiswaBackBundle:Product:addProduct.html.twig',["formProduct"=>$formProduct->createView()]);
+    }
+
+    public function allProductAction()
+    {
+
+        $em = $this->getDoctrine()->getManager();
+
+        // DOC des find :  http://www.doctrine-project.org/api/orm/2.2/class-Doctrine.ORM.EntityRepository.html
+        $products = $em->getRepository("troiswaBackBundle:Product") // get repository est comme le from en sql , mais ici on parle en objet
+                       ->findAll();
+
+        //dump($products);
+        //die();
+
+        return $this->render('troiswaBackBundle:Product:allProduct.html.twig',["products"=>$products]);
+    }
+
+    public function productInfoAction($idprod)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+
+        //on stock l'id dans $produit , id que l'on a chercher en BDD avec find($idprod)
+        // DOC fonction native doctrine (find) : http://www.doctrine-project.org/api/orm/2.2/class-Doctrine.ORM.EntityRepository.html
+        $product = $em->getRepository("troiswaBackBundle:Product") // get repository est comme le from en sql , mais ici on parle en objet
+        ->find($idprod);
+
+        //dump($product);
+        //die();
+
+        // pour comperendre ce test , on doit dump $product avec un id faux en url ( ../info/9999 par exemple )
+        // le dump retourne alors null , donc on écris une condition :
+        // si $product est null , alors effiche moi le NotFoundException.
+        // cette condition verifie si l'id demandée en url existe bien ,
+        // et renvois un message d'erreur grace a throw + creatNotFoundException
+
+        if(!$product) //!$product équivaut à $product == false ou empty($product) ou null == false ( verifie si $product est NULL )
+        {
+            throw $this->createNotFoundException("cette id n'existe pas");
+        }
+
+
+
+        return $this->render('troiswaBackBundle:Product:productInfo.html.twig',array("product"=>$product));
+    }
+
+    public function editProductAction(Request $request, $idprod)// ne pas oublier l'objet request sinon on ne peu pas utiliser POST
+    {
+
+        $em = $this->getDoctrine()->getManager();
+
+        //// DOC fonction native doctrine (find) : http://www.doctrine-project.org/api/orm/2.2/class-Doctrine.ORM.EntityRepository.html
+        $product = $em->getRepository("troiswaBackBundle:Product") // get repository est comme le from en sql , mais ici on parle en objet
+        ->find($idprod);
+
+        if(!$product) //!$product équivaut à $product == false ou empty($product) ou null == false ( verifie si $product est NULL )
+        {
+            throw $this->createNotFoundException("Impossible d'éditer un produit qui n'existe pas, id inconnue ");
+        }
+
+        $formUpdateProduct=$this->createForm(new ProductType(),$product,["attr"=>["novalidate"=>"novalidate"]]); // l'hydration se fait grace au paramettre $product
+
+        $formUpdateProduct->handleRequest($request);
+        if($formUpdateProduct->isValid())
+        {
+
+            $this->get("session")->getFlashBag()->add("success","Votre article est bien enregistré");
+
+            $em->flush();
+
+            // si on redirige vers une route qui a besoin d'un paramettre , on doit le spécifier dans la redirection
+            return $this->redirectToRoute("troiswa_back_product_edit", ["idprod" => $idprod]);
+        }
+
+        // ATTENTION : ne pas oublier de passer l'objet form à la vue et d'utiliser ->createView
+        return $this->render('troiswaBackBundle:Product:editProduct.html.twig',["formUpdateProduct"=>$formUpdateProduct->createView()]);
+    }
+
+    public  function deleteProductAction(Request $request, $idprod)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        //// DOC fonction native doctrine (find) : http://www.doctrine-project.org/api/orm/2.2/class-Doctrine.ORM.EntityRepository.html
+        $product = $em->getRepository("troiswaBackBundle:Product") // get repository est comme le from en sql , mais ici on parle en objet
+        ->find($idprod);
+
+        if(!$product) //!$product équivaut à $product == false ou empty($product) ou null == false ( verifie si $product est NULL )
+        {
+            throw $this->createNotFoundException("Impossible de supprimer un produit qui n'existe pas, id inconnue ");
+        }
+
+        $em->remove($product);
+
+        $em->flush();
+
+        $this->get("session")->getFlashBag()->add("success","Votre article à bien été supprimé");
+
+        return $this->redirectToRoute("troiswa_back_product");
+    }
+
+    public function productActiveAction(Request $request)
+    {
+        // utilisation de la fonction php intval() pour parser , si string la fonction zero
+        $limit = intval($request->query->get("limit"));
+
+        // si limùit  égal à , null affichera tous les résultats
+        if ($limit == 0)
+        {
+            $limit = null;
+        }
+
+        $em = $this->getDoctrine()->getManager();
+
+        // DOC fonction native doctrine (find) : http://www.doctrine-project.org/api/orm/2.2/class-Doctrine.ORM.EntityRepository.html
+        $products = $em->getRepository('troiswaBackBundle:Product')
+                       ->findBy(["active"=>true],["price"=>"ASC"],$limit);
+
+        //dump($products);
+        //die();
+
+        return $this->render('troiswaBackBundle:Product:productActive.html.twig',["products"=>$products]);
+    }
+
+    public function changeActiveProductAction(Request $request,$idprod,$changeAction)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $product = $em->getRepository('troiswaBackBundle:Product')
+                     ->find($idprod);
+
+        // utilisation du getter de l'entité product pour la colonne active (/!\ $product est un objet !!!! )
+        $changeAction = $product->getActive();
+
+        if( $changeAction == 1)
+        {
+            // j'utilise le setter ( $product est un objet !!!! )
+            $product->setActive(false);
+        }else{
+            // j'utilise le setter ( $product est un objet !!!! )
+            $product->setActive(true);
+             }
+
+        $em->flush($product);
+
+        return $this->redirectToRoute('troiswa_back_product',["idprod"=>$idprod,"changeAction"=>$changeAction]);
+    }
+
+
+
+
+    ///////////////////////////////// methode d'entrainement ///////////////////////////////////
+    public function allProductTrainAction()
+    {
+        $products = [
+            [
+                "id" => 1,
+                "title" => "Mon premier produit",
+                "description" => "lorem ipsum",
+                "date_created" => new \DateTime('now')
+            ],
+            [
+                "id" => 2,
+                "title" => "Mon deuxième produit",
+                "description" => "lorem ipsum",
+                "date_created" => new \DateTime('now')
+            ],
+            [
+                "id" => 3,
+                "title" => "Mon troisième produit",
+                "description" => "lorem ipsum",
+                "date_created" => new \DateTime('now')
+            ],
+            [
+                "id" => 4,
+                "title" => "",
+                "description" => "lorem ipsum",
+                "date_created" => new \DateTime('now')
+            ],
+        ];
+
+        return $this->render('troiswaBackBundle:Product:allProductTrain.html.twig',array("products"=>$products));
+    }
+
+    public function productInfoTrainAction($idprod)
+    {
+        $products = [
+            1 => [
+                "id" => 1,
+                "title" => "Mon premier produit",
+                "description" => "lorem ipsum",
+                "date_created" => new \DateTime('now'),
+                "prix" => 10
+            ],
+            2 => [
+                "id" => 2,
+                "title" => "Mon deuxième produit",
+                "description" => "lorem ipsum",
+                "date_created" => new \DateTime('now'),
+                "prix" => 20
+            ],
+            3 => [
+                "id" => 3,
+                "title" => "Mon troisième produit",
+                "description" => "lorem ipsum",
+                "date_created" => new \DateTime('now'),
+                "prix" => 30
+            ],
+            4 => [
+                "id" => 4,
+                "title" => "",
+                "description" => "lorem ipsum",
+                "date_created" => new \DateTime('now'),
+                "prix" => 410
+            ],
+        ];
+
+        // cette condition verifie si l'id demandée en url existe bien ,
+        // et renvois un message d'erreur grace a throw + creatNotFoundException
+        if(!isset($products[$idprod]))
+        {
+            throw $this->createNotFoundException("cette id n'existe pas");
+        }
+
+        $product = $products[$idprod];
+
+        return $this->render('troiswaBackBundle:Product:productInfoTrain.html.twig',array("product"=>$product));
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+}

@@ -1,0 +1,102 @@
+{% extends "troiswaBackBundle::layout_admin.html.twig" %}
+
+{% block stylesheet %}
+    {{ parent() }}
+    <link href="{{ asset("assets/css/jquery-ui.min.css") }}" rel="stylesheet">
+    <link href="{{ asset("assets/css/jquery-ui.structure.min.css") }}" rel="stylesheet">
+    <link href="{{ asset("assets/css/jquery-ui.theme.min.css") }}" rel="stylesheet">
+{% endblock stylesheet %}
+
+{% block title %}
+    <h1>Rapportez nous les bugs !</h1>
+{% endblock title %}
+
+{% block breadcrumb %}
+
+    <ol class="breadcrumb">
+        {{ parent() }}
+        <li class="active">
+            <i class="fa fa-reply"></i> feedback
+        </li>
+    </ol>
+
+{% endblock breadcrumb %}
+
+{%  block contenu %}
+    {# {{ form(formfeedback) }} #}
+
+    {{ form_start(formfeedback) }}
+
+    <div class="form-group">
+        {{ form_label(formfeedback.firstname, null , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(formfeedback.firstname) }}
+        {{ form_widget( formfeedback.firstname, {id:'monid',attr:{class:"form-control toto"}} ) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(formfeedback.lastname, "Entrez votre Nom:" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(formfeedback.lastname) }}
+        {{ form_widget(formfeedback.lastname, {attr:{class:"form-control toto"}} ) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(formfeedback.email,  "Entrez un email valide:" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(formfeedback.email) }}
+        {{ form_widget(formfeedback.email, {attr:{class:"form-control toto"}} ) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(formfeedback.url,  "Entrez une url valide:" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(formfeedback.url) }}
+        {{ form_widget(formfeedback.url, {attr:{class:"form-control toto"}} ) }}
+    </div>
+
+    <div class="form-group">
+        <p>Choississez votre statut</p>
+        {{ form_errors(formfeedback.statut) }}
+        <label class="radio-inline">
+            {{ form_widget(formfeedback.statut.0, {attr:{class:"toto"}} ) }}
+            {{ formfeedback.statut.children.0.vars.value }}    {# pour voir le tableau multi dimension , {{ dump(formfeedback.statut) }} #}
+        </label>
+        <label class="radio-inline">
+            {{ form_widget(formfeedback.statut.1, {attr:{class:"toto"}} ) }}
+            {{ formfeedback.statut.children.1.vars.value }}
+        </label>
+        <label class="radio-inline">
+            {{ form_widget(formfeedback.statut.2, {attr:{class:"toto"}} ) }}
+            {{ formfeedback.statut.children.2.vars.value }}
+        </label>
+    </div>
+
+    <div class="form-group">
+        {{ form_label(formfeedback.description, "Entrez une description:" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(formfeedback.description) }}
+        {{ form_widget(formfeedback.description, {attr:{class:"form-control toto"}} ) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(formfeedback.date) }}
+        {{ form_errors(formfeedback.date) }}
+        {{ form_widget(formfeedback.date, {id:"datepicker",attr:{class:"toto"}} ) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_widget(formfeedback.envoyer, {attr:{class:"btn btn-warning"}} ) }}
+    </div>
+
+    {{ form_end(formfeedback) }}
+
+
+{% endblock contenu %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="{{ asset("assets/js/jquery-ui.min.js") }}"></script>
+
+    <script>
+        $(function() {
+            $( "#datepicker" ).datepicker();
+        });
+    </script>
+{% endblock javascripts %}

@@ -1,0 +1,74 @@
+{% extends "troiswaBackBundle::layout_admin.html.twig" %}
+
+
+
+{% block stylesheet %}
+    {{ parent() }}
+{% endblock stylesheet %}
+
+{% block title %}
+    <h1>ajoutez un produit</h1>
+{% endblock title %}
+
+{% block breadcrumb %}
+
+    <ol class="breadcrumb">
+        {{ parent() }}
+        <li class="">
+            <i class="fa fa-cube"></i> <a href="{{ path("troiswa_back_product") }}">produits</a>
+        </li>
+        <li class="active">
+            <i class="fa fa-plus-square-o"></i> ajouter un produit
+        </li>
+    </ol>
+
+{% endblock breadcrumb %}
+
+
+{% block contenu %}
+
+    {# {{ form(formProduct) }} #}
+
+    {{ form_start(formProduct) }}
+
+    <div class="form-group">
+        {{ form_label(formProduct.title, "Entrez le nom du produit" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(formProduct.title) }}
+        {{ form_widget( formProduct.title, {id:'monid',attr:{class:"form-control toto"}} ) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(formProduct.description, "Entrez la description produit:" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(formProduct.description) }}
+        {{ form_widget(formProduct.description, {attr:{class:"form-control toto"}} ) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(formProduct.price, "Entrez le prix du produit:" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(formProduct.price) }}
+        {{ form_widget(formProduct.price, {attr:{class:"form-control toto"}} ) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(formProduct.active,  "Choisissez si le produit est disponible:" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(formProduct.active) }}
+        {{ form_widget(formProduct.active, {attr:{class:""}} ) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(formProduct.quantity, "Entrez la quantité:" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(formProduct.quantity) }}
+        {{ form_widget(formProduct.quantity, {attr:{class:"form-control toto"}} ) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_widget(formProduct.envoyer, {label:"Envoyer",attr:{class:"btn btn-warning"}} ) }}
+    </div>
+
+    {{ form_end(formProduct) }}
+
+{% endblock contenu %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock javascripts %}

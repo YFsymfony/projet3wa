@@ -1,0 +1,75 @@
+{% extends "::base.html.twig" %}
+
+{% block stylesheet %}
+    <!-- Bootstrap Core CSS -->
+    <link href="{{ asset("assets/css/bootstrap.css") }}" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="{{ asset("assets/css/sb-admin.css") }}" rel="stylesheet">
+    <!-- Custom Fonts -->
+    <link href="{{ asset("assets/font-awesome/css/font-awesome.min.css") }}" rel="stylesheet">
+{% endblock stylesheet %}
+
+
+{% block body %}
+    <div id="wrapper">
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            {% include "troiswaBackBundle:Globals:nav.html.twig" only %}
+            {% include "troiswaBackBundle:Globals:sidenav.html.twig" only %}
+        </nav>
+
+        <div id="page-wrapper">
+
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">
+                            {% block title %}Dashboard <small>Statistics Overview</small>{% endblock title %}
+                        </h1>
+                            {% block breadcrumb %}
+                                <li class="">
+                                    <i class="fa fa-dashboard"></i> <a href="{{ path('troiswa_back_administration') }}">Dashboard</a>
+                                </li>
+
+                            {% endblock %}
+                    </div>
+                </div>
+                <!-- /.row -->
+
+                <!-- cette boucle for permet de récupérer tous les messages flashgag nommé success grace a la variable globale app -->
+                <!-- les variable globale de twig : http://alexandre.clain.info/twig-les-variables-globales/ -->
+                {% for flashMessage in app.session.flashbag.get('success') %}
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="alert alert-success alert-dismissable">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                <i class="fa fa-info-circle"></i>  {{ flashMessage }}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+
+
+                {% block contenu %}
+
+                {% endblock contenu%}
+
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+{% endblock body %}
+
+{% block javascripts %}
+    <!-- jQuery -->
+    <script src="{{ asset("assets/js/jquery.js") }}"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{{ asset("assets/js/bootstrap.min.js") }}"></script>
+{% endblock javascripts%}

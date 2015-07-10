@@ -1,0 +1,15 @@
+troiswa_back_administration:
+    path: /admin
+    defaults: { _controller: troiswaBackBundle:Main:index }
+
+troiswa_back_contact:
+    path: /contact
+    defaults: { _controller: troiswaBackBundle:Main:contact}
+
+troiswa_back_feedback:
+    path: /feedback
+    defaults: { _controller: troiswaBackBundle:Main:feedback}
+
+troiswa_back_dqlTrain:
+    path: /dqlTrain
+    defaults: { _controller: troiswaBackBundle:Main:dqlTrain}

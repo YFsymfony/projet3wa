@@ -1,0 +1,74 @@
+<!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+
+<!-- on stock dans une variable , ici routepath , la route grace a la variable global app-->
+<!-- grace a cette variable , on peu vérifier la route de notre page et tester avec un if
+si on doit modifier la class="active" des élément du menu de la side bar -->
+{% set routepath= app.request.attributes.get("_route") %}
+
+<div class="collapse navbar-collapse navbar-ex1-collapse">
+    <ul class="nav navbar-nav side-nav">
+        <li {% if routepath == "troiswa_back_administration" %} class="active" {% endif %}>
+            <a {% if routepath != "troiswa_back_administration" %} href="{{ path('troiswa_back_administration') }}"{% endif %}><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
+        </li>
+
+        <li {% if routepath == "troiswa_back_contact" %} class="active" {% endif %}>
+            <a {% if routepath != "troiswa_back_contact" %} href="{{ path('troiswa_back_contact') }}"{% endif %}><i class="fa fa-fw fa-phone"></i> Contact</a>
+        </li>
+
+        <li {% if routepath == "troiswa_back_feedback" %} class="active" {% endif %}>
+            <a {% if routepath != "troiswa_back_feedback" %} href="{{ path('troiswa_back_feedback') }}"{% endif %}><i class="fa fa-fw fa-reply"></i> Feedback</a>
+        </li>
+
+        <li>
+            <a href="javascript:;" data-toggle="collapse" data-target="#product"><i class="fa fa-fw fa-cube"></i> Produit <i class="fa fa-fw fa-caret-down"></i></a>
+            <ul id="product" class="collapse nav navbar-nav in">
+                <li class="">
+                    <a href="{{ path('troiswa_back_product') }}">Tous les produits</a>
+                </li>
+                <li>
+                    <a href="{{ path('troiswa_back_product_add') }}">Ajouter un produit</a>
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="javascript:;" data-toggle="collapse" data-target="#category"><i class="fa fa-fw fa-cube"></i> categories <i class="fa fa-fw fa-caret-down"></i></a>
+            <ul id="category" class="collapse nav navbar-nav in">
+                <li class="">
+                    <a href="{{ path('troiswa_back_category') }}">Toutes les categories</a>
+                </li>
+                <li>
+                    <a href="{{ path('troiswa_back_category_add') }}">Ajouter une categorie</a>
+                </li>
+                <!--
+                    ici on fait une inclusion de controller qui va nous permettre d'insérer une vue grace à $this->render
+                    pour pouvoir afficher la liste des catégories dans la nav pour eviter de faire une requete dans
+                    dans tous les controlleurs
+                -->
+                {{ render(controller('troiswaBackBundle:Category:listCategoryNav')) }}
+            </ul>
+        </li>
+
+        <li>
+            <a href="blank-page.html"><i class="fa fa-fw fa-file"></i> Blank Page</a>
+        </li>
+
+        <li>
+            <a href="index-rtl.html"><i class="fa fa-fw fa-dashboard"></i> RTL Dashboard</a>
+        </li>
+
+        <li>
+            <a href="forms.html"><i class="fa fa-fw fa-edit"></i> Forms</a>
+        </li>
+
+        <li {% if routepath == "troiswa_back_cgv" %} class="active" {% endif %}>
+            <a {% if routepath != "troiswa_back_cgv" %} href="{{ path('troiswa_back_cgv') }}"{% endif %}><i class="fa fa-fw fa-gavel"></i> CGV</a>
+        </li>
+
+        <li {% if routepath == "troiswa_back_cgu" %} class="active" {% endif %}>
+            <a {% if routepath != "troiswa_back_cgu" %} href="{{ path('troiswa_back_cgu') }}"{% endif %}><i class="fa fa-fw fa-gavel"></i> CGU</a>
+        </li>
+
+    </ul>
+</div>
+<!-- /.navbar-collapse -->

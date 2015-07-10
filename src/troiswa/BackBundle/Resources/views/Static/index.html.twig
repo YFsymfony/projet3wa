@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Formation symfony</title>
+</head>
+<body>
+<header>
+    <h1>Bienvenue sur les conditions générales de ventes. </h1>
+
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores assumenda earum rem. Ab ad, aliquam aspernatur atque debitis distinctio ea, hic illo illum quisquam quo sed vel voluptate voluptatibus voluptatum.</p>
+
+    <a href="{{ path('troiswa_back_team') }}">Voir l'équipe formatrice</a>
+
+</header>
+<footer>
+    {# {% include "troiswaBackBundle:Globals:footercgv.html.twig" %} fait un include avec toute les variable de contexte de la vue mère ici cgv #}
+    {# {% include "troiswaBackBundle:Globals:footercgv.html.twig" only %} fait un include sans les variables de contexte#}
+    {# {% include "troiswaBackBundle:Globals:footercgv.html.twig" with{"name":name} %} fait un include avec uniquement la variable "name" sans les autres variable de contexte#}
+
+    {# include "troiswaBackBundle:Globals:footercgv.html.twig" only #}
+    {# include "troiswaBackBundle:Globals:footercgv.html.twig" with{"nameAfter":name} #}
+    {% include "troiswaBackBundle:Globals:footercgv.html.twig" with{"nameAfter":name} only %}
+</footer>
+</body>
+
+</html>

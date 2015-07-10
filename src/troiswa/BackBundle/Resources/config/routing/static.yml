@@ -1,0 +1,29 @@
+troiswa_back_templating:
+    path: /heritage-template
+    defaults: { _controller: troiswaBackBundle:Static:testTemplating }
+
+troiswa_back_test_templating:
+    path: /test-templating
+    defaults: { _controller: troiswaBackBundle:Static:othertestTemplating }
+
+troiswa_back_training:
+    path: /training/{string}
+    defaults: { _controller: troiswaBackBundle:Static:training, string:"1000"} # , string:"test" juste apres le controller défini une valeur par defaut a la variable string
+    requirements:
+        string: "^toto$"  # pour les expressions régulières personalisées on doit mettre des guillemet (pas de quote)
+
+troiswa_back_cgv:
+    path: /cgv
+    defaults: { _controller: troiswaBackBundle:Static:index}
+
+troiswa_back_cgu:
+    path: /cgu
+    defaults: { _controller: troiswaBackBundle:Static:index2}
+
+#ici on passe par un controleur général de symfony, pour éviter de créer un controller
+#avec uniquement une redirection vers une vue.
+troiswa_back_team:
+    path: /team
+    defaults:
+        _controller: FrameworkBundle:Template:template
+        template: "troiswaBackBundle:Static:team.html.twig"

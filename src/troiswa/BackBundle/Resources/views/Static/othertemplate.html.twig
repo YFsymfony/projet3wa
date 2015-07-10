@@ -1,0 +1,22 @@
+{% extends "troiswaBackBundle::layout2.html.twig" %}
+
+{% block stylesheet %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/css/style2.css') }}"/>
+{% endblock %}
+
+{% block balise_title %}
+    Templating-{{ parent() }}
+{% endblock %}
+
+{% block title %}
+    <h1 class="yellow">Bienvenue sur mon site (Titre qui ecrase le titre du layout)</h1>
+{% endblock %}
+
+{% block contenu %}
+    ceci est du contenu
+{% endblock %}
+
+{% block contenu_en_plus %}
+    Du contenu en plus a l'interieur du p
+{% endblock %}

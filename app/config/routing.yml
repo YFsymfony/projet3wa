@@ -1,0 +1,5 @@
+troiswa_back:
+    resource: "@troiswaBackBundle/Resources/config/routing.yml"
+    prefix:   /
+
+

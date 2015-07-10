@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Formation symfony</title>
+</head>
+<body>
+<header>
+    <h1>Tous les produits</h1>
+
+    <a href="{{ path("troiswa_back_administration",{page:1,admin:"guiz"}) }}"> ADMIN</a>
+
+
+    <ul>
+    {% for product in products %}
+
+            {% if product.title is empty %}
+                <li>PRODUIT PAR DEFFAUT</li>
+            {% else %}
+                <li>{{ product.title|upper }}</li>
+            {% endif %}
+            {# {{ product.title|default('Produit par defaut') }} #}
+            <li>{{ product.description }}</li>
+            {% if loop.first == true %}
+                <li>Ceci est le premier article</li>
+            {% endif %}
+            <li><a href="{{ path('troiswa_back_product_info',{idprod: product.id}) }}">Voir info produit</a></li>
+
+
+        {% if loop.last == true %}
+            <p>Total d'articles: {{ loop.length }}</p>
+        {% endif %}
+
+    {% endfor %}
+    </ul>
+
+    <hr/>
+
+    <ul>
+    {% for product in products|reverse %}
+
+            {% if product.title is empty %}
+                <li>PRODUIT PAR DEFFAUT</li>
+            {% else %}
+                <li>{{ product.title|upper }}</li>
+            {% endif %}
+            {# {{ product.title|default('Produit par defaut') }} #}
+            <li>{{ product.description }}</li>
+            {% if loop.first == true %}
+                <li>Ceci est le dernier article</li>
+            {% endif %}
+            <li> {{ product.date_created|date("d/m/Y") }}</li>
+
+
+        {% if loop.last == true %}
+            <p>Total d'articles: {{ loop.length }}</p>
+        {% endif %}
+
+    {% endfor %}
+    </ul>
+
+    <hr/>
+
+    <ul>
+    {% for product in products|slice(1,2) %}
+
+            {% if product.title is empty %}
+                <li>PRODUIT PAR DEFFAUT</li>
+            {% else %}
+                <li>{{ product.title|upper }}</li>
+            {% endif %}
+
+            <li>{{ product.description }}</li>
+            {% if loop.first == true %}
+                <li>Ceci est le premier article</li>
+            {% endif %}
+
+
+        {% if loop.last == true %}
+            <p>Total d'articles: {{ loop.length }}</p>
+        {% endif %}
+
+    {% endfor %}
+    </ul>
+
+    {{ dump(products) }}
+
+
+
+</header>
+<footer>
+    <p>---powered by symfony2---dev: Guiz---</p>
+</footer>
+</body>
+
+</html>

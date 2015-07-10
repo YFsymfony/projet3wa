@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Formation symfony</title>
+</head>
+<body>
+<header>
+    <h1>Information sur le produit numéro : {{ product.id }}</h1>
+
+    <hr/>
+
+    <h2>{{ product.title }}</h2>
+
+    <p> Description : {{ product.description }}</p>
+
+    <p> Prix : {{ product.prix }}</p>
+
+    <p> Date : {{ product.date_created | date("d/m/Y") }}</p>
+
+    <hr/>
+
+</header>
+<footer>
+    <p>---powered by symfony2---dev: Guiz---</p>
+</footer>
+</body>
+
+</html>

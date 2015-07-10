@@ -1,0 +1,46 @@
+#troiswa_back_homepage:
+#    path:     /hello/{name}
+#    defaults: { _controller: troiswaBackBundle:Default:index }
+
+
+
+
+#ceci n'est pas une route mais une inclusion de route , ici on trouveras toutes les routes lié a main
+troiswa_back_resource_main:
+    resource: "@troiswaBackBundle/Resources/config/routing/main.yml"
+
+troiswa_back_resource_static:
+    resource: "@troiswaBackBundle/Resources/config/routing/static.yml"
+
+troiswa_back_resource_product:
+    resource: "@troiswaBackBundle/Resources/config/routing/product.yml"
+
+troiswa_back_resource_category:
+    resource: "@troiswaBackBundle/Resources/config/routing/category.yml"
+
+
+
+
+#-- route d'entrainement (TOUJOURS laisser en fin, premier arrive premier servis) --------
+troiswa_back_product_train:
+    path: /productTrain
+    defaults: { _controller: troiswaBackBundle:Product:allProductTrain}
+
+troiswa_back_product_info_train:
+    path: /productTrain/info/{idprod}
+    defaults: { _controller: troiswaBackBundle:Product:productInfoTrain}
+    requirements:
+        idprod: \d+
+
+
+troiswa_back_category_train:
+    path: /categoryTrain
+    defaults: { _controller: troiswaBackBundle:Category:allCategoryTrain}
+
+troiswa_back_category_info_train:
+    path: /categoryTrain/info/{idcat}
+    defaults: { _controller: troiswaBackBundle:Category:categoryInfoTrain}
+    requirements:
+        idcat: \d+
+
+#------------------------ NE PAS DEPASSER CETTE ZONE -------------------------------------------------

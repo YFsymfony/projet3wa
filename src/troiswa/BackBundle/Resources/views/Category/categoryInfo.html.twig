@@ -1,0 +1,62 @@
+{% extends "troiswaBackBundle::layout_admin.html.twig" %}
+
+
+
+{% block stylesheet %}
+    {{ parent() }}
+{% endblock stylesheet %}
+
+{% block title %}
+    <h1>Information:</h1>
+{% endblock title %}
+
+{% block breadcrumb %}
+
+    <ol class="breadcrumb">
+        {{ parent() }}
+        <li class="">
+            <i class="fa fa-cube"></i> <a href="{{ path('troiswa_back_category') }}">Categories</a>
+        </li>
+        <li class="active">
+            <i class="fa fa-info"></i> Info
+        </li>
+    </ol>
+
+{% endblock breadcrumb %}
+
+{%  block contenu %}
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h2>Information sur la categorie {{ category.title|upper }}</h2>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>TITRE</th>
+                        <th>Position</th>
+                        <th>Description</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <tr>
+                        <td>{{ category.id }}</td>
+                        <td>{{ category.title }}</td>
+                        <td>{{ category.position }}</td>
+                        <td>{{ category.description }}</td>
+                    </tr>
+
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock contenu %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock javascripts %}

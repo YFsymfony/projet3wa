@@ -1,0 +1,107 @@
+{% extends "troiswaBackBundle::layout_admin.html.twig" %}
+
+{# ------------------------------------------#}
+
+{# Surchage au saint d'un template vue twig #}
+{# prioritaire face au fichiers fields.html.twig #}
+{# à ecrire a l'extérieur d'un block #}
+
+{# lien DOC pour surcharger :
+http://symfony.com/fr/doc/current/cookbook/form/form_customization.html#}
+
+{% form_theme formcontact _self %}
+    {%- block form_errors -%}
+        {%- if errors|length > 0 -%}
+            <ul class="alert alert-danger list-unstyled">
+                {%- for error in errors -%}
+                    <li>{{ error.message }}</li>
+                {%- endfor -%}
+            </ul>
+        {%- endif -%}
+    {%- endblock form_errors -%}
+
+{# -------------------------------------------#}
+
+
+
+{% block stylesheet %}
+    {{ parent() }}
+    <link href="{{ asset("assets/css/jquery.datetimepicker.css") }}" rel="stylesheet">
+{% endblock stylesheet %}
+
+{% block title %}
+    <h1>Contactez nous !</h1>
+{% endblock title %}
+
+{% block breadcrumb %}
+
+    <ol class="breadcrumb">
+        {{ parent() }}
+        <li class="active">
+            <i class="fa fa-phone"></i> Contact
+        </li>
+    </ol>
+
+{% endblock breadcrumb %}
+
+{%  block contenu %}
+
+    {# form(formcontact) #} {# affiche le formulaire a l'arrache pour vérifier dle fonctionnement en mode dev#}
+
+    {{ form_start(formcontact) }}
+
+        <div class="form-group">
+            {{ form_label(formcontact.firstname, null , { label_attr:{class:"class_du_label"}} ) }}
+            {{ form_errors(formcontact.firstname) }}
+            {{ form_widget( formcontact.firstname, {id:'monid',attr:{class:"form-control toto"}} ) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(formcontact.lastname, "Entrez votre Nom:" , { label_attr:{class:"class_du_label"}} ) }}
+            {{ form_errors(formcontact.lastname) }}
+            {{ form_widget(formcontact.lastname, {attr:{class:"form-control toto"}} ) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(formcontact.subject, "Choisissez un sujet:" , { label_attr:{class:"class_du_label"}} ) }}
+            {{ form_errors(formcontact.subject) }}
+            {{ form_widget(formcontact.subject, {attr:{class:"form-control toto"}} ) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(formcontact.email,  "Entrez un email valide:" , { label_attr:{class:"class_du_label"}} ) }}
+            {{ form_errors(formcontact.email) }}
+            {{ form_widget(formcontact.email, {attr:{class:"form-control toto"}} ) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(formcontact.content, "Entrez votre message:" , { label_attr:{class:"class_du_label"}} ) }}
+            {{ form_errors(formcontact.content) }}
+            {{ form_widget(formcontact.content, {attr:{class:"form-control toto"}} ) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(formcontact.date) }}
+            {{ form_errors(formcontact.date) }}
+            {{ form_widget(formcontact.date, {id:"datetimepicker",attr:{class:""}} ) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_widget(formcontact.submit, {label:"Envoyer",attr:{class:"btn btn-warning"}} ) }}
+        </div>
+
+    {{ form_end(formcontact) }}
+
+{% endblock contenu %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="{{ asset("assets/js/jquery.datetimepicker.js") }}"></script>
+    <script>
+        $(function()
+        {
+            $('#datetimepicker').datetimepicker();
+        });
+    </script>
+{% endblock javascripts %}

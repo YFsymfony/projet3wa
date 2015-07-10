@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Formation symfony</title>
+</head>
+<body>
+<header>
+    <h1>Bienvenue sur les conditions générales d'utilisations. </h1>
+
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores assumenda earum rem.
+        Ab ad, aliquam aspernatur atque debitis distinctio ea, hic illo illum quisquam quo sed
+        vel voluptate voluptatibus voluptatum.</p>
+
+    <hr/>
+
+    <h2> affichage des données personnel</h2>
+
+    <p>Prénom: {{ firstname|capitalize }}</p>
+
+    <p>Nom : {{ lastname|upper }}</p>
+
+    <p>Age: {{ age }}</p>
+
+    <hr/>
+
+    <h2> affichage des données personnel en concaténation</h2>
+
+    <p>Prénom: {{ firstname|capitalize ~" Nom:" ~ lastname|upper }}</p>
+
+    <hr/>
+
+    <h2>affichage des donnees personelles avec concaténation et création de variable</h2>
+
+    <p>{% set completName = "Prénom: " ~ firstname ~ " Nom: " ~ lastname %}</p>
+
+    <p>{{ completName }}</p>
+
+    <hr/>
+
+    {% if age > 18 %}
+        <p>Vous etes majeur</p>
+    {% else %}
+        <p>Vous etes mineur</p>
+    {% endif %}
+
+    <hr/>
+
+    {% if article is defined %}
+        <p>La variable article existe</p>
+    {% else %}
+        <p>La variable article n'existe pas</p>
+    {% endif %}
+
+    <hr/>
+
+    {{ article|default('article de base') }}
+
+    <hr/>
+
+</header>
+<footer>
+    <p>---powered by symfony2---dev: Guiz---</p>
+</footer>
+</body>
+
+</html>

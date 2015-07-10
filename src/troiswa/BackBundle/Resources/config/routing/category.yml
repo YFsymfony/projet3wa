@@ -1,0 +1,25 @@
+troiswa_back_category_add:
+    path: /category/add
+    defaults: { _controller: troiswaBackBundle:Category:addCategory }
+
+troiswa_back_category:
+    path: /category
+    defaults: { _controller: troiswaBackBundle:Category:allCategory }
+
+troiswa_back_category_edit:
+    path: /category/edit/{idcat}
+    defaults: { _controller: troiswaBackBundle:Category:editCategory }
+    requirements:
+       idcat: \d+
+
+troiswa_back_category_info:
+    path: /category/info/{idcat}
+    defaults: { _controller: troiswaBackBundle:Category:categoryInfo }
+    requirements:
+        idcat: \d+
+
+troiswa_back_category_delete:
+    path: /category/delete/{idcat}
+    defaults: { _controller: troiswaBackBundle:Category:deleteCategory }
+    requirements:
+       idcat: \d+

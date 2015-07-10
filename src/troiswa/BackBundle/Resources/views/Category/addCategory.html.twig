@@ -1,0 +1,60 @@
+{% extends "troiswaBackBundle::layout_admin.html.twig" %}
+
+
+
+{% block stylesheet %}
+    {{ parent() }}
+{% endblock stylesheet %}
+
+{% block title %}
+    <h1>Ajoutez une categorie</h1>
+{% endblock title %}
+
+{% block breadcrumb %}
+
+    <ol class="breadcrumb">
+        {{ parent() }}
+        <li class="">
+            <i class="fa fa-cube"></i> <a href="{{ path("troiswa_back_category") }}">categories</a>
+        </li>
+        <li class="active">
+            <i class="fa fa-plus-square-o"></i> ajouter une categorie
+        </li>
+    </ol>
+
+{% endblock breadcrumb %}
+
+
+{% block contenu %}
+
+    {{ form_start(formCategory) }}
+
+    <div class="form-group">
+        {{ form_label(formCategory.title, "Entrez le nom de la categorie:" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(formCategory.title) }}
+        {{ form_widget( formCategory.title, {attr:{class:"form-control"}} ) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(formCategory.description, "Entrez la description de la categorie:" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(formCategory.description) }}
+        {{ form_widget( formCategory.description, {attr:{class:"form-control"}} ) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(formCategory.position, "Entrez la position de la categorie:" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(formCategory.position) }}
+        {{ form_widget( formCategory.position, {attr:{class:"form-control"}} ) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_widget(formCategory.envoyer, {label:"Envoyer",attr:{class:"btn btn-warning"}} ) }}
+    </div>
+
+    {{ form_end(formCategory) }}
+
+{% endblock contenu %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock javascripts %}
