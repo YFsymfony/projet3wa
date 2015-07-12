@@ -3,8 +3,10 @@
 {% block stylesheet %}
     <!-- Bootstrap Core CSS -->
     <link href="{{ asset("assets/css/bootstrap.css") }}" rel="stylesheet">
-    <!-- Custom CSS -->
+    <!-- SB admin CSS -->
     <link href="{{ asset("assets/css/sb-admin.css") }}" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="{{ asset("assets/css/style.css") }}" rel="stylesheet">
     <!-- Custom Fonts -->
     <link href="{{ asset("assets/font-awesome/css/font-awesome.min.css") }}" rel="stylesheet">
 {% endblock stylesheet %}
@@ -25,7 +27,7 @@
                 <!-- Page Heading -->
                 <div class="row">
                     <div class="col-lg-12">
-                        <h1 class="page-header">
+                        <h1 class="page-header text-center">
                             {% block title %}Dashboard <small>Statistics Overview</small>{% endblock title %}
                         </h1>
                             {% block breadcrumb %}
