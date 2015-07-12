@@ -42,4 +42,11 @@ class CategoryRepository extends EntityRepository
 
         return $query->getQuery()->getResult();
     }
+
+    public function findAllCategory()
+    {
+        $query = $this->createQueryBuilder("cat");
+
+        return $query->getQuery()->getResult();
+    }
 }

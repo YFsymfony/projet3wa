@@ -38,6 +38,8 @@
                         <th>Prix</th>
                         <th>Description</th>
                         <th>Quantité</th>
+                        <th>Edition</th>
+                        <th>Suppression</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -49,6 +51,8 @@
                             <td>{{ product.price }}</td>
                             <td>{{ product.description }}</td>
                             <td>{{ product.quantity }}</td>
+                            <td><a class="btn btn-success" href="{{ path('troiswa_back_product_edit',{idprod: product.id} ) }}">Edit</a></td>
+                            <td><a class="btn btn-danger" href="{{ path('troiswa_back_product_delete',{idprod: product.id} ) }}">Supprimer</a></td>
                         </tr>
 
 

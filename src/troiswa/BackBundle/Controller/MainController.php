@@ -43,6 +43,18 @@ class MainController extends Controller
         $ProctBetweenPrice = $em->getRepository("troiswaBackBundle:Product")
                                 ->findProctBetweenPrice(400,900);
 
+        $allproducts = $em->getRepository("troiswaBackBundle:Product")
+                          ->findAllProduct();
+
+        $allCategory = $em->getRepository("troiswaBackBundle:Category")
+            ->findAllCategory();
+
+        $countProductToOrder = $em->getRepository("troiswaBackBundle:Product")
+            ->countProductToOrder();
+
+
+
+
         return $this->render
         ('troiswaBackBundle:Main:index.html.twig',
 
@@ -55,7 +67,10 @@ class MainController extends Controller
                 "countAllProduct"=>$countAllProduct,
                 "countActiveAndNonActiveProduct"=>$countActiveAndNonActiveProduct,
                 "displayCategoryByPostion"=>$displayCategoryByPostion,
-                "ProctBetweenPrice"=>$ProctBetweenPrice
+                "ProctBetweenPrice"=>$ProctBetweenPrice,
+                "allproducts"=>$allproducts,
+                "allCategory"=>$allCategory,
+                "countProductToOrder"=>$countProductToOrder
 
             ]
         );

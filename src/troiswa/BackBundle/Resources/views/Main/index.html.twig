@@ -21,8 +21,201 @@
 
 {% block contenu %}
 
+    <!-- ///////////////////////////////////// WIDGET ///////////////////////////////////-->
+
     <div class="row">
 
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-info-circle fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">{{ countActiveProduct }}</div>
+                            <div>Nombre de produits actifs</div>
+                        </div>
+                    </div>
+                </div>
+                <a href="#">
+                    <div class="panel-footer">
+                        <span class="pull-left">View Details</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-green">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-tasks fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">{{ countCategory }}</div>
+                            <div>Nombre de categories</div>
+                        </div>
+                    </div>
+                </div>
+                <a href="#">
+                    <div class="panel-footer">
+                        <span class="pull-left">View Details</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel panel-red">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-exclamation-triangle fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">{{ countProductOutOfStock }}</div>
+                            <div>Produits épuisés</div>
+                        </div>
+                    </div>
+                </div>
+                <a href="#">
+                    <div class="panel-footer">
+                        <span class="pull-left">View Details</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-yellow">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-exclamation-triangle fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <ul>
+                                <div class="huge">{{ countProductToOrder }}</div>
+                                <div>Produits à commander</div>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <a href="#">
+                    <div class="panel-footer">
+                        <span class="pull-left">Views details</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- /////////////////////////////////// END WIDGET ////////////////////////////////////-->
+
+    <!-- ///////////////////////////////////// PANEL FILTER //////////////////////////////-->
+
+    <hr/>
+
+                                <div class="container">
+
+                                    <div class="row">
+                                        <div class="col-md-6 col-lg-6">
+                                            <h2 class="text-center">Gestion rapide des produits:</h2>
+                                            <div class="panel panel-primary">
+                                                <div class="panel-heading">
+                                                    <h3 class="panel-title">Categories</h3>
+                                                </div>
+                                                <div class="panel-body">
+                                                    <input type="text" class="form-control" id="dev-table-filter" data-action="filter" data-filters="#dev-table" placeholder="Filtre des categories" />
+                                                </div>
+                                                <table class="table table-hover" id="dev-table">
+                                                    <thead>
+                                                    <tr>
+                                                        <th># ID</th>
+                                                        <th>Categorie / Info</th>
+                                                        <th>Nombre de produits</th>
+                                                        <th>Edition</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+
+                                                    {% for onecategory in allCategory %}
+                                                        <tr>
+                                                            <td>{{ onecategory.id }}</td>
+                                                            <td><a class="btn btn-primary" href="{{ path('troiswa_back_category_info',{idcat: onecategory.id}) }}">{{ onecategory.title }}</a></td>
+                                                            <td>nombre de produits</td>
+                                                            <td><a class="btn btn-success" href="{{ path('troiswa_back_category_edit',{idcat: onecategory.id}) }}">Editer</a></td>
+                                                        </tr>
+                                                    {% endfor %}
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-lg-6">
+                                            <h2 class="text-center">Gestion rapide des categories:</h2>
+                                            <div class="panel panel-primary">
+                                                <div class="panel-heading">
+                                                    <h3 class="panel-title">Produits</h3>
+                                                </div>
+                                                <div class="panel-body">
+                                                    <input type="text" class="form-control" id="task-table-filter" data-action="filter" data-filters="#task-table" placeholder="Filtre des Produits" />
+                                                </div>
+                                                <table class="table table-hover" id="task-table">
+                                                    <thead>
+                                                    <tr>
+                                                        <th># ID</th>
+                                                        <th>Désignation / Edition</th>
+                                                        <th>Quantitée</th>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+
+                                                    {% for product in allproducts %}
+                                                        <tr>
+                                                            <td>{{ product.id }}</td>
+                                                            <td><a class="btn btn-primary" href="{{ path('troiswa_back_product_edit',{idprod: product.id} ) }}">{{ product.title }}</a></td>
+                                                            <td>{{ product.quantity }}</td>
+                                                            {% if product.quantity == 0 %}
+                                                                <td class="danger text-center">Rupture de stock</td>
+                                                            {% elseif product.quantity <5 and product.quantity != 0%}
+                                                                <td class="warning text-center">A commander</td>
+                                                            {% endif %}
+                                                        </tr>
+                                                    {% endfor %}
+
+
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+    <hr/>
+
+    <!-- ///////////////////////////////////// END PANEL FILTER //////////////////////////////-->
+
+    <!-- ///////////////////////////////////// WIDGET D'ENTRAINEMENT //////////////////////////////-->
+
+    <!--
+
+    <div class="row">
 
         <div class="col-lg-3 col-md-6">
             <div class="panel panel-primary">
@@ -122,7 +315,6 @@
             </div>
         </div>
     </div>
-    <!-- /.row 1-->
 
     <hr/>
 
@@ -241,7 +433,10 @@
             </div>
         </div>
     </div>
-    <!-- /.row 2-->
+
+    -->
+
+    <!-- ///////////////////////////////////// END WIDGET D'ENTRAINEMENT//////////////////////////////-->
 
     <div class="row">
         <div class="col-lg-12">
@@ -394,6 +589,8 @@
     </div>
     <!-- /.row -->
 
+
+
 {% endblock contenu %}
 
 {% block javascripts %}
@@ -402,4 +599,5 @@
     <script src="{{ asset("assets/js/plugins/morris/raphael.min.js") }}"></script>
     <script src="{{ asset("assets/js/plugins/morris/morris.min.js") }}"></script>
     <script src="{{ asset("assets/js/plugins/morris/morris-data.js") }}"></script>
+    <script src="{{ asset('assets/js/PanelFilter.js') }}"></script>
 {% endblock javascripts %}

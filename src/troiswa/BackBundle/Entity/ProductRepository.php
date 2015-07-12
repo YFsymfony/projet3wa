@@ -115,6 +115,25 @@ class ProductRepository extends EntityRepository
 
     }
 
+    public function findAllProduct()
+    {
+        $query = $this->createQueryBuilder('prod');
+
+        return $query->getQuery()->getResult();
+    }
+
+    public function countProductToOrder($quantity = 5)
+    {
+        $query = $this->createQueryBuilder("prod")
+            ->select('Count(prod)')
+            ->where("prod.quantity<= :qtyValue")
+            ->setParameter("qtyValue",$quantity);
+
+        return $query->getQuery()->getSingleScalarResult();
+
+
+    }
+
 
 
 
