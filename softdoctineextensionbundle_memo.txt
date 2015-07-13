@@ -1,0 +1,105 @@
+
+
+DOCUMENTATION :
+
+    https://github.com/Atlantic18/DoctrineExtensions/tree/master/doc/
+
+/////////////////////////////// pour les slug : //////////////////////////////////
+
+
+
+    https://github.com/Atlantic18/DoctrineExtensions/blob/master/doc/sluggable.md
+
+---------------------------------------------------------------------------------
+
+ajouter cette ligne dans composer.json :
+
+    "stof/doctrine-extensions-bundle": "~1.1@dev",
+
+---------------------------------------------------------------------------------
+
+ensuite update composer , puis ajouter cette ligne dans le kernel :
+
+    new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
+
+
+----------------------------------------------------------------------------------
+
+dans app/config.yml , ajouter tous en bas :
+
+    stof_doctrine_extensions:
+        orm:
+            default:
+                sluggable: true
+
+----------------------------------------------------------------------------------
+
+ajouter dans l'entité :
+
+        /**
+         * @Gedmo\Slug(fields={"title"})
+         * @ORM\Column(length=128, unique=true)
+         */
+        private $slug;
+
+        Documentation des paramettres à mettre dans l'entité : exemple -> * @Gedmo\Slug(fields={"title"}, updatable=false)
+
+            https://github.com/Atlantic18/DoctrineExtensions/blob/master/doc/sluggable.md#some-other-configuration-options-for-slug-annotation
+
+        ne pas oublier ce use :
+
+            use Gedmo\Mapping\Annotation as Gedmo;
+
+------------------------------------------------------------------------------------
+
+re-générer les getter et setter avec la commande :
+
+    php app/console doctrine:generate:entities nomDuBundle:Entité
+
+-------------------------------------------------------------------------------------
+
+mettre à jour la base de données!
+
+
+//////////////////////////////////// pour time stampable//////////////////////////////////
+
+ajouter dans l'entitée :
+
+    /**
+         * @var \DateTime $created
+         *
+         * @Gedmo\Timestampable(on="create")
+         * @ORM\Column(type="datetime")
+         */
+        private $created;
+
+        /**
+         * @var \DateTime $updated
+         *
+         * @Gedmo\Timestampable(on="update")
+         * @ORM\Column(type="datetime")
+         */
+        private $updated;
+
+----------------------------------------------------------------------------------------------
+
+
+    Activer d'autre fonction :
+
+    ne pas oublier de modifier le config.yml
+
+    exemple :
+
+        stof_doctrine_extensions:
+            orm:
+                default:
+                    sluggable: true
+                    timestampable: true      ici on a rajouter timestampable
+
+                    doc : https://github.com/stof/StofDoctrineExtensionsBundle/blob/master/Resources/doc/index.rst
+
+                        section : Activate the extensions you want
+
+-----------------------------------------------------------------------------------------------
+
+Ne pas oublier de recreer les getter et setter et metre à jour la base de donnee

@@ -185,46 +185,4 @@ class Category
     {
         return $this->title;
     }
-
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->products = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Add products
-     *
-     * @param \troiswa\BackBundle\Entity\Product $products
-     * @return Category
-     */
-    public function addProduct(\troiswa\BackBundle\Entity\Product $products)
-    {
-        $this->products[] = $products;
-
-        return $this;
-    }
-
-    /**
-     * Remove products
-     *
-     * @param \troiswa\BackBundle\Entity\Product $products
-     */
-    public function removeProduct(\troiswa\BackBundle\Entity\Product $products)
-    {
-        $this->products->removeElement($products);
-    }
-
-    /**
-     * Get products
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getProducts()
-    {
-        return $this->products;
-    }
 }

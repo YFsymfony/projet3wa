@@ -4,6 +4,7 @@ namespace troiswa\BackBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Product
@@ -79,11 +80,45 @@ class Product
      */
     private $quantity;
 
+
+    /**
+     * @ORM\ManyToOne(targetEntity="troiswa\BackBundle\Entity\Category", inversedBy="products")
+     *
+     * change la clé nommée automatiquement par celle que l'on veux , ici transforme categ_id en id category
+     * @ORM\JoinColumn(name="id_category",referencedColumnName="id")
+     */
+    private $categ;
+
     // cette fonction permet a l'entité d'etre automatiquement sélectioné a true dans le choice/radio
     public function __construct()
     {
         $this->active = true;
     }
+
+
+    /**
+     * @Gedmo\Slug(fields={"title"}, updatable=false)
+     * @ORM\Column(length=128, unique=true )
+     */
+    private $slug;
+
+
+    /**
+     * @var \DateTime $created
+     *
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime")
+     *
+     */
+    private $created;
+
+    /**
+     * @var \DateTime $updated
+     *
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime")
+     */
+    private $updated;
 
 
     /**
@@ -209,5 +244,109 @@ class Product
     public function getQuantity()
     {
         return $this->quantity;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return Product
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string 
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+
+    /**
+     * Set created
+     *
+     * @param \DateTime $created
+     * @return Product
+     */
+    public function setCreated($created)
+    {
+        $this->created = $created;
+
+        return $this;
+    }
+
+    /**
+     * Get created
+     *
+     * @return \DateTime 
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * Set updated
+     *
+     * @param \DateTime $updated
+     * @return Product
+     */
+    public function setUpdated($updated)
+    {
+        $this->updated = $updated;
+
+        return $this;
+    }
+
+    /**
+     * Get updated
+     *
+     * @return \DateTime 
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
+    }
+
+
+    /**
+     * Set categ
+     *
+     * @param \troiswa\BackBundle\Entity\Category $categ
+     * @return Product
+     */
+    public function setCateg(\troiswa\BackBundle\Entity\Category $categ = null)
+    {
+        $this->categ = $categ;
+
+        return $this;
+    }
+
+    /**
+     * Get categ
+     *
+     * @return \troiswa\BackBundle\Entity\Category 
+     */
+    public function getCateg()
+    {
+        return $this->categ;
+    }
+
+    // methode magique pour convertir un objet en chaine de charactère
+    // exemple d'erreur causé si on utilise pas cette methode :
+    // Catchable Fatal Error: Object of class troiswa\BackBundle\Entity\Category could not be converted to string
+
+    // doc : http://symfony.com/fr/doc/current/reference/forms/types/entity.html
+    public function __toString()
+    {
+        return $this->title;
     }
 }

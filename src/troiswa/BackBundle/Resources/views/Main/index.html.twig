@@ -334,7 +334,41 @@
     <!--////////////////////////////////////// END WIDGET COMMANDE //////////////////////////////////-->
 
     <!-- //////////////////////////////////////// PANEL FILTER Commandes//////////////////////////////-->
+    <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12">
+            <h3 class="text-center main-heading">Gestion rapide des commandes:</h3>
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h4 class="panel-title">Commandes</h4>
+                </div>
+                <div class="panel-body">
+                    <input type="text" class="form-control" id="dev-table-filter" data-action="filter" data-filters="#dev-table" placeholder="Filtre des categories" />
+                </div>
+                <table class="table table-hover" id="dev-table">
+                    <thead>
+                    <tr>
+                        <th># Numéro de commande</th>
+                        <th>Date</th>
+                        <th>Heure</th>
+                        <th>Montant</th>
+                    </tr>
+                    </thead>
+                    <tbody>
 
+                    {% for onecategory in allCategory %}
+                        <tr>
+                            <td>{{ onecategory.id }}</td>
+                            <td><a class="btn btn-primary" href="{{ path('troiswa_back_category_info',{idcat: onecategory.id}) }}">{{ onecategory.title }}</a></td>
+                            <td>nombre de produits</td>
+                            <td><a class="btn btn-success" href="{{ path('troiswa_back_category_edit',{idcat: onecategory.id}) }}">Editer</a></td>
+                        </tr>
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
     <!-- //////////////////////////////////////// PANEL FILTER Commandes//////////////////////////////-->
 
     <!--///////////////////////////////////////// TABLEAU COMMANDE //////////////////////////////////-->

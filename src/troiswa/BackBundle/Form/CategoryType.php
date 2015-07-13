@@ -5,6 +5,7 @@ namespace troiswa\BackBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Doctrine\ORM\EntityRepository;
 
 class CategoryType extends AbstractType
 {
@@ -18,6 +19,23 @@ class CategoryType extends AbstractType
             ->add('title',"text")
             ->add('description',"text")
             ->add('position',"number")
+            ->add("products","entity",
+                    [
+                        "class"=>"troiswaBackBundle:Product",
+                        //"property"=>"title",
+                        // doc :http://symfony.com/doc/master/reference/forms/types/collection.html#by-reference
+                        // on passe par l'entitée esclave
+                        'query_builder' => function(EntityRepository $er)
+                        {
+                            return $er->createQueryBuilder('prod');
+
+                        },
+                        "expanded"=>false,
+                        "multiple"=>true
+
+                    ]
+                 )
+
             ->add("envoyer","submit")
         ;
     }

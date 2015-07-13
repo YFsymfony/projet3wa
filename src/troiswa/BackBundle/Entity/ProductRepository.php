@@ -134,11 +134,19 @@ class ProductRepository extends EntityRepository
 
     }
 
+    public function findAllProductAndCategory()
+    {
 
+        $query = $this->getEntityManager()
+            ->createQuery
+            ("
+                           SELECT prod,cat
+                           FROM troiswaBackBundle:Product prod
+                           LEFT JOIN prod.categ cat
+                        ");
 
-
-
-
+        return $query->getResult();
+    }
 
 
 }

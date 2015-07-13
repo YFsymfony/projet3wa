@@ -36,6 +36,7 @@
                     <th>Prix</th>
                     <th>quantité</th>
                     <th>Action </th>
+                    <th>Categorie</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -45,7 +46,13 @@
                     <td>{{ product.id }}</td>
                     <td>{{ product.title }}</td>
                     <td>{{ product.price }}</td>
-                    <td>{{ product.quantity }}</td>
+                    {% if product.quantity == 0 %}
+                        <td class="danger">{{ product.quantity }}</td>
+                    {% elseif product.quantity < 5%}
+                        <td class="warning">{{ product.quantity }}</td>
+                    {% else  %}
+                        <td class="success">{{ product.quantity }}</td>
+                    {% endif %}
                     <td class="disablable"> <!-- class disablable pour lr javascript , écouter uniquement le parent des boutons plutot que d'écouter tous les boutons -->
                         <a class="btn btn-primary" href="{{ path('troiswa_back_product_info',{idprod: product.id} ) }}">info</a>
                         <a class="btn btn-success" href="{{ path('troiswa_back_product_edit',{idprod: product.id} ) }}">Edit</a>
@@ -62,6 +69,11 @@
                         <!-- Confirmation de suppression en inline via le popup du navigateur -->
                         <!-- <a class="btn btn-danger" href="{{ path('troiswa_back_product_delete',{idprod: product.id} ) }}" onclick="return confirm('Etes-vous sur de supprimer cet article?')">Supprimer</a> -->
                     </td>
+                    {% if product.categ is null %}
+                        <td class="warning">Acune catégorie est associée à ce produit</td>
+                    {% else %}
+                        <td class="success">{{ product.categ.title }}</td>
+                    {% endif %}
                 </tr>
                 {% endfor %}
 

@@ -35,6 +35,7 @@
                         <th>Titre</th>
                         <th>Position</th>
                         <th>Action</th>
+                        <th>Produits</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -51,6 +52,13 @@
 
                                 <!-- Confirmation de suppression en inline via le popup du navigateur -->
                                 <!-- <a class="btn btn-danger" href="{{ path('troiswa_back_category_delete',{idcat: onecategory.id}) }}" onclick="return confirm('Etes-vous sur de supprimer cet article?')">Supprimer</a> -->
+                            </td>
+                            <td>
+                                <ul>
+                                {% for product in onecategory.products %}
+                                    <li><a class="btn btn-primary" href="{{ path('troiswa_back_product_info',{idprod: product.id} ) }}">{{ product.title }}</a></li>
+                                {% endfor %}
+                                </ul>
                             </td>
                         </tr>
                     {% endfor %}

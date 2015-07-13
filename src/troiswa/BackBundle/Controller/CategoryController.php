@@ -6,9 +6,18 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use troiswa\BackBundle\Entity\Category;
 use Symfony\Component\HttpFoundation\Request;
 use troiswa\BackBundle\Form\CategoryType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;   // grisé car ce service est en annotation
 
 class CategoryController extends Controller
 {
+
+
+
+
+
+
+
+
     public function addCategoryAction(Request $request)
     {
         // j'instancie un nouvel objet category que je stock dans la variable $category
@@ -22,6 +31,8 @@ class CategoryController extends Controller
         // Grâce a handleRequest, j'hydrate le formulaire avec les informations de $_POST donc $request
         $formCategory->handleRequest($request);
 
+
+
         // je test si le formulaire et valide et j'éxécute le traitement si celui ci est valide
         if($formCategory->isValid())
         {
@@ -30,6 +41,9 @@ class CategoryController extends Controller
 
             //j'appel le service doctrine et entity manager
             $em = $this->getDoctrine()->getManager();
+
+            //dump($category);
+            //die();
 
             // j'informe doctrine de l'existance de l'objet $category afin qu'il le surveille
             $em->persist($category);
@@ -48,6 +62,15 @@ class CategoryController extends Controller
         return $this->render('troiswaBackBundle:Category:addCategory.html.twig',["formCategory"=>$formCategory->createView()]);
     }
 
+
+
+
+
+
+
+
+
+
     public function allCategoryAction()
     {
         // j'appel le service doctrine et entity manager
@@ -57,7 +80,12 @@ class CategoryController extends Controller
         // toute les categories
         //  DOC fonction native doctrine (find) : http://www.doctrine-project.org/api/orm/2.2/class-Doctrine.ORM.EntityRepository.html
         $category = $em->getRepository("troiswaBackBundle:Category")
-        ->findAll();
+                     //avec findAll() , on aurras pluieurs requetes
+                     //->findAll();
+
+                     //  avec cette methode que l'on a faite dans le repository Product
+                     //  on aurra plus qu'une seule requete.
+                     ->findAllProductInCategory();
 
 
         //je rend la vue de la liste de toutes les categories en passant en paramettre
@@ -66,59 +94,99 @@ class CategoryController extends Controller
 
     }
 
-    public function categoryInfoAction($idcat)
+
+
+
+
+
+
+
+
+
+    /**
+     * @param $idcat
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @ParamConverter("category", options={ "mapping":{"idcat":"id"} } )
+     */
+    public function categoryInfoAction(Category $category)
     {
         // appel du service doctrine et entity manager
         $em = $this->getDoctrine()->getManager();
 
-        // on stock dans $category le résultat de la recherche en BDD
-        // DOC fonction native doctrine (find) : http://www.doctrine-project.org/api/orm/2.2/class-Doctrine.ORM.EntityRepository.html
-        $category = $em->getRepository("troiswaBackBundle:Category")
-        ->find($idcat);
 
-        // pour comperendre ce test , on doit dump $product avec un id faux en url ( ../info/9999 par exemple )
-        // le dump retourne alors null , donc on écris une condition :
-        // si $product est null , alors effiche moi le NotFoundException.
-        // cette condition verifie si l'id demandée en url existe bien ,
-        // et renvois un message d'erreur grace a throw + creatNotFoundException
-
-        //!$category équivaut à $category == false ou empty($category)
-        // ou null == false ( verifie si $category est NULL )
-        if(!$category)
-        {
-            throw $this->createNotFoundException("cette id n'existe pas");
-        }
-
+////////////////////////////////////Ancienne methode remplacé par param converter///////////////////////////////////////////////////////
+//
+//        // on stock dans $category le résultat de la recherche en BDD
+//        // DOC fonction native doctrine (find) : http://www.doctrine-project.org/api/orm/2.2/class-Doctrine.ORM.EntityRepository.html
+//        $category = $em->getRepository("troiswaBackBundle:Category")
+//        ->find($idcat);
+//
+//        // pour comperendre ce test , on doit dump $product avec un id faux en url ( ../info/9999 par exemple )
+//        // le dump retourne alors null , donc on écris une condition :
+//        // si $product est null , alors effiche moi le NotFoundException.
+//        // cette condition verifie si l'id demandée en url existe bien ,
+//        // et renvois un message d'erreur grace a throw + creatNotFoundException
+//
+//        //!$category équivaut à $category == false ou empty($category)
+//        // ou null == false ( verifie si $category est NULL )
+//        if(!$category)
+//        {
+//            throw $this->createNotFoundException("cette id n'existe pas");
+//        }
+//
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         // redirection vers la vu avec les résultats en parametres
         return $this->render('troiswaBackBundle:Category:categoryInfo.html.twig',array("category"=>$category));
 
     }
 
-    public  function editCategoryAction(Request $request, $idcat)
+
+
+
+
+
+
+
+
+
+
+    /**
+     * @param Request $request
+     * @param Category $category
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @ParamConverter("category", options={ "mapping":{"idcat":"id"} } )
+     */
+
+    public  function editCategoryAction(Request $request, Category $category)
     {
         // appel du service doctrine et entity manager
         $em = $this->getDoctrine()->getManager();
 
-        // DOC fonction native doctrine (find) :
-        // http://www.doctrine-project.org/api/orm/2.2/class-Doctrine.ORM.EntityRepository.html
-        // get repository est comme le from en sql , car ici on parle en objet
-        $category = $em->getRepository("troiswaBackBundle:Category")
-        ->find($idcat);
+////////////////////////////////////Ancienne methode remplacé par param converter///////////////////////////////////////////////////////
+//
+//        // DOC fonction native doctrine (find) :
+//        // http://www.doctrine-project.org/api/orm/2.2/class-Doctrine.ORM.EntityRepository.html
+//        // get repository est comme le from en sql , car ici on parle en objet
+//        $category = $em->getRepository("troiswaBackBundle:Category")
+//        ->find($idcat);
+//
+//
+//        // pour comperendre ce test , on doit dump $product avec un id faux en url ( ../info/9999 par exemple )
+//        // le dump retourne alors null , donc on écris une condition :
+//        // si $product est null , alors effiche moi le NotFoundException.
+//        // cette condition verifie si l'id demandée en url existe bien ,
+//        // et renvois un message d'erreur grace a throw + creatNotFoundException
+//
+//        //!$category équivaut à $category == false ou empty($category)
+//        // ou null == false ( verifie si $category est NULL )
+//        if(!$category)
+//        {
+//            throw $this->createNotFoundException("Impossible d'éditer une categorie qui n'existe pas, id inconnue ");
+//        }
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-        // pour comperendre ce test , on doit dump $product avec un id faux en url ( ../info/9999 par exemple )
-        // le dump retourne alors null , donc on écris une condition :
-        // si $product est null , alors effiche moi le NotFoundException.
-        // cette condition verifie si l'id demandée en url existe bien ,
-        // et renvois un message d'erreur grace a throw + creatNotFoundException
-
-        //!$category équivaut à $category == false ou empty($category)
-        // ou null == false ( verifie si $category est NULL )
-        if(!$category)
-        {
-            throw $this->createNotFoundException("Impossible d'éditer une categorie qui n'existe pas, id inconnue ");
-        }
 
         // création du formulaire en instanciant un nouvel objet de type categoryType
         // lié a l'entité catégory grace au parametre $category , l'hydration se fait grace au paramettre $category
@@ -142,7 +210,7 @@ class CategoryController extends Controller
             // je redirige sur la page de liste de toute les catégories en methode GET
             // Utilisation de ce concept POST/REDIRECT/GET
             // si on redirige vers une route qui a besoin d'un paramettre , on doit le spécifier dans la redirection
-            return $this->redirectToRoute("troiswa_back_category_edit", ["idcat" => $idcat]);
+            return $this->redirectToRoute("troiswa_back_category_edit", ["idcat" => $category->getId()]); // avec l'ancienne methode on utilise $idcat et non $category->getId()
         }
 
         // ATTENTION : ne pas oublier de passer l'objet form à la vue et d'utiliser ->createView
@@ -150,21 +218,35 @@ class CategoryController extends Controller
         return $this->render('troiswaBackBundle:Category:editCategory.html.twig',["formUpdateCategory"=>$formUpdateCategory->createView()]);
     }
 
-    public function deleteCategoryAction($idcat)
+
+
+
+
+    /**
+     * @param $idcat
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @ParamConverter("category", options={ "mapping":{"idcat":"id"} } )
+     */
+    public function deleteCategoryAction(Category $category)
     {
         //appel du service doctrine et entity manager
         $em = $this->getDoctrine()->getManager();
 
-        // DOC fonction native doctrine (find) : http://www.doctrine-project.org/api/orm/2.2/class-Doctrine.ORM.EntityRepository.html
-        // get repository est comme le from en sql , car ici on parle en objet
-        $category = $em->getRepository("troiswaBackBundle:Category")
-        ->find($idcat);
-
-        //!$product équivaut à $product == false ou empty($product) ou null == false ( verifie si $product est NULL )
-        if(!$category)
-        {
-            throw $this->createNotFoundException("Impossible de supprimer une categorie qui n'existe pas, id inconnue ");
-        }
+////////////////////////////////////Ancienne methode remplacé par param converter///////////////////////////////////////////////////////
+//
+//        // DOC fonction native doctrine (find) : http://www.doctrine-project.org/api/orm/2.2/class-Doctrine.ORM.EntityRepository.html
+//        // get repository est comme le from en sql , car ici on parle en objet
+//        $category = $em->getRepository("troiswaBackBundle:Category")
+//        ->find($idcat);
+//
+//        //!$product équivaut à $product == false ou empty($product) ou null == false ( verifie si $product est NULL )
+//        if(!$category)
+//        {
+//            throw $this->createNotFoundException("Impossible de supprimer une categorie qui n'existe pas, id inconnue ");
+//        }
+//
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         // remove delete l'objet en base de donnée
         $em->remove($category);
@@ -181,6 +263,12 @@ class CategoryController extends Controller
         return $this->redirectToRoute("troiswa_back_category");
     }
 
+
+
+
+
+
+
     public function listCategoryNavAction()
     {
         // appel du service doctrine et entity manager
@@ -193,6 +281,13 @@ class CategoryController extends Controller
 
         return $this->render('troiswaBackBundle:Category:listCategoryNav.html.twig',["category"=>$category]);
     }
+
+
+
+
+
+
+
 
     ///////////////////////////methode d'entrainement////////////////////////////////
     public function allCategoryTrainAction()

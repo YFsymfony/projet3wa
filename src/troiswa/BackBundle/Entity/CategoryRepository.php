@@ -49,4 +49,42 @@ class CategoryRepository extends EntityRepository
 
         return $query->getQuery()->getResult();
     }
+
+    public function findAllCategoryOrderByPosition()
+    {
+
+        $query = $this->getEntityManager()
+            ->createQuery
+            ("
+                           SELECT cat
+                           FROM troiswaBackBundle:Category cat
+                           ORDER BY cat.position ASC
+                        ");
+
+        return $query->getResult();
+
+    }
+
+    public function findAllProductInCategory()
+    {
+
+        $query = $this->getEntityManager()
+            ->createQuery
+             // je selectionne toutes les categories et tous les produits lié aux categories
+             // dans l'entité category
+             // jointure avec la table product la proprieté private $products de l'entitée category.
+            ("
+
+                           SELECT cat,prod
+                           FROM troiswaBackBundle:Category cat
+                           LEFT JOIN cat.products prod
+                        ");
+
+
+
+        //dump($query->getSQL());
+        //die();
+
+        return $query->getResult();
+    }
 }

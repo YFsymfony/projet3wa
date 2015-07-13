@@ -39,11 +39,10 @@
                         <th>Description</th>
                         <th>Quantité</th>
                         <th>Edition</th>
-                        <th>Suppression</th>
+                        <th>Categorie</th>
                     </tr>
                     </thead>
                     <tbody>
-
 
                         <tr>
                             <td>{{ product.id }}</td>
@@ -52,9 +51,12 @@
                             <td>{{ product.description }}</td>
                             <td>{{ product.quantity }}</td>
                             <td><a class="btn btn-success" href="{{ path('troiswa_back_product_edit',{idprod: product.id} ) }}">Edit</a></td>
-                            <td><a class="btn btn-danger" href="{{ path('troiswa_back_product_delete',{idprod: product.id} ) }}">Supprimer</a></td>
+                            {% if product.categ is null%}
+                                <td> Acune catégorie n'est associée à ce produit</td>
+                                {% else %}
+                                    <td><a class="btn btn-primary" href="{{ path('troiswa_back_category_info',{idcat: product.categ.id} ) }}">{{ product.categ.title }}</a></td>
+                            {% endif %}
                         </tr>
-
 
                     </tbody>
                 </table>

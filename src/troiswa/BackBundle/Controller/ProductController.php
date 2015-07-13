@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use troiswa\BackBundle\Entity\Product;
 use Symfony\Component\HttpFoundation\Request;
 use troiswa\BackBundle\Form\ProductType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;   // grisé car ce service est en annotation
 
 
 class ProductController extends Controller
@@ -73,6 +74,12 @@ class ProductController extends Controller
         return $this->render('troiswaBackBundle:Product:addProduct.html.twig',["formProduct"=>$formProduct->createView()]);
     }
 
+
+
+
+
+
+
     public function allProductAction()
     {
 
@@ -80,7 +87,13 @@ class ProductController extends Controller
 
         // DOC des find :  http://www.doctrine-project.org/api/orm/2.2/class-Doctrine.ORM.EntityRepository.html
         $products = $em->getRepository("troiswaBackBundle:Product") // get repository est comme le from en sql , mais ici on parle en objet
-                       ->findAll();
+
+                     // avec findAll() , on aurras pluieurs requetes
+                     //->findAll
+
+                     //  avec cette methode que l'on a faite dans le repository Product
+                     //  on aurra plus qu'une seule requete.
+                       ->findAllProductAndCategory();
 
         //dump($products);
         //die();
@@ -88,48 +101,94 @@ class ProductController extends Controller
         return $this->render('troiswaBackBundle:Product:allProduct.html.twig',["products"=>$products]);
     }
 
-    public function productInfoAction($idprod)
+
+
+
+
+
+
+
+
+    /**
+    * @ParamConverter("product", options={ "mapping":{"idprod":"id"} } )
+    * converti le parametre idprod de la route en id
+    */
+    public function productInfoAction(Product $product) // methode avec param converter
     {
 
-        $em = $this->getDoctrine()->getManager();
-
-        //on stock l'id dans $produit , id que l'on a chercher en BDD avec find($idprod)
-        // DOC fonction native doctrine (find) : http://www.doctrine-project.org/api/orm/2.2/class-Doctrine.ORM.EntityRepository.html
-        $product = $em->getRepository("troiswaBackBundle:Product") // get repository est comme le from en sql , mais ici on parle en objet
-        ->find($idprod);
 
         //dump($product);
         //die();
 
-        // pour comperendre ce test , on doit dump $product avec un id faux en url ( ../info/9999 par exemple )
-        // le dump retourne alors null , donc on écris une condition :
-        // si $product est null , alors effiche moi le NotFoundException.
-        // cette condition verifie si l'id demandée en url existe bien ,
-        // et renvois un message d'erreur grace a throw + creatNotFoundException
+///////////////////////////////////// Ancienne methode///////////////////////////////////////////
+//
+//        METHODE AVEC $idprod en argument , remplacer par le param converter
+//
+//       $em = $this->getDoctrine()->getManager();
+//
+//        //on stock l'id dans $produit , id que l'on a chercher en BDD avec find($idprod)
+//        // DOC fonction native doctrine (find) : http://www.doctrine-project.org/api/orm/2.2/class-Doctrine.ORM.EntityRepository.html
+//        $product = $em->getRepository("troiswaBackBundle:Product") // get repository est comme le from en sql , mais ici on parle en objet
+//        ->find($idprod);
+//
+//        //dump($product);
+//        //die();
+//
+//       // pour comperendre ce test , on doit dump $product avec un id faux en url ( ../info/9999 par exemple )
+//        // le dump retourne alors null , donc on écris une condition :
+//        // si $product est null , alors effiche moi le NotFoundException.
+//        // cette condition verifie si l'id demandée en url existe bien ,
+//       // et renvois un message d'erreur grace a throw + creatNotFoundException
+//
+//        if(!$product) //!$product équivaut à $product == false ou empty($product) ou null == false ( verifie si $product est NULL )
+//        {
+//            throw $this->createNotFoundException("cette id n'existe pas");
+//        }
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        if(!$product) //!$product équivaut à $product == false ou empty($product) ou null == false ( verifie si $product est NULL )
-        {
-            throw $this->createNotFoundException("cette id n'existe pas");
-        }
-
-
+        //var_dump($product);
+        //dump($product);
+        //die();
 
         return $this->render('troiswaBackBundle:Product:productInfo.html.twig',array("product"=>$product));
     }
 
-    public function editProductAction(Request $request, $idprod)// ne pas oublier l'objet request sinon on ne peu pas utiliser POST
+
+
+
+
+
+
+
+
+
+    /**
+     * @param Request $request
+     * @param Product $product
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @ParamConverter("product", options={ "mapping":{"idprod":"id"} } )
+     */
+
+    public function editProductAction(Request $request, Product $product)// ne pas oublier l'objet request sinon on ne peu pas utiliser POST
     {
 
         $em = $this->getDoctrine()->getManager();
 
-        //// DOC fonction native doctrine (find) : http://www.doctrine-project.org/api/orm/2.2/class-Doctrine.ORM.EntityRepository.html
-        $product = $em->getRepository("troiswaBackBundle:Product") // get repository est comme le from en sql , mais ici on parle en objet
-        ->find($idprod);
 
-        if(!$product) //!$product équivaut à $product == false ou empty($product) ou null == false ( verifie si $product est NULL )
-        {
-            throw $this->createNotFoundException("Impossible d'éditer un produit qui n'existe pas, id inconnue ");
-        }
+////////////////////////////////////Ancienne methode remplacé par param converter///////////////////////////////////////////////////////
+//
+//        //// DOC fonction native doctrine (find) : http://www.doctrine-project.org/api/orm/2.2/class-Doctrine.ORM.EntityRepository.html
+//        $product = $em->getRepository("troiswaBackBundle:Product") // get repository est comme le from en sql , mais ici on parle en objet
+//        ->find($idprod);
+//
+//        if(!$product) //!$product équivaut à $product == false ou empty($product) ou null == false ( verifie si $product est NULL )
+//        {
+//            throw $this->createNotFoundException("Impossible d'éditer un produit qui n'existe pas, id inconnue ");
+//       }
+//
+//
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         $formUpdateProduct=$this->createForm(new ProductType(),$product,["attr"=>["novalidate"=>"novalidate"]]); // l'hydration se fait grace au paramettre $product
 
@@ -142,25 +201,47 @@ class ProductController extends Controller
             $em->flush();
 
             // si on redirige vers une route qui a besoin d'un paramettre , on doit le spécifier dans la redirection
-            return $this->redirectToRoute("troiswa_back_product_edit", ["idprod" => $idprod]);
+            return $this->redirectToRoute("troiswa_back_product_edit", ["idprod" => $product->getId()]);  // avec l'ancienne methode on utilise $idprod et non $product->getId()
         }
 
         // ATTENTION : ne pas oublier de passer l'objet form à la vue et d'utiliser ->createView
         return $this->render('troiswaBackBundle:Product:editProduct.html.twig',["formUpdateProduct"=>$formUpdateProduct->createView()]);
     }
 
-    public  function deleteProductAction(Request $request, $idprod)
+
+
+
+
+
+
+
+
+
+
+    /**
+     * @param Request $request
+     * @param $idprod
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @ParamConverter("product", options={ "mapping":{"idprod":"id"} } )
+     */
+    public  function deleteProductAction(Request $request, Product $product)
     {
         $em = $this->getDoctrine()->getManager();
 
-        //// DOC fonction native doctrine (find) : http://www.doctrine-project.org/api/orm/2.2/class-Doctrine.ORM.EntityRepository.html
-        $product = $em->getRepository("troiswaBackBundle:Product") // get repository est comme le from en sql , mais ici on parle en objet
-        ->find($idprod);
 
-        if(!$product) //!$product équivaut à $product == false ou empty($product) ou null == false ( verifie si $product est NULL )
-        {
-            throw $this->createNotFoundException("Impossible de supprimer un produit qui n'existe pas, id inconnue ");
-        }
+//////////////////////////////////////Ancienne methode remplacé par param converter//////////////////////////////////////////////////////////////////////////
+//
+//        //// DOC fonction native doctrine (find) : http://www.doctrine-project.org/api/orm/2.2/class-Doctrine.ORM.EntityRepository.html
+//        $product = $em->getRepository("troiswaBackBundle:Product") // get repository est comme le from en sql , mais ici on parle en objet
+//        ->find($idprod);
+//
+//        if(!$product) //!$product équivaut à $product == false ou empty($product) ou null == false ( verifie si $product est NULL )
+//        {
+//            throw $this->createNotFoundException("Impossible de supprimer un produit qui n'existe pas, id inconnue ");
+//        }
+//
+//
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         $em->remove($product);
 
@@ -170,6 +251,19 @@ class ProductController extends Controller
 
         return $this->redirectToRoute("troiswa_back_product");
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public function productActiveAction(Request $request)
     {
@@ -194,6 +288,19 @@ class ProductController extends Controller
         return $this->render('troiswaBackBundle:Product:productActive.html.twig',["products"=>$products]);
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
     public function changeActiveProductAction(Request $request,$idprod,$changeAction)
     {
         $em = $this->getDoctrine()->getManager();
@@ -217,6 +324,19 @@ class ProductController extends Controller
 
         return $this->redirectToRoute('troiswa_back_product',["idprod"=>$idprod,"changeAction"=>$changeAction]);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
