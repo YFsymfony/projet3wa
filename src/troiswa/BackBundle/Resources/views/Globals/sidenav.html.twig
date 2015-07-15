@@ -32,6 +32,18 @@ si on doit modifier la class="active" des élément du menu de la side bar -->
         </li>
 
         <li>
+            <a href="javascript:;" data-toggle="collapse" data-target="#brand"><i class="fa fa-fw fa-cube"></i> marques <i class="fa fa-fw fa-caret-down"></i></a>
+            <ul id="brand" class="collapse nav navbar-nav ">
+                <li class="">
+                    <a href="{{ path('troiswa_back_brand') }}">Toutes les marques</a>
+                </li>
+                <li>
+                    <a href="{{ path('troiswa_back_brand_add') }}">Ajouter une marquet</a>
+                </li>
+            </ul>
+        </li>
+
+        <li>
             <a href="javascript:;" data-toggle="collapse" data-target="#category"><i class="fa fa-fw fa-cube"></i> categories <i class="fa fa-fw fa-caret-down"></i></a>
             <ul id="category" class="collapse nav navbar-nav ">
                 <li class="">

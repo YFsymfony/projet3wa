@@ -14,10 +14,11 @@ class MainController extends Controller
 {
     public function indexAction()
     {
+
         $em = $this->getDoctrine()->getManager();
 
         $productsByQuantity = $em->getRepository("troiswaBackBundle:Product")
-                               ->findProductByQuantity(100);
+                                 ->findProductByQuantity(100);
 
         $productToOrder = $em->getRepository("troiswaBackBundle:Product")
                              ->findProductToOrder();
@@ -47,10 +48,16 @@ class MainController extends Controller
                           ->findAllProduct();
 
         $allCategory = $em->getRepository("troiswaBackBundle:Category")
-            ->findAllCategory();
+                          ->findAllCategory();
 
         $countProductToOrder = $em->getRepository("troiswaBackBundle:Product")
-            ->countProductToOrder();
+                                  ->countProductToOrder();
+
+        $findAllBrand = $em->getRepository("troiswaBackBundle:Brand")
+                           ->findAllBrand();
+
+        $countProductInCategory = $em->getRepository("troiswaBackBundle:Category")
+                                     ->countProductInCategory('Produits apple');
 
 
 
@@ -70,7 +77,9 @@ class MainController extends Controller
                 "ProctBetweenPrice"=>$ProctBetweenPrice,
                 "allproducts"=>$allproducts,
                 "allCategory"=>$allCategory,
-                "countProductToOrder"=>$countProductToOrder
+                "countProductToOrder"=>$countProductToOrder,
+                "findAllBrand"=>$findAllBrand,
+                "countProductInCategory"=>$countProductInCategory,
 
             ]
         );

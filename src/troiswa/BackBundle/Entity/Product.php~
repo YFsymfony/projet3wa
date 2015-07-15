@@ -40,7 +40,7 @@ class Product
     /**
      * @var string
      * @Assert\NotBlank(message=" Champ obligatoire ")
-     *@Assert\Length(
+     * @Assert\Length(
      *      min = "20",
      *      max = "1000",
      *      minMessage = "la description de l'article doit etre minimum de {{ limit }} caractères",
@@ -84,10 +84,22 @@ class Product
     /**
      * @ORM\ManyToOne(targetEntity="troiswa\BackBundle\Entity\Category", inversedBy="products")
      *
-     * change la clé nommée automatiquement par celle que l'on veux , ici transforme categ_id en id category
+     * incersed coté maitre et mappedby coté esclave sont nécéssaire pour le bidirectionnel
+     *
+     * Pour le many to one , le coté maitre et l'endroit ou on a la clé étrangère
+     * ici l'entité produit aurra une clé étrangère $categ (categorie_id), prooduit sera maitre
+     *
+     * paramètres: change la clé nommée automatiquement par celle que l'on veux , ici transforme categ_id en id category
      * @ORM\JoinColumn(name="id_category",referencedColumnName="id")
      */
     private $categ;
+
+
+    /**
+     * @ORM\ManyToOne(targetEntity="troiswa\BackBundle\Entity\Brand", inversedBy="products")
+     * @ORM\JoinColumn(name="id_brand",referencedColumnName="id")
+     */
+    private $brand;
 
     // cette fonction permet a l'entité d'etre automatiquement sélectioné a true dans le choice/radio
     public function __construct()
@@ -97,7 +109,7 @@ class Product
 
 
     /**
-     * @Gedmo\Slug(fields={"title"}, updatable=false)
+     * @Gedmo\Slug(fields={"title","id"}, updatable=false)
      * @ORM\Column(length=128, unique=true )
      */
     private $slug;
@@ -338,5 +350,42 @@ class Product
     public function getCateg()
     {
         return $this->categ;
+    }
+
+
+
+    // methode magique pour convertir un objet en chaine de charactère
+    // exemple d'erreur causé si on utilise pas cette methode :
+    // Catchable Fatal Error: Object of class troiswa\BackBundle\Entity\Category could not be converted to string
+
+    // doc : http://symfony.com/fr/doc/current/reference/forms/types/entity.html
+    public function __toString()
+    {
+        return $this->title;
+    }
+
+
+
+    /**
+     * Set brand
+     *
+     * @param \troiswa\BackBundle\Entity\Brand $brand
+     * @return Product
+     */
+    public function setBrand(\troiswa\BackBundle\Entity\Brand $brand = null)
+    {
+        $this->brand = $brand;
+
+        return $this;
+    }
+
+    /**
+     * Get brand
+     *
+     * @return \troiswa\BackBundle\Entity\Brand 
+     */
+    public function getBrand()
+    {
+        return $this->brand;
     }
 }

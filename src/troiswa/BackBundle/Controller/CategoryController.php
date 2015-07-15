@@ -76,6 +76,11 @@ class CategoryController extends Controller
         // j'appel le service doctrine et entity manager
         $em = $this->getDoctrine()->getManager();
 
+        //TEST
+        //$query = $em->getRepository("troiswaBackBundle:Category")
+        //            ->displayCategoryWhereProductsBrandIsApple();
+        // END TEST
+
         // j'utilise le repository comme pour faire un FROM en SQL et le findAll pour récupérer
         // toute les categories
         //  DOC fonction native doctrine (find) : http://www.doctrine-project.org/api/orm/2.2/class-Doctrine.ORM.EntityRepository.html
@@ -359,4 +364,5 @@ class CategoryController extends Controller
 
         return $this->render('troiswaBackBundle:Category:addCategoryTrain.html.twig',array("category"=>$category));
     }
+
 }

@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use troiswa\BackBundle\Entity\CategoryRepository;   // non utilisé
+use troiswa\BackBundle\Entity\CategoryRepository;
 
 class ProductType extends AbstractType
 {
@@ -41,32 +41,55 @@ class ProductType extends AbstractType
             //Vous devez utiliser le repository EntityRepository afin de charger une méthode faisant ce
             //comportement
             // ne pas oublier la methode magique __toString() dans l'entité Category
+
             ->add("categ","entity",
                     [
                         "class"=>"troiswaBackBundle:Category",
 
-                          //création d'une requete dans la mauvaise couche
-                          //métier mais fonctionnelle
+                        //création d'une requete dans la mauvaise couche
+                        //métier mais fonctionnelle
+                        // ici on veux affichée toutes les catégories afin de lié un produit
+                        // a une catégorie lors de la création d'un nouveau produit mais on
+                        // veux que les catégories soit classé par ordre de position
 
+                        /*
                         'query_builder' => function(EntityRepository $er)
                         {
                             return $er->createQueryBuilder('cat')
                                 ->orderBy('cat.position', 'ASC');
                         },
-                        "required"=>false
+                        */
 
-                    /*
+
                         // création d'une fonction pour appeller n'importe quelle
                         // requete du repository Category
-                        // DONNE une ERREUR : Expected argument of type "Doctrine\ORM\QueryBuilder", "array" given
+                        // ici on veux affichée toutes les catégories afin de lié un produit
+                        // a une catégorie lors de la création d'un nouveau produit mais on
+                        // veux que les catégories soit classé par ordre de position
+                        // c'est pour cela que l'on créer une requete
+                        // sinon on utilise juste : 'property' => 'title', ainsi que
+                        // la methode magique __toString() dans l'entité
+                        //  /!\ attention aux use /!\
                         "query_builder" => function(CategoryRepository $er)
                         {
 
                             return $er->findAllCategoryOrderByPosition();
-                        }
-                    */
+                        },
+
+                        "required"=>false
+
                     ]
                 )
+
+            ->add("brand","entity",
+                    [
+                        "class"=>"troiswaBackBundle:Brand",
+                        //'property' => 'title',
+                        "expanded"=>false,
+                        "multiple"=>false,
+                        "required" => true,
+                    ]
+                 )
 
             ->add("envoyer","submit")
         ;

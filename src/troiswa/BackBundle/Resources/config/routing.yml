@@ -20,6 +20,43 @@ troiswa_back_resource_category:
 
 
 
+troiswa_back_brand_add:
+    path: /brand/add
+    defaults: { _controller: troiswaBackBundle:Brand:addBrand}
+
+troiswa_back_brand_edit:
+    path: /brand/edit/{idbrand}
+    defaults: { _controller: troiswaBackBundle:Brand:editBrand }
+    requirements:
+       idcat: \d+
+
+troiswa_back_brand:
+    path: /brand
+    defaults: { _controller: troiswaBackBundle:Brand:allBrand }
+
+troiswa_back_brand_info:
+    path: /brand/info/{idbrand}
+    defaults: { _controller: troiswaBackBundle:Brand:brandInfo }
+    requirements:
+        idcat: \d+
+
+troiswa_back_brand_delete:
+    path: /brand/delete/{idbrand}
+    defaults: { _controller: troiswaBackBundle:Brand:deleteBrand }
+    requirements:
+       idcat: \d+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #-- route d'entrainement (TOUJOURS laisser en fin, premier arrive premier servis) --------
 troiswa_back_product_train:

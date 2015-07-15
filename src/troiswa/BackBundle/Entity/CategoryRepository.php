@@ -50,18 +50,19 @@ class CategoryRepository extends EntityRepository
         return $query->getQuery()->getResult();
     }
 
+
+    // cette requette est utilisable uniquement dans un form type, ici CategoryType
+    // on doit utiliser uniquement un createQyeryBuilder et retourner uniquement $query !
+    // si on veux utiliser cette requette autre par que dans un FormType, on peu passer un paramettre
+    // dans la requette , exemple form = true ou false , et tester avec un if sur le return
+    // pour choir quoi retourner en fonction de l'endroit ou l'on appel la requette.
     public function findAllCategoryOrderByPosition()
     {
 
-        $query = $this->getEntityManager()
-            ->createQuery
-            ("
-                           SELECT cat
-                           FROM troiswaBackBundle:Category cat
-                           ORDER BY cat.position ASC
-                        ");
+        $query = $this->createQueryBuilder("cat")
+            ->orderBy("cat.position","asc");
 
-        return $query->getResult();
+        return $query;
 
     }
 
@@ -86,5 +87,45 @@ class CategoryRepository extends EntityRepository
         //die();
 
         return $query->getResult();
+    }
+
+    public function displayCategoryWhereProductsBrandIsApple(){
+
+        $query = $this->getEntityManager()
+            ->createQuery("
+
+                SELECT cat,prod,brand
+                FROM troiswaBackBundle:Category cat
+                LEFT JOIN cat.products prod
+                LEFT JOIN prod.brand brand
+                WHERE brand.title LIKE '%Apple%'
+            ");
+
+        //dump($query->getResult());die;
+
+        return $query->getResult();
+    }
+
+    public function countProductInCategory($catTitle)
+    {
+
+         //SELECT COUNT(product.id)
+         //FROM Product
+         //LEFT JOIN category cat ON cat.id = product.id_category
+         //WHERE cat.title = "Produits apple"
+
+        $query = $this->getEntityManager($catTitle)
+                      ->createQuery
+                      ("
+                            SELECT COUNT(prod.id)
+                            FROM troiswaBackBundle:Product prod
+                            LEFT JOIN  prod.categ cat
+                            WHERE cat.title = :title
+                      ")
+                      ->setParameter('title',$catTitle);
+
+        //dump($query->getSingleScalarResult());die();
+
+        return $query->getSingleScalarResult();
     }
 }

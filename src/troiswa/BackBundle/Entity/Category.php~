@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
 use troiswa\BackBundle\Entity\Product;    // grisée car utilisé en annotation
+use Symfony\Component\Validator\Context\ExecutionContextInterface; // use du call back
 
 /**
  * Category
@@ -68,7 +69,7 @@ class Category
     private $products;
 
     /**
-     * @Gedmo\Slug(fields={"title"})
+     * @Gedmo\Slug(fields={"title","id"})
      * @ORM\Column(length=128, unique=true)
      */
     private $slug;
@@ -176,6 +177,7 @@ class Category
         return $this->slug;
     }
 
+
     // methode magique pour convertir un objet en chaine de charactère
     // exemple d'erreur causé si on utilise pas cette methode :
     // Catchable Fatal Error: Object of class troiswa\BackBundle\Entity\Category could not be converted to string
@@ -185,4 +187,110 @@ class Category
     {
         return $this->title;
     }
+
+
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->products = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add products
+     *
+     * @param \troiswa\BackBundle\Entity\Product $products
+     * @return Category
+     */
+    public function addProduct(\troiswa\BackBundle\Entity\Product $products)
+    {
+
+        $this->products[] = $products;
+
+        $products->setCateg($this);
+
+        //dump($products);die();    affiche qu'un seul produit car symfony boucle et modifie un par un
+
+        return $this;
+    }
+
+    /**
+     * Remove products
+     *
+     * @param \troiswa\BackBundle\Entity\Product $products
+     */
+    public function removeProduct(\troiswa\BackBundle\Entity\Product $products)
+    {
+        $this->products->removeElement($products);
+
+
+        // sans cette ligne , si on édité une catégorie avec des produits associé ,
+        // et que l'on veux retiré un produits associé, on ne pouvais pas, la modification
+        // ne se faisait pas et conservé les produits associé avant l'édition.
+        $products->setCateg(null);
+    }
+
+    /**
+     * Get products
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getProducts()
+    {
+        return $this->products;
+    }
+
+
+    /**
+     * @Assert\True(message="categorie invalide , la catégorie à la position 0 doit avoir comme nom Promotion")
+     *
+     * cette methode n'a pas besoin d'etre appelée par le formulaire car le nom de la méthode commence par
+     * is***** en combinaison avec le assert. ( idem pour get )
+     */
+    public function isCategoryValid()
+    {
+        if( $this->position == 0 and $this->title != "Promotion" )
+        {
+            return false;
+
+        }else{
+
+                return true;
+
+             }
+
+    }
+
+    /**
+     * @Assert\Callback
+     */
+    public function validate(ExecutionContextInterface $message)
+    {
+
+
+        if ($this->getTitle() != ucfirst($this->title)){
+
+            // pour le paramettre entre acolade , attention aux espaces ,
+            // les deux valeur doivent etre identique  dans buildViolation et setParameter
+            $message->buildViolation('{{ parameter }} n\'est pas valide! Le nom de la categorie doit commencer par une majuscule')
+                ->atPath('title')
+                ->setParameter("{{ parameter }}", $this->title)
+                ->addViolation();
+        }
+    }
+
+    /*
+    /**
+     * @Assert\True(message="Nom de catégorie invalide, le nom doit commencer par une majuscule")
+
+         probleme avec la methode isTitle , éxécute le assert mais ne rentre pas dans un test si on en met
+         un dans la methode ( exemple if le titre ne commence pas par une majuscule )
+
+    public  function isTitle()
+    {
+       return false;
+    }
+    */
 }

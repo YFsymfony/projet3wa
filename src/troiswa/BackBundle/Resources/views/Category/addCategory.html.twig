@@ -29,6 +29,10 @@
 
     {{ form_start(formCategory) }}
 
+    {# affiche les erreur qui invalide la totalité du formulaire et non un seul champ
+       par exemple le assert le la methode isCategoryValid#}
+    {{ form_errors(formCategory) }}
+
     <div class="form-group">
         {{ form_label(formCategory.title, "Entrez le nom de la categorie:" , { label_attr:{class:"class_du_label"}} ) }}
         {{ form_errors(formCategory.title) }}

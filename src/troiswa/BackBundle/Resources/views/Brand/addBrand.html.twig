@@ -1,0 +1,55 @@
+{% extends "troiswaBackBundle::layout_admin.html.twig" %}
+
+
+
+{% block stylesheet %}
+    {{ parent() }}
+{% endblock stylesheet %}
+
+{% block title %}
+    <h1>ajoutez une marque</h1>
+{% endblock title %}
+
+{% block breadcrumb %}
+
+    <ol class="breadcrumb">
+        {{ parent() }}
+        <li class="">
+            <i class="fa fa-cube"></i> <a href="{{  path("troiswa_back_brand") }}">marques</a>
+        </li>
+        <li class="active">
+            <i class="fa fa-plus-square-o"></i> ajouter une marque
+        </li>
+    </ol>
+
+{% endblock breadcrumb %}
+
+
+{% block contenu %}
+
+
+    {{ form_start(formbrand) }}
+
+    <div class="form-group">
+        {{ form_label(formbrand.title, "Entrez le nom de la marque" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(formbrand.title) }}
+        {{ form_widget( formbrand.title, {id:'monid',attr:{class:"form-control toto"}} ) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(formbrand.description, "Entrez la description de la marque:" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(formbrand.description) }}
+        {{ form_widget(formbrand.description, {attr:{class:"form-control toto"}} ) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_widget(formbrand.envoyer, {label:"Envoyer",attr:{class:"btn btn-warning"}} ) }}
+    </div>
+
+    {{ form_end(formbrand) }}
+
+{% endblock contenu %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock javascripts %}

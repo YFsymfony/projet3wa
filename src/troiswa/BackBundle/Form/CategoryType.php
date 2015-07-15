@@ -25,13 +25,14 @@ class CategoryType extends AbstractType
                         //"property"=>"title",
                         // doc :http://symfony.com/doc/master/reference/forms/types/collection.html#by-reference
                         // on passe par l'entitée esclave
-                        'query_builder' => function(EntityRepository $er)
-                        {
-                            return $er->createQueryBuilder('prod');
+                        // ici on veux lié des produits à une catégorie lors de la création d'une catégorie
 
-                        },
+                        'property' => 'title',
                         "expanded"=>false,
-                        "multiple"=>true
+                        "multiple"=>true,
+                        "required" => false,
+                        // by_reference est toujours du coté esclave, propre aux biderectionel.
+                        "by_reference" => false
 
                     ]
                  )

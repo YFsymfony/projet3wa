@@ -139,7 +139,7 @@
     <hr/>
 
     <div class="row">
-        <div class="col-md-12 col-lg-6 col-sm-12">
+        <div class="col-md-12 col-lg-12 col-sm-12">
             <h3 class="text-center main-heading">Gestion rapide des categories:</h3>
             <div class="panel panel-primary">
                 <div class="panel-heading">
@@ -172,7 +172,41 @@
                 </table>
             </div>
         </div>
-        <div class="col-md-12 col-lg-6 col-sm-12">
+        <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12">
+                <h3 class="text-center main-heading">Gestion rapide des marques:</h3>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">Marques</h4>
+                    </div>
+                    <div class="panel-body">
+                        <input type="text" class="form-control" id="dev-table-filter" data-action="filter" data-filters="#dev-table" placeholder="Filtre des marques" />
+                    </div>
+                    <table class="table table-hover" id="dev-table">
+                        <thead>
+                        <tr>
+                            <th># ID</th>
+                            <th>Marque / Info</th>
+                            <th>Nombre de produits</th>
+                            <th>Edition</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        {% for onebrand in findAllBrand %}
+                            <tr>
+                                <td>{{ onebrand.id }}</td>
+                                <td><a class="btn btn-primary" href="{{ path('troiswa_back_brand_info',{idbrand: onebrand.id}) }}">{{ onebrand.title }}</a></td>
+                                <td>nombre de produits</td>
+                                <td><a class="btn btn-success" href="{{ path('troiswa_back_brand_edit',{idbrand: onebrand.id}) }}">Editer</a></td>
+                            </tr>
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        <div class="col-md-12 col-lg-12 col-sm-12">
             <h3 class="text-center main-heading">Gestion rapide des produits:</h3>
             <div class="panel panel-primary">
                 <div class="panel-heading">

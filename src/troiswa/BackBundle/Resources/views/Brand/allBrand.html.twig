@@ -1,0 +1,77 @@
+{% extends "troiswaBackBundle::layout_admin.html.twig" %}
+
+
+
+{% block stylesheet %}
+    {{ parent() }}
+{% endblock stylesheet %}
+
+{% block title %}
+    <h1>Liste des marques</h1>
+{% endblock title %}
+
+{% block breadcrumb %}
+
+    <ol class="breadcrumb">
+        {{ parent() }}
+        <li class="active">
+            <i class="fa fa-cube"></i>marques
+        </li>
+    </ol>
+
+{% endblock breadcrumb %}
+
+
+{% block contenu %}
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h2>Toutes les marques:<a class="btn btn-warning pull-right" href="{{ path('troiswa_back_brand_add') }}"> Ajouter une marque</a></h2>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Titre</th>
+                        <th>Description</th>
+                        <th>Action</th>
+                        <th>Produits</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for onebrand in brand %}
+                        <tr>
+                            <td>{{ onebrand.id }}</td>
+                            <td>{{ onebrand.title }}</td>
+                            <td>{{ onebrand.description }}</td>
+                            <td class="disablable"> <!-- class disablable pour lr javascript , écouter uniquement le parent des boutons plutot que d'écouter tous les boutons -->
+                                <a class="btn btn-primary" href="{{  path('troiswa_back_brand_info',{idbrand: onebrand.id}) }}">Voir info</a>
+                                <a class="btn btn-success" href="{{ path('troiswa_back_brand_edit',{idbrand: onebrand.id}) }}">Editer</a>
+                                <a class="btn btn-danger" href="{{  path('troiswa_back_brand_delete',{idbrand: onebrand.id}) }}">Supprimer</a>
+
+                                <!-- Confirmation de suppression en inline via le popup du navigateur -->
+                                <!-- <a class="btn btn-danger" href="{# path('troiswa_back_brand_delete',{idbrand: onebrand.id}) #}" onclick="return confirm('Etes-vous sur de supprimer cet article?')">Supprimer</a> -->
+                            </td>
+                            <td>
+                                <ul>
+                                    {% for product in onebrand.products %}
+                                        <li><a class="btn btn-primary" href="{{ path('troiswa_back_product_info',{idprod: product.id} ) }}">{{ product.title }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                        </tr>
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock contenu %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/js/confirmRemove.js') }}"></script>
+{% endblock javascripts %}
