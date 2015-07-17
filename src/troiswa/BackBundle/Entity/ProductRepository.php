@@ -148,5 +148,24 @@ class ProductRepository extends EntityRepository
         return $query->getResult();
     }
 
+    public function countProductInAllCategory()
+    {
+        $query = $this->getEntityManager()
+                      ->createQuery
+                      ("
+
+                            SELECT COUNT(prod.id)
+                            FROM troiswaBackBundle:Product prod
+                            LEFT JOIN  prod.categ cat
+                            GROUP BY cat.id
+                      ");
+
+        //dump($query->getResult());die();
+
+        return $query->getResult();
+
+
+    }
+
 
 }

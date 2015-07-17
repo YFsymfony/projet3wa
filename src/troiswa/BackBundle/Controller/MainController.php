@@ -59,6 +59,12 @@ class MainController extends Controller
         $countProductInCategory = $em->getRepository("troiswaBackBundle:Category")
                                      ->countProductInCategory('Produits apple');
 
+        $countProductInBrand = $em->getRepository("troiswaBackBundle:Brand")
+                                  ->countProductInBrand('apple');
+
+        $countProductInAllCategory = $em->getRepository("troiswaBackBundle:Product")
+                                        ->countProductInAllCategory();
+
 
 
 
@@ -80,6 +86,8 @@ class MainController extends Controller
                 "countProductToOrder"=>$countProductToOrder,
                 "findAllBrand"=>$findAllBrand,
                 "countProductInCategory"=>$countProductInCategory,
+                "countProductInBrand"=>$countProductInBrand,
+                "countProductInAllCategory"=>$countProductInAllCategory,
 
             ]
         );

@@ -29,6 +29,17 @@
     <div class="row">
         <div class="col-lg-12">
             <h2>Information sur la marque {{ brand.title|upper }}</h2>
+            <hr/>
+
+            {% if brand.logo != null %}
+                <div class="">
+                    <img class="img-responsive center-block" src="{{ asset(brand.logo.WebPath) }}" alt="{{ brand.logo.alt }}"/>
+
+                </div>
+            {% else %}
+                <p class="text-center">Cette marque n'a pas d'image associé</p>
+            {% endif %}
+            <hr/>
             <div class="table-responsive">
                 <table class="table table-bordered table-hover">
                     <thead>

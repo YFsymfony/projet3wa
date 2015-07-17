@@ -30,8 +30,8 @@ class Product
      * @Assert\Length(
      *      min = "2",
      *      max = "100",
-     *      minMessage = "le nom de l'article doit etre minimum de {{ limit }} caractères",
-     *      maxMessage = "le nom de l'article doit etre maximum de {{ limit }} caractères"
+     *      minMessage = "le nom de l'article doit être minimum de {{ limit }} caractères",
+     *      maxMessage = "le nom de l'article doit être maximum de {{ limit }} caractères"
      * )
      * @ORM\Column(name="title", type="string", length=100)
      */
@@ -43,8 +43,8 @@ class Product
      * @Assert\Length(
      *      min = "20",
      *      max = "1000",
-     *      minMessage = "la description de l'article doit etre minimum de {{ limit }} caractères",
-     *      maxMessage = "la description de l'article doit etre maximum de {{ limit }} caractères"
+     *      minMessage = "la description de l'article doit être minimum de {{ limit }} caractères",
+     *      maxMessage = "la description de l'article doit être maximum de {{ limit }} caractères"
      * )
      * @ORM\Column(name="description", type="text")
      */
@@ -86,8 +86,8 @@ class Product
      *
      * incersed coté maitre et mappedby coté esclave sont nécéssaire pour le bidirectionnel
      *
-     * Pour le many to one , le coté maitre et l'endroit ou on a la clé étrangère
-     * ici l'entité produit aurra une clé étrangère $categ (categorie_id), prooduit sera maitre
+     * Pour le many to one , le coté maitre et l'endroit ou on à la clé étrangère
+     * ici l'entité produit aurra une clé étrangère $categ (categorie_id), produit sera maitre
      *
      * paramètres: change la clé nommée automatiquement par celle que l'on veux , ici transforme categ_id en id category
      * @ORM\JoinColumn(name="id_category",referencedColumnName="id")
@@ -97,9 +97,19 @@ class Product
 
     /**
      * @ORM\ManyToOne(targetEntity="troiswa\BackBundle\Entity\Brand", inversedBy="products")
-     * @ORM\JoinColumn(name="id_brand",referencedColumnName="id")
+     *
+     * nullable=false permet de rendre obligatoire la liaison entre marque et produit
+     * @ORM\JoinColumn(name="id_brand",referencedColumnName="id", nullable=false)
      */
     private $brand;
+
+    /**
+     *
+     * @ORM\OneToOne(targetEntity="troiswa\BackBundle\Entity\ProductCover", cascade={"persist"})
+     * @ORM\JoinColumn(name="id_product_cover", referencedColumnName="id")
+     * @Assert\Valid
+     */
+    private $Cover;
 
     // cette fonction permet a l'entité d'etre automatiquement sélectioné a true dans le choice/radio
     public function __construct()
@@ -372,7 +382,7 @@ class Product
      * @param \troiswa\BackBundle\Entity\Brand $brand
      * @return Product
      */
-    public function setBrand(\troiswa\BackBundle\Entity\Brand $brand = null)
+    public function setBrand(\troiswa\BackBundle\Entity\Brand $brand)
     {
         $this->brand = $brand;
 
@@ -387,5 +397,28 @@ class Product
     public function getBrand()
     {
         return $this->brand;
+    }
+
+    /**
+     * Set Cover
+     *
+     * @param \troiswa\BackBundle\Entity\ProductCover $cover
+     * @return Product
+     */
+    public function setCover(\troiswa\BackBundle\Entity\ProductCover $cover = null)
+    {
+        $this->Cover = $cover;
+
+        return $this;
+    }
+
+    /**
+     * Get Cover
+     *
+     * @return \troiswa\BackBundle\Entity\ProductCover 
+     */
+    public function getCover()
+    {
+        return $this->Cover;
     }
 }

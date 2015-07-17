@@ -55,10 +55,30 @@ class ProductController extends Controller
             //dump($product);
             //die;
 
+            /////////////////////////////// Partie UPLOAD d'image ////////////////////////////////////
+
+                // on récupère l'image grace au getter et on le stock dans $cover
+                $cover = $product->getCover();
+
+                if($cover->getAlt() == null )
+                {
+                    // on definie le alt en lui donnat le nom de l'image
+                    $cover->setAlt($product->getTitle());
+                }
+                // appel de la methode upload que l'on a créer dans l'entité ProductCover
+                // plus besoin d'appeller cette methode car on a ajouter un  Lifecycle Callbacks en annotation au dessus de la fonction
+                //$cover->upload();
+
+            //////////////////////////////////////////////////////////////////////////////////////////
+
+            //die('uhggguiyt');
+
             $this->get("session")->getFlashBag()->add("success","Votre article est bien enregistré");
 
             $em = $this->getDoctrine()->getManager();
 
+            // plus besoin de persister cover car on a ajouté cascade au OneToOne dans l'entitée product
+            //$em->persist($cover);
             $em->persist($product);
 
             //modification apres le persist
@@ -195,6 +215,10 @@ class ProductController extends Controller
         $formUpdateProduct->handleRequest($request);
         if($formUpdateProduct->isValid())
         {
+            $cover = $product->getCover(); // ou $cover = $product->getCover()->upload();
+
+            // plus besoin d'appeller cette methode car on a ajouter un  Lifecycle Callbacks en annotation au dessus de la fonction
+            //$cover->upload();
 
             $this->get("session")->getFlashBag()->add("success","Votre article est bien enregistré");
 

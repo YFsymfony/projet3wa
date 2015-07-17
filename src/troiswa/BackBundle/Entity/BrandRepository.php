@@ -32,4 +32,27 @@ class BrandRepository extends EntityRepository
 
         return $query->getResult();
     }
+
+    public function countProductInBrand($brandtitle)
+    {
+
+        //SELECT COUNT(product.id)
+        //FROM Product
+        //LEFT JOIN brand brd ON brand.id = product.id_brand
+        //WHERE brand.title = "apple"
+
+        $query = $this->getEntityManager($brandtitle)
+            ->createQuery
+            ("
+                            SELECT COUNT(prod.id)
+                            FROM troiswaBackBundle:Product prod
+                            LEFT JOIN  prod.brand brd
+                            WHERE brd.title = :title
+                      ")
+            ->setParameter('title',$brandtitle);
+
+        //dump($query->getSingleScalarResult());die();
+
+        return $query->getSingleScalarResult();
+    }
 }

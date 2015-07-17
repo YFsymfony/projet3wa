@@ -6,6 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Context\ExecutionContextInterface; // use du call back
+use troiswa\BackBundle\Validator\insulteFilter;
+use troiswa\BackBundle\Entity\Product;
 
 /**
  * Brand
@@ -48,6 +50,8 @@ class Brand
      *      maxMessage = "la description de l'article doit etre maximum de {{ limit }} caractères"
      * )
      * @ORM\Column(name="description", type="text")
+     *
+     * @insulteFilter(message=" Soyez poli , pas d'insulte s'il vous plais !")
      */
     private $description;
 
@@ -63,6 +67,13 @@ class Brand
      * @ORM\OneToMany(targetEntity="Product", mappedBy="brand")
      */
     private $products;
+
+    /**
+     * @ORM\OneToOne(targetEntity="troiswa\BackBundle\Entity\Logo", cascade={"persist"})
+     * @ORM\JoinColumn(name="id_logo", referencedColumnName="id")
+     * @Assert\Valid
+     */
+    private $logo;
 
     /**
      * @var \DateTime $dateCreated
@@ -217,6 +228,26 @@ class Brand
         $this->products = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
+
+
+    /**
+     * @Assert\Callback
+     */
+    public function validate(ExecutionContextInterface $message)
+    {
+
+
+        if ($this->getTitle() == "troiswa"){
+
+            // pour le paramettre entre acolade , attention aux espaces ,
+            // les deux valeur doivent etre identique  dans buildViolation et setParameter
+            $message->buildViolation('{{ parameter }} n\'est pas valide! Le nom de la marque ne peu etre troiswa')
+                ->atPath('title')
+                ->setParameter("{{ parameter }}", $this->title)
+                ->addViolation();
+        }
+    }
+
     /**
      * Add products
      *
@@ -250,21 +281,28 @@ class Brand
         return $this->products;
     }
 
+
+
     /**
-     * @Assert\Callback
+     * Set logo
+     *
+     * @param \troiswa\BackBundle\Entity\Logo $logo
+     * @return Brand
      */
-    public function validate(ExecutionContextInterface $message)
+    public function setLogo(\troiswa\BackBundle\Entity\Logo $logo = null)
     {
+        $this->logo = $logo;
 
+        return $this;
+    }
 
-        if ($this->getTitle() == "troiswa"){
-
-            // pour le paramettre entre acolade , attention aux espaces ,
-            // les deux valeur doivent etre identique  dans buildViolation et setParameter
-            $message->buildViolation('{{ parameter }} n\'est pas valide! Le nom de la marque ne peu etre troiswa')
-                ->atPath('title')
-                ->setParameter("{{ parameter }}", $this->title)
-                ->addViolation();
-        }
+    /**
+     * Get logo
+     *
+     * @return \troiswa\BackBundle\Entity\Logo 
+     */
+    public function getLogo()
+    {
+        return $this->logo;
     }
 }

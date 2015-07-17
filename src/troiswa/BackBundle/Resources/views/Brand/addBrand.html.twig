@@ -43,6 +43,31 @@
     </div>
 
     <div class="form-group">
+        {{ form_label(formbrand.logo.alt, "Choisissez un alt pour le logo:" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(formbrand.logo.alt) }}
+        {{ form_widget(formbrand.logo.alt, {attr:{class:"form-control"}} ) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(formbrand.logo.figcaption, "Choisissez une légende pour le logo:" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(formbrand.logo.figcaption) }}
+        {{ form_widget(formbrand.logo.figcaption, {attr:{class:"form-control"}} ) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(formbrand.logo.name, "Choisissez un nom pour le logo:" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(formbrand.logo.name) }}
+        {{ form_widget(formbrand.logo.name, {attr:{class:"form-control"}} ) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(formbrand.logo.logofile, "Entez le logo ( png / jpg / jpeg ):" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(formbrand.logo.logofile) }}
+        {{ form_widget(formbrand.logo.logofile, {attr:{class:"toto"}} ) }}
+    </div>
+
+
+    <div class="form-group">
         {{ form_widget(formbrand.envoyer, {label:"Envoyer",attr:{class:"btn btn-warning"}} ) }}
     </div>
 

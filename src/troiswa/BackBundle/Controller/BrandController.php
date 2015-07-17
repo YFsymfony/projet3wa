@@ -13,13 +13,29 @@ class BrandController extends Controller
     public function addBrandAction(Request $request)
     {
         $brand = new Brand();
-
         $formbrand=$this->createForm(new BrandType(),$brand,["attr"=>["novalidate"=>"novalidate"]]);
 
         $formbrand->handleRequest($request);
 
         if($formbrand->isValid())
         {
+            /////////////////////////////// Partie UPLOAD d'image ////////////////////////////////////
+
+            // on récupère le logo grace au getter et on le stock dans $logo
+            $logofile = $brand->getLogofile();
+
+
+
+            if($logofile->getAlt() == null )
+            {
+                // on definie le alt en lui donnat le nom du logo
+                $logofile->setAlt($brand->getTitle());
+            }
+            // appel de la methode upload que l'on a créer dans l'entité Brand
+            $logofile->upload();
+
+            //////////////////////////////////////////////////////////////////////////////////////////
+
             $this->get("session")->getFlashBag()->add("success","Votre marque est bien enregistrée");
 
             $em = $this->getDoctrine()->getManager();
@@ -34,6 +50,9 @@ class BrandController extends Controller
         return $this->render('troiswaBackBundle:Brand:addBrand.html.twig',["formbrand"=>$formbrand->createView()] );
     }
 
+    /**
+     * @ParamConverter("brand", options={ "mapping":{"idbrand":"id"} } )
+     */
     public  function editBrandAction(Request $request, Brand $brand)
     {
 
@@ -42,7 +61,6 @@ class BrandController extends Controller
         $formUpdatebrand=$this->createForm(new BrandType(),$brand,["attr"=>["novalidate"=>"novalidate"]]);
 
         $formUpdatebrand->handleRequest($request);
-
         if($formUpdatebrand->isValid())
         {
 
@@ -53,7 +71,7 @@ class BrandController extends Controller
             return $this->redirectToRoute("troiswa_back_brand_edit", ["idbrand" => $brand->getId()]);
         }
 
-        return $this->render('troiswaBackBundle:Brand:editBrand.html.twig',["formUpdateCategory"=>$formUpdatebrand->createView()]);
+        return $this->render('troiswaBackBundle:Brand:editBrand.html.twig',["formUpdateBrand"=>$formUpdatebrand->createView()]);
     }
 
     public function allBrandAction()

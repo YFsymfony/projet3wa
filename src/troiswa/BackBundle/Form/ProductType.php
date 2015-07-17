@@ -8,6 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use troiswa\BackBundle\Entity\CategoryRepository;
 
+
 class ProductType extends AbstractType
 {
     /**
@@ -33,7 +34,6 @@ class ProductType extends AbstractType
                     }
                 ]
             )
-
 
             ->add("quantity","number")
             // http://symfony.com/fr/doc/current/reference/forms/types/entity.html
@@ -90,6 +90,13 @@ class ProductType extends AbstractType
                         "required" => true,
                     ]
                  )
+
+            // INSERTION DU PRODUCT COVER TYPE DANS LE PRODUCT TYPE
+            // add('nom de la propriété présente dans l'entité
+            // product qui correspond au formulaire a inssérer',
+            // 'instanciation de l'objet' )
+            ->add("cover", new ProductCoverType())
+
 
             ->add("envoyer","submit")
         ;

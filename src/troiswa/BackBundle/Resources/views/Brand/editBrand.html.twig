@@ -29,25 +29,25 @@
 
 
 
-    {{ form_start(formbrand) }}
+    {{ form_start(formUpdateBrand) }}
 
     <div class="form-group">
-        {{ form_label(formUpdatebrand.title, "Entrez le nom de la marque" , { label_attr:{class:"class_du_label"}} ) }}
-        {{ form_errors(formUpdatebrand.title) }}
-        {{ form_widget( formUpdatebrand.title, {id:'monid',attr:{class:"form-control toto"}} ) }}
+        {{ form_label(formUpdateBrand.title, "Entrez le nom de la marque" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(formUpdateBrand.title) }}
+        {{ form_widget( formUpdateBrand.title, {id:'monid',attr:{class:"form-control toto"}} ) }}
     </div>
 
     <div class="form-group">
-        {{ form_label(formUpdatebrand.description, "Entrez la description de la marque:" , { label_attr:{class:"class_du_label"}} ) }}
-        {{ form_errors(formUpdatebrand.description) }}
-        {{ form_widget(formUpdatebrand.description, {attr:{class:"form-control toto"}} ) }}
+        {{ form_label(formUpdateBrand.description, "Entrez la description de la marque:" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(formUpdateBrand.description) }}
+        {{ form_widget(formUpdateBrand.description, {attr:{class:"form-control toto"}} ) }}
     </div>
 
     <div class="form-group">
-        {{ form_widget(formUpdatebrand.envoyer, {label:"Envoyer",attr:{class:"btn btn-warning"}} ) }}
+        {{ form_widget(formUpdateBrand.envoyer, {label:"Envoyer",attr:{class:"btn btn-warning"}} ) }}
     </div>
 
-    {{ form_end(formbrand) }}
+    {{ form_end(formUpdateBrand) }}
 
 {% endblock contenu %}
 

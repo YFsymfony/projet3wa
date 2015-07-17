@@ -4,52 +4,89 @@ namespace Troiswa\BackBundle\DataFixtures\ORM;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use troiswa\BackBundle\Entity\Product;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
+use Doctrine\Common\DataFixtures\AbstractFixture;
 
-class LoadProductData implements FixtureInterface
-{
 
-    public function load(ObjectManager $manager)
+    class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
     {
-
-        $listProduct = array(
-            array(
-                'title'   => 'I-Pomme',
-                'description'  => 'Téléphone tres fragile et vachement cher pour pas grand chose',
-                'price'=> '600',
-                'quantity' => '100'),
-            array(
-                'title'   => 'I-Peigne',
-                'description'  => 'Peigne à cheuveux éléctronique permettant une coiffure aérodynamique',
-                'price'=> '80',
-                'quantity' => '50'),
-            array(
-                'title'   => 'I-Montre',
-                'description'  => 'Montre connécter permettant de savoir quand les fions sont alignés avec les astres',
-                'price'=> '900',
-                'quantity' => '80'),
-            array(
-                'title'   => 'Ordinateur pc-Winloose',
-                'description'  => 'PC avec micro pour sa soeur CPC-4200 à écran à double facialité tactile',
-                'price'=> '2400',
-                'quantity' => '1500'),
-            array(
-                'title'   => 'Enceinte 3x2watts',
-                'description'  => 'Enceinte de qualité hi-fi chinoise à durée determiné ',
-                'price'=> '400',
-                'quantity' => '200'),
-        );
-
-        foreach ($listProduct as $productVal ) {
-
-            $product = new Product();
-            $product->setTitle($productVal['title']);
-            $product->setDescription($productVal['description']);
-            $product->setPrice($productVal['price']);
-            $product->setQuantity($productVal['quantity']);
-            $manager->persist($product);
+        //  cette fonction permet aux fixtures de se charger dans un certain ordre,
+        // on charge en premier les entitées inverse et en dernier les entitées
+        // propriétaire des clées étrangère
+        // ne pas oublier le use.
+        public function getOrder()
+        {
+            return 3;
         }
 
-        $manager->flush();
+        public function load(ObjectManager $manager)
+        {
+
+            $listProduct = array(
+                array(
+                    'title' => 'I-Pomme',
+                    'description' => 'Téléphone tres fragile et vachement cher pour pas grand chose',
+                    'price' => '600',
+                    'quantity' => '100',
+                    // get référence permet de ciblé les clée étrangère a mettre
+                    // en relation avec l'entité propriétaire
+                    // on utilisera un for each avec les clées index
+                    'category' => $this->getReference('refcat-0'),
+                    'brand' => $this->getReference('refbrand-0')
+                    ),
+                array(
+                    'title' => 'I-Peigne',
+                    'description' => 'Peigne à cheuveux éléctronique permettant une coiffure aérodynamique',
+                    'price' => '80',
+                    'quantity' => '50',
+                    'category' => $this->getReference('refcat-1'),
+                    'brand' => $this->getReference('refbrand-0')
+                    ),
+                array(
+                    'title' => 'I-Montre',
+                    'description' => 'Montre connécter permettant de savoir quand les fions sont alignés avec les astres',
+                    'price' => '900',
+                    'quantity' => '80',
+                    'category' => $this->getReference('refcat-2'),
+                    'brand' => $this->getReference('refbrand-0')
+                    ),
+                array(
+                    'title' => 'Ordinateur pc-Winloose',
+                    'description' => 'PC avec micro pour sa soeur CPC-4200 à écran à double facialité tactile',
+                    'price' => '2400',
+                    'quantity' => '1500',
+                    'category' => $this->getReference('refcat-0'),
+                    'brand' => $this->getReference('refbrand-1')
+                    ),
+                array(
+                    'title' => 'Enceinte 3x2watts',
+                    'description' => 'Enceinte de qualité hi-fi chinoise à durée determiné ',
+                    'price' => '400',
+                    'quantity' => '200',
+                    'category' => $this->getReference('refcat-2'),
+                    'brand' => $this->getReference('refbrand-2')
+                    )
+            );
+
+
+
+            foreach ($listProduct as $productVal) {
+
+                $product = new Product();
+                $product->setTitle($productVal['title']);
+                $product->setDescription($productVal['description']);
+                $product->setPrice($productVal['price']);
+                $product->setQuantity($productVal['quantity']);
+                $product->setCateg($productVal['category']);
+                $product->setBrand($productVal['brand']);
+                $manager->persist($product);
+            }
+
+            $manager->flush();
+        }
+
+
+    }
 
 
         //php app/console doctrine:fixtures:load              load les fixtures en écrasant la base de données
@@ -94,5 +131,5 @@ class LoadProductData implements FixtureInterface
         $manager->flush();
 
         */
-    }
-}
+
+

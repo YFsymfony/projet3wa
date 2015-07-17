@@ -29,6 +29,19 @@
     <div class="row">
         <div class="col-lg-12">
             <h2>Information sur le produit {{ product.title|upper }}</h2>
+            <hr/>
+            {# asset(product.cover.WebPath) = asset(product.cover.getWebPath)
+               car twig traverse les méthodes une par une j'usqu'a trouver la bonne
+               ici , il seras capable de faire la relation entre WebPath et getWebPath
+               dans l'entité productCover #}
+            {% if product.cover != null %}
+            <div class="">
+                <img class="img-responsive center-block" src="{{ asset(product.cover.webPath("thumb-medium")) }}" alt="{{ product.cover.alt }}"/>
+            </div>
+            {% else %}
+                <p class="text-center">Ce produit n'a pas d'image associé</p>
+            {% endif %}
+            <hr/>
             <div class="table-responsive">
                 <table class="table table-bordered table-hover">
                     <thead>

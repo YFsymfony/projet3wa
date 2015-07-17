@@ -97,9 +97,16 @@ class Product
 
     /**
      * @ORM\ManyToOne(targetEntity="troiswa\BackBundle\Entity\Brand", inversedBy="products")
-     * @ORM\JoinColumn(name="id_brand",referencedColumnName="id")
+     *
+     * nullable=false permet de rendre obligatoire la liaison entre marque et produit
+     * @ORM\JoinColumn(name="id_brand",referencedColumnName="id", nullable=false)
      */
     private $brand;
+
+    /**
+     * @ORM\OneToOne(targetEntity="troiswa\BackBundle\Entity\ProductCover", cascade={"persist"})
+     */
+    private $Cover;
 
     // cette fonction permet a l'entité d'etre automatiquement sélectioné a true dans le choice/radio
     public function __construct()
@@ -109,7 +116,7 @@ class Product
 
 
     /**
-     * @Gedmo\Slug(fields={"title","id"}, updatable=false)
+     * @Gedmo\Slug(fields={"title","id"}, updatable=true)
      * @ORM\Column(length=128, unique=true )
      */
     private $slug;
@@ -372,7 +379,7 @@ class Product
      * @param \troiswa\BackBundle\Entity\Brand $brand
      * @return Product
      */
-    public function setBrand(\troiswa\BackBundle\Entity\Brand $brand = null)
+    public function setBrand(\troiswa\BackBundle\Entity\Brand $brand)
     {
         $this->brand = $brand;
 

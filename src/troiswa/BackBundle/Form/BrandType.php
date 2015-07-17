@@ -18,7 +18,11 @@ class BrandType extends AbstractType
             ->add('title')
             ->add('description')
             ->add("envoyer","submit")
-
+            // INSERTION DU PRODUCT COVER TYPE DANS LE PRODUCT TYPE
+            // add('nom de la propriété présente dans l'entité
+            // product qui correspond au formulaire a inssérer',
+            // 'instanciation de l'objet' )
+            ->add("logo", new LogoType())
         ;
     }
     

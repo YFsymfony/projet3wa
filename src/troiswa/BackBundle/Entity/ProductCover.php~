@@ -1,0 +1,134 @@
+<?php
+
+namespace troiswa\BackBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
+/**
+ * ProductCover
+ *
+ * @ORM\Table(name="product_cover")
+ * @ORM\Entity(repositoryClass="troiswa\BackBundle\Entity\ProductCoverRepository")
+ */
+class ProductCover
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255)
+     */
+    private $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="alt", type="string", length=255)
+     */
+    private $alt;
+
+
+
+
+    /**
+     * Propriété pour l'upload d'image , elle est singulière et non relié à doctrine
+     */
+    private $fileCache;
+
+    /**
+     * On doit écrire le getter soit meme car cette propriété n'est pas lié à doctrine
+     * la commande generate:entities ne marchera pas !
+     */
+    public function getFileCache()
+    {
+        return $this->fileCache;
+    }
+
+    /**
+     * On doit écrire le setter soit meme car cette propriété n'est pas lié à doctrine
+     * la commande generate:entities ne marchera pas !
+     */
+    public function setFileCache(UploadedFile $fileCache=null)
+    {
+        $this->fileCache = $fileCache;
+
+        return $this;
+    }
+
+
+
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+
+    /**
+     * Set alt
+     *
+     * @param string $alt
+     * @return ProductCover
+     */
+    public function setAlt($alt)
+    {
+        $this->alt = $alt;
+
+        return $this;
+    }
+
+    /**
+     * Get alt
+     *
+     * @return string 
+     */
+    public function getAlt()
+    {
+        return $this->alt;
+    }
+
+    private function getUploadRouteDir()
+    {
+        return __DIR__."/../../../../web/Upload/Products";
+    }
+
+    public  function upload()
+    {
+        //die("go pour upload");
+
+        // test pour voir si on à bien envoyer une image
+        if(null == $this->fileCache)
+        {
+            return;
+        }
+
+        // on stock dans une variable le nom original du fichier
+        $nameImage = $this->fileCache
+                          ->getClientOriginalName();
+
+        // move contient 2 parametres , le premier est le chemin vers le dossier ou l'on veux uploader
+        // et le  deuxième  le nom de l'image
+        $this->fileCache->move
+        (
+            $this->getUploadRouteDir(),
+            $nameImage
+        );
+
+        // ici on défini le
+        $this->name = $nameImage;
+    }
+}
