@@ -1,0 +1,109 @@
+{% extends "troiswaBackBundle::layout_admin.html.twig" %}
+
+{% block stylesheet %}
+    {{ parent() }}
+    <link href="{{ asset("assets/css/jquery.datetimepicker.css") }}" rel="stylesheet">
+{% endblock stylesheet %}
+
+{% block title %}
+    <h1>Création d'un nouveau client</h1>
+{% endblock title %}
+
+{% block breadcrumb %}
+
+    <ol class="breadcrumb">
+        {{ parent() }}
+        <li class="">
+            <i class="fa fa-cube"></i> <a href="{{ path("user") }}">Clients</a>
+        </li>
+        <li class="active">
+            <i class="fa fa-plus-square-o"></i> ajouter un client
+        </li>
+    </ol>
+
+{% endblock breadcrumb %}
+
+{% block contenu %}
+
+    {# form(form) #}
+
+    {{ form_start(form) }}
+
+    <div class="form-group">
+        {{ form_label(form.firstname, "Entrez le nom du client" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(form.firstname) }}
+        {{ form_widget( form.firstname, {attr:{class:"form-control "}} ) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.lastname, "Entrez le prénom du client" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(form.lastname) }}
+        {{ form_widget( form.lastname, {attr:{class:"form-control "}} ) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.email, "Entrez l'email du client" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(form.email) }}
+        {{ form_widget( form.email, {attr:{class:"form-control "}} ) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.birthday, "Entrez la date de naissance" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(form.birthday) }}
+        {{ form_widget( form.birthday, {id:"datetimepicker",attr:{class:" "}} ) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.telephone, "Entrez le numéro de téléphone" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(form.telephone) }}
+        {{ form_widget( form.telephone, {attr:{class:"form-control "}} ) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.pseudo, "Entrez le pseudo du client" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(form.pseudo) }}
+        {{ form_widget( form.pseudo, {attr:{class:"form-control "}} ) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.adress, "Entrez l'adresse du client" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(form.adress) }}
+        {{ form_widget( form.adress, {attr:{class:"form-control"}} ) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.password.first, "Entrez le mot de passe" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(form.password.first) }}
+        {{ form_widget(form.password.first, {attr:{class:"form-control "}} ) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.password.second, "Confirmer le mot de passe" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(form.password.second) }}
+        {{ form_widget(form.password.second, {attr:{class:"form-control "}} ) }}
+    </div>
+
+    {{ form_end(form) }}
+
+    <hr/>
+
+        <ul class="record_actions list-unstyled">
+    <li>
+        <a class="btn btn-primary" href="{{ path('user') }}">
+            Retour à la liste des clients
+        </a>
+    </li>
+</ul>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="{{ asset("assets/js/jquery.datetimepicker.js") }}"></script>
+    <script>
+        $(function()
+        {
+            $('#datetimepicker').datetimepicker();
+        });
+    </script>
+{% endblock javascripts %}

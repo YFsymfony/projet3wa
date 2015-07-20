@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * ProductCover
  *
  * @ORM\Table(name="product_cover")
- * @ORM\Entity(repositoryClass="troiswa\BackBundle\Entity\ProductCoverRepository")
+ * @ORM\Entity(repositoryClass="troiswa\BackBundle\Repository\ProductCoverRepository")
  *
  *
  * Doc : http://doctrine-orm.readthedocs.org/en/latest/reference/events.html
@@ -127,6 +127,43 @@ class ProductCover
         }
 
         return $this;
+    }
+
+    /**
+     * @ORM\PreRemove()
+     *
+     * cette fonction sert à récupérer les bonnes informations et contourner le principe de proxy
+     * de symfony2 ( cache des objets , symfony2 met en cache les objets en attendant d'être appelé,
+     * si on utilise un objet mit en cache avant de l'appeler, symfony crois que l'objet est
+     * null, ou récupère de mauvaises informations)
+     *
+     */
+    public function preRemoveFileCache()
+    {
+        //dump($this);die;
+    }
+
+    /**
+     * @ORM\PostRemove()
+     */
+    public function removeFileCache()
+    {
+        $mainCover = $this->getAbsolutePath();
+
+        if(file_exists($mainCover))
+        {
+            unlink($mainCover);
+        }
+
+        foreach( $this->coverSize as $key =>$size)
+        {
+            if(file_exists($this->getUploadRootDir() . '/' . $key . '-' . $this->name))
+            {
+                unlink($this->getUploadRootDir() . '/' . $key . '-' . $this->name);
+            }
+
+        }
+
     }
 
 

@@ -10,7 +10,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * Product
  *
  * @ORM\Table(name="product")
- * @ORM\Entity(repositoryClass="troiswa\BackBundle\Entity\ProductRepository")
+ * @ORM\Entity(repositoryClass="troiswa\BackBundle\Repository\ProductRepository")
  */
 class Product
 {
@@ -105,17 +105,13 @@ class Product
 
     /**
      *
-     * @ORM\OneToOne(targetEntity="troiswa\BackBundle\Entity\ProductCover", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="troiswa\BackBundle\Entity\ProductCover", cascade={"persist","remove"})
      * @ORM\JoinColumn(name="id_product_cover", referencedColumnName="id")
      * @Assert\Valid
      */
     private $Cover;
 
-    // cette fonction permet a l'entité d'etre automatiquement sélectioné a true dans le choice/radio
-    public function __construct()
-    {
-        $this->active = true;
-    }
+
 
 
     /**
@@ -141,6 +137,12 @@ class Product
      * @ORM\Column(type="datetime")
      */
     private $updated;
+
+    // cette fonction permet a l'entité d'etre automatiquement sélectioné a true dans le choice/radio
+    public function __construct()
+    {
+        $this->active = true;
+    }
 
 
     /**

@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new troiswa\BackBundle\troiswaBackBundle(),
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
+            new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
 
         );
 

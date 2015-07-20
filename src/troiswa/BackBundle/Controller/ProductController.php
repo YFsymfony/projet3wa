@@ -100,7 +100,7 @@ class ProductController extends Controller
 
 
 
-    public function allProductAction()
+    public function allProductAction(Request $request)
     {
 
         $em = $this->getDoctrine()->getManager();
@@ -115,10 +115,20 @@ class ProductController extends Controller
                      //  on aurra plus qu'une seule requete.
                        ->findAllProductAndCategory();
 
+        $sortable = $em->getRepository("troiswaBackBundle:Product")
+                    ->findAllProductAndCategoryForSortable();
+
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $sortable,
+            $request->query->getInt('page', 1),
+            3
+        );
+
         //dump($products);
         //die();
 
-        return $this->render('troiswaBackBundle:Product:allProduct.html.twig',["products"=>$products]);
+        return $this->render('troiswaBackBundle:Product:allProduct.html.twig',["products"=>$products,'pagination' => $pagination]);
     }
 
 
@@ -266,6 +276,7 @@ class ProductController extends Controller
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
         $em->remove($product);
 

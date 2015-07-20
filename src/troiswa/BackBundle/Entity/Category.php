@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface; // use du cal
  * Category
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="troiswa\BackBundle\Entity\CategoryRepository")
+ * @ORM\Entity(repositoryClass="troiswa\BackBundle\Repository\CategoryRepository")
  */
 class Category
 {

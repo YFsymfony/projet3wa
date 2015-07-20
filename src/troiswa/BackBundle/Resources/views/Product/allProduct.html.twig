@@ -28,20 +28,30 @@
         <h2>Tous les produits:<a class="btn btn-warning pull-right" href="{{ path('troiswa_back_product_add') }}"> Ajouter un produit</a></h2>
 
         <div class="table-responsive">
+
+            <div class="count">
+                <p>Total des produits : {{ pagination.getTotalItemCount }}</p>
+            </div>
+
+
             <table class="table table-bordered table-hover">
                 <thead>
+
                 <tr>
-                    <th>ID</th>
-                    <th>Titre</th>
-                    <th>Prix</th>
-                    <th>quantité</th>
-                    <th>Action </th>
-                    <th>Categorie</th>
+                    <th>{{ knp_pagination_sortable(pagination, 'Id', 'prod.id') }}</th>
+                    <th{% if pagination.isSorted('prod.Title') %} class="sorted"{% endif %}>
+                        {{ knp_pagination_sortable(pagination, 'Titre', 'prod.title') }}
+                    </th>
+                    <th>{{ knp_pagination_sortable(pagination, 'Prix', 'prod.price') }}</th>
+                    <th>{{ knp_pagination_sortable(pagination, 'Quantité', 'prod.quantity') }}</th>
+                    <th> <span class="btn btn-default disabled">Action</span> </th>
+                    <th>{{ knp_pagination_sortable(pagination, 'Categorie', 'cat.title') }}</th>
                 </tr>
+
                 </thead>
                 <tbody>
 
-                {% for product in products %}
+                {% for product in pagination %}
                 <tr>
                     <td>{{ product.id }}</td>
                     <td>{{ product.title }}</td>
@@ -79,6 +89,11 @@
 
                 </tbody>
             </table>
+
+            <div class="navigation">
+                {{ knp_pagination_render(pagination) }}
+            </div>
+
         </div>
     </div>
 </div>

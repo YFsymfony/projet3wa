@@ -13,7 +13,7 @@ use troiswa\BackBundle\Entity\Product;
  * Brand
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="troiswa\BackBundle\Entity\BrandRepository")
+ * @ORM\Entity(repositoryClass="troiswa\BackBundle\Repository\BrandRepository")
  */
 class Brand
 {

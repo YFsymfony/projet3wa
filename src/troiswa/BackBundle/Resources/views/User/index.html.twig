@@ -1,0 +1,78 @@
+{% extends "troiswaBackBundle::layout_admin.html.twig" %}
+
+{% block stylesheet %}
+    {{ parent() }}
+{% endblock stylesheet %}
+
+{% block title %}
+    <h1>Liste de tous les clients</h1>
+{% endblock title %}
+
+{% block breadcrumb %}
+
+    <ol class="breadcrumb">
+        {{ parent() }}
+        <li class="active">
+            <i class="fa fa-cube"></i> <a href="">Clients</a>
+        </li>
+    </ol>
+
+{% endblock breadcrumb %}
+
+{% block contenu %}
+
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Firstname</th>
+                <th>Lastname</th>
+                <th>Email</th>
+                <th>Birthday</th>
+                <th>Telephone</th>
+                <th>Pseudo</th>
+                <th>Adress</th>
+                <th>Password</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('user_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.firstname }}</td>
+                <td>{{ entity.lastname }}</td>
+                <td>{{ entity.email }}</td>
+                <td>{% if entity.birthday %}{{ entity.birthday|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ entity.telephone }}</td>
+                <td>{{ entity.pseudo }}</td>
+                <td>{{ entity.adress }}</td>
+                <td>{{ entity.password }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('user_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('user_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul class="list-unstyled">
+        <li>
+            <a class="btn btn-primary" href="{{ path('user_new') }}">
+                Entrer un nouvel utilisateur
+            </a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock javascripts %}

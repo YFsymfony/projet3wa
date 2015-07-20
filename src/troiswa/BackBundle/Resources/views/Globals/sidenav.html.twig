@@ -62,7 +62,15 @@ si on doit modifier la class="active" des élément du menu de la side bar -->
         </li>
 
         <li>
-            <a href="blank-page.html"><i class="fa fa-fw fa-users"></i> Clients</a>
+            <a href="javascript:;" data-toggle="collapse" data-target="#clients"><i class="fa fa-fw fa-users"></i> Clients <i class="fa fa-fw fa-caret-down"></i></a>
+            <ul id="clients" class="collapse nav navbar-nav ">
+                <li class="">
+                    <a href="{{ path('user') }}">Toutes les clients</a>
+                </li>
+                <li>
+                    <a href="{{ path('user_new') }}">Ajouter un client</a>
+                </li>
+            </ul>
         </li>
 
         <li>

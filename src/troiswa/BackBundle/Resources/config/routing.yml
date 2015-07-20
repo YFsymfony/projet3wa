@@ -1,3 +1,7 @@
+troiswa_back_user:
+    resource: "@troiswaBackBundle/Resources/config/routing/user.yml"
+    prefix:   /user
+
 #troiswa_back_homepage:
 #    path:     /hello/{name}
 #    defaults: { _controller: troiswaBackBundle:Default:index }

@@ -1,6 +1,6 @@
 <?php
 
-namespace troiswa\BackBundle\Entity;
+namespace troiswa\BackBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 

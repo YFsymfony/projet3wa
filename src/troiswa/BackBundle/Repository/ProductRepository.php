@@ -1,6 +1,6 @@
 <?php
 
-namespace troiswa\BackBundle\Entity;
+namespace troiswa\BackBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
@@ -146,6 +146,20 @@ class ProductRepository extends EntityRepository
                         ");
 
         return $query->getResult();
+    }
+
+    public function findAllProductAndCategoryForSortable()
+    {
+
+        $query = $this->getEntityManager()
+            ->createQuery
+            ("
+                           SELECT prod,cat
+                           FROM troiswaBackBundle:Product prod
+                           LEFT JOIN prod.categ cat
+                        ");
+
+        return $query;
     }
 
     public function countProductInAllCategory()
