@@ -308,7 +308,7 @@
                                         </thead>
                                         <tbody>
 
-                                        {% for product in allproducts %}
+                                        {% for product in productOutOfStock %}
                                             <tr>
                                                 <td>{{ product.id }}</td>
                                                 <td><a class="btn btn-primary" href="{{ path('troiswa_back_product_edit',{idprod: product.id} ) }}">{{ product.title }}</a></td>
@@ -354,7 +354,7 @@
                                         </thead>
                                         <tbody>
 
-                                        {% for product in allproducts %}
+                                        {% for product in productToOrder %}
                                             <tr>
                                                 <td>{{ product.id }}</td>
                                                 <td><a class="btn btn-primary" href="{{ path('troiswa_back_product_edit',{idprod: product.id} ) }}">{{ product.title }}</a></td>

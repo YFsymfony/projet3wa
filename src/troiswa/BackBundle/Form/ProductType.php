@@ -91,6 +91,16 @@ class ProductType extends AbstractType
                     ]
                  )
 
+            ->add("tag","entity",
+                [
+                    "class"=>"troiswaBackBundle:Tag",
+                    'property' => 'word',
+                    "expanded"=>false,
+                    "multiple"=>true,
+                    "required" => false,
+                ]
+            )
+
             // INSERTION DU PRODUCT COVER TYPE DANS LE PRODUCT TYPE
             // add('nom de la propriété présente dans l'entité
             // product qui correspond au formulaire a inssérer',

@@ -138,6 +138,24 @@ class Product
      */
     private $updated;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Tag", inversedBy="product" )
+     * @ORM\JoinTable
+     * (name="product_tag" ,
+     *  joinColumns=
+     *  {
+     *      @ORM\JoinColumn(name="product_id", referencedColumnName="id")
+     *  },
+     *  inverseJoinColumns=
+     *  {
+     *      @ORM\JoinColumn(name="tag_id" , referencedColumnName="id")
+     *  }
+     * )
+     *
+     */
+    private $tag;
+
+
     // cette fonction permet a l'entité d'etre automatiquement sélectioné a true dans le choice/radio
     public function __construct()
     {
@@ -422,5 +440,38 @@ class Product
     public function getCover()
     {
         return $this->Cover;
+    }
+
+    /**
+     * Add tag
+     *
+     * @param \troiswa\BackBundle\Entity\Tag $tag
+     * @return Product
+     */
+    public function addTag(\troiswa\BackBundle\Entity\Tag $tag)
+    {
+        $this->tag[] = $tag;
+
+        return $this;
+    }
+
+    /**
+     * Remove tag
+     *
+     * @param \troiswa\BackBundle\Entity\Tag $tag
+     */
+    public function removeTag(\troiswa\BackBundle\Entity\Tag $tag)
+    {
+        $this->tag->removeElement($tag);
+    }
+
+    /**
+     * Get tag
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTag()
+    {
+        return $this->tag;
     }
 }

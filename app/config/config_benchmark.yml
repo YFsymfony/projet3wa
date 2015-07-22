@@ -1,0 +1,14 @@
+imports:
+    - { resource: config_prod.yml }
+
+framework:
+    profiler: { only_exceptions: false }
+    router:
+      resource: "%kernel.root_dir%/config/routing_dev.yml"
+
+web_profiler:
+    toolbar: true
+
+doctrine:
+    dbal:
+      profiling: true

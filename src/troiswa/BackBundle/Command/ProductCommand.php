@@ -16,7 +16,7 @@ class ProductCommand extends ContainerAwareCommand
             ->setName('product:quantity')
             ->setDescription("Permet d'envoyer un mail des produits dont la quantité est inférieur à 5")
             ->addArgument('nombre', InputArgument::REQUIRED, 'quantité de produit ?')
-        ->addOption('message', 'm', InputOption::VALUE_NONE,'Si définie, un petit message apparaitra');
+            ->addOption('message', 'm', InputOption::VALUE_NONE,'Si définie, un petit message apparaitra');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

@@ -1,0 +1,90 @@
+{% extends "troiswaBackBundle::layout_admin.html.twig" %}
+
+{% block stylesheet %}
+    {{ parent() }}
+    <link href="{{ asset("assets/css/jquery.datetimepicker.css") }}" rel="stylesheet">
+{% endblock stylesheet %}
+
+{% block title %}
+    <h1>Création d'un Compte client</h1>
+{% endblock title %}
+
+{% block breadcrumb %}
+{% endblock %}
+
+
+{% block contenu %}
+
+    {{ form_start(formLogin) }}
+
+    <div class="form-group">
+        {{ form_label(formLogin.firstname, "Entrez le nom du client" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(formLogin.firstname) }}
+        {{ form_widget( formLogin.firstname, {attr:{class:"form-control "}} ) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(formLogin.lastname, "Entrez le prénom du client" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(formLogin.lastname) }}
+        {{ form_widget( formLogin.lastname, {attr:{class:"form-control "}} ) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(formLogin.email, "Entrez l'email du client" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(formLogin.email) }}
+        {{ form_widget( formLogin.email, {attr:{class:"form-control "}} ) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(formLogin.birthday, "Entrez la date de naissance" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(formLogin.birthday) }}
+        {{ form_widget( formLogin.birthday, {id:"datetimepicker",attr:{class:" "}} ) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(formLogin.telephone, "Entrez le numéro de téléphone" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(formLogin.telephone) }}
+        {{ form_widget( formLogin.telephone, {attr:{class:"form-control "}} ) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(formLogin.pseudo, "Entrez le pseudo du client" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(formLogin.pseudo) }}
+        {{ form_widget( formLogin.pseudo, {attr:{class:"form-control "}} ) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(formLogin.adress, "Entrez l'adresse du client" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(formLogin.adress) }}
+        {{ form_widget( formLogin.adress, {attr:{class:"form-control"}} ) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(formLogin.password.first, "Entrez le mot de passe" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(formLogin.password.first) }}
+        {{ form_widget(formLogin.password.first, {attr:{class:"form-control "}} ) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(formLogin.password.second, "Confirmer le mot de passe" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(formLogin.password.second) }}
+        {{ form_widget(formLogin.password.second, {attr:{class:"form-control "}} ) }}
+    </div>
+
+    {{ form_end(formLogin) }}
+
+    <hr/>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="{{ asset("assets/js/jquery.datetimepicker.js") }}"></script>
+    <script>
+        $(function()
+        {
+            $('#datetimepicker').datetimepicker();
+        });
+    </script>
+{% endblock javascripts %}

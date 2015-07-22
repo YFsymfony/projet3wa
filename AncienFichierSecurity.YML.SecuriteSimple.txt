@@ -1,0 +1,66 @@
+security:
+
+    encoders:
+
+        # définition de l'encodage en texte , c'est a dire pas d'encodage ( ne pas utiliser pour la prod )
+        # à utiliser juste pour tester étape par étape notre application.
+        # Symfony\Component\Security\Core\User\User: plaintext
+
+        #utilisation de la fonction de hachage php sha512
+        Symfony\Component\Security\Core\User\User:
+            algorithm: sha512
+            encode_as_base64: false
+            iterations: 1
+
+    role_hierarchy:
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN]
+        ROLE_ADMIN: [ROLE_USER, , ROLE_ALLOWED_TO_SWITCH]
+
+    # sert à savoir ou aller chercher les utilisateurs
+    providers:
+
+        # in memory sert a enregistrer des utilisateur sans utiliser de base de donnée
+        in_memory:
+            memory:
+                users:
+
+                    #nom d'utilisateur
+                    admin:
+
+                        #mot de passe du l'utilisateur du dessu crypté en sha512 ( bidule )
+                        password: 582fc805980c8508c75c6b162671552d6a468293d4070c03f82b849169c5e88ab1949558f938b98f212f5c53cfbf6a8c5d2401c69e63b9cfb0a6dcc92aae3ec7
+                        roles: ROLE_ADMIN
+                    gege: { password: 582fc805980c8508c75c6b162671552d6a468293d4070c03f82b849169c5e88ab1949558f938b98f212f5c53cfbf6a8c5d2401c69e63b9cfb0a6dcc92aae3ec7 , roles: ROLE_USER } # syntaxe version inline
+
+    # sert à définir les zone à bloquer ou non
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt|error)|css|images|js)/ # ne pas toucher !
+            security: false
+
+        administration:
+
+            # signifie : toute les url qui commence par admin ( comme pour les regex )
+            pattern: ^/admin
+
+            # signifie : impossible d'accéder aux urls qui commence par admin si l'on est pas connecté
+            anonymous: false
+
+            # ouvre une boite de dialogue pour ce connecter affin d'afficher les pages
+            http_basic:
+
+                # affiche un message approprié pour la boite de dialogue
+                realm: "Attention zone reserve aux utilisateurs enregistre"
+
+                # permet de savoir ou chercher les utilisateurs
+                provider: in_memory
+
+            # permet de switcher la conection d'un admin avec celle d'un user pour prendre sa place
+            # et vérifier les problemes comme si l'on été connecté avec son compte user
+            # exemple : http://localhost/projet3wa/web/app_dev.php/admin/?_switch_user=toto
+            # pour sortir : http://localhost/projet3wa/web/app_dev.php/admin/?_switch_user=exit
+            switch_user: { role: ROLE_ADMIN, parameter: _want_to_be_this_user }
+
+    # gestion des acces en fonction des page ( quel user à droit d'accéder a tel page )
+    #access_control:
+    #    - { path: ^/admin/product$, role: ROLE_ADMIN }

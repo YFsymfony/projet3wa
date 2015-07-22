@@ -1,0 +1,30 @@
+tag:
+    path:     /
+    defaults: { _controller: "troiswaBackBundle:Tag:index" }
+
+tag_show:
+    path:     /{id}/show
+    defaults: { _controller: "troiswaBackBundle:Tag:show" }
+
+tag_new:
+    path:     /new
+    defaults: { _controller: "troiswaBackBundle:Tag:new" }
+
+tag_create:
+    path:     /create
+    defaults: { _controller: "troiswaBackBundle:Tag:create" }
+    methods:  POST
+
+tag_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "troiswaBackBundle:Tag:edit" }
+
+tag_update:
+    path:     /{id}/update
+    defaults: { _controller: "troiswaBackBundle:Tag:update" }
+    methods:  [POST, PUT]
+
+tag_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "troiswaBackBundle:Tag:delete" }
+    methods:  [POST, DELETE]

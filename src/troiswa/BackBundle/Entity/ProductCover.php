@@ -237,7 +237,7 @@ class ProductCover
 
         // test pour supprimer les images associé à un produit si on change les images
         // l'orsqu'on édite un produit en lui attribuant une nouvelle image
-        if($this->oldFileCache)
+        if(file_exists($this->oldFileCache))
         {
             //////////suppression des images//////////////
 

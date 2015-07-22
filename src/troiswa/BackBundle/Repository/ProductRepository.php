@@ -70,6 +70,17 @@ class ProductRepository extends EntityRepository
         return $query->getQuery()->getSingleScalarResult();
     }
 
+    // Afficher le nombre de produit dont la quantité est à 0
+    public function productOutOfStock()
+    {
+        $query = $this->createQueryBuilder('prod')
+            ->select('prod')
+            ->where("prod.quantity = :qtyValue")
+            ->setParameter("qtyValue",0);
+
+        return $query->getQuery()->getResult();
+    }
+
     // Afficher le nombre de produit actif
     public function countActiveProduct()
     {

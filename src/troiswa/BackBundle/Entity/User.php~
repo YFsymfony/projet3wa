@@ -376,44 +376,4 @@ class User implements UserInterface
     {
         // TODO: Implement eraseCredentials() method.
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->coupon = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Add coupon
-     *
-     * @param \troiswa\BackBundle\Entity\UserCoupon $coupon
-     * @return User
-     */
-    public function addCoupon(\troiswa\BackBundle\Entity\UserCoupon $coupon)
-    {
-        $this->coupon[] = $coupon;
-
-        return $this;
-    }
-
-    /**
-     * Remove coupon
-     *
-     * @param \troiswa\BackBundle\Entity\UserCoupon $coupon
-     */
-    public function removeCoupon(\troiswa\BackBundle\Entity\UserCoupon $coupon)
-    {
-        $this->coupon->removeElement($coupon);
-    }
-
-    /**
-     * Get coupon
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getCoupon()
-    {
-        return $this->coupon;
-    }
 }

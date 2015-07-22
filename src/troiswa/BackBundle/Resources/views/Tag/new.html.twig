@@ -1,0 +1,57 @@
+{% extends "troiswaBackBundle::layout_admin.html.twig" %}
+
+{% block stylesheet %}
+    {{ parent() }}
+{% endblock stylesheet %}
+
+{% block title %}
+    <h1>Création d'un nouveau tag</h1>
+{% endblock title %}
+
+{% block breadcrumb %}
+
+    <ol class="breadcrumb">
+        {{ parent() }}
+        <li class="">
+            <i class="fa fa-cube"></i> <a href="{{ path("tag") }}">Tags</a>
+        </li>
+        <li class="active">
+            <i class="fa fa-plus-square-o"></i> ajouter un tag
+        </li>
+    </ol>
+
+{% endblock breadcrumb %}
+
+{% block contenu %}
+
+
+    {{ form_start(form) }}
+
+    <div class="form-group">
+        {{ form_label(form.word, "Entrez la désignation du tag" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(form.word) }}
+        {{ form_widget(form.word, {attr:{class:"form-control "}} ) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.product, "Choisissez des produits à associé" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(form.product) }}
+        {{ form_widget(form.product, {attr:{class:"form-control "}} ) }}
+    </div>
+
+    {{ form_end(form) }}
+
+    <hr/>
+
+    <ul class="record_actions list-unstyled">
+        <li>
+            <a class="btn btn-primary" href="{{ path('tag') }}">
+                Retour à la liste
+            </a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock javascripts %}

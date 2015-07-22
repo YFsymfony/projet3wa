@@ -1,13 +1,95 @@
 security:
 
-    providers:
-        in_memory:
-            memory: ~
+    encoders:
+        troiswa\BackBundle\Entity\User:
+            algorithm: bcrypt
+            cost: 15
+            #iteration: 5
+            encode_as_base64: true
+        #troiswa\BackBundle\Entity\User: plaintext
 
+    role_hierarchy:
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN]
+        ROLE_ADMIN: [ROLE_USER, ROLE_ALLOWED_TO_SWITCH]
+        ROLE_ADMIN: [ROLE_ALLOWED_TO_SWITCH]
+
+
+    # sert à savoir ou aller chercher les utilisateurs
+    providers:
+
+        in_memory:
+            memory:
+                users: # Utilisateur en mémoire
+                    admin: # Utilisateur admin
+                        password: admin # Mot de passe de admin
+                        roles: ROLE_ADMIN
+                    toto: { password: bidule, roles: ROLE_USER }
+                    #toto: { password: 582fc805980c8508c75c6b162671552d6a468293d4070c03f82b849169c5e88ab1949558f938b98f212f5c53cfbf6a8c5d2401c69e63b9cfb0a6dcc92aae3ec7, roles: ROLE_USER }
+        provider_back:
+            # ajouter 'implements UserInterface' sur la class user et mettre le use
+            # le parametre property permet de savoir avec quel élément on se connecte ( pseudo , email etc etc )
+            #entity: { class: troiswaBackBundle:User, property: pseudo }
+
+            # Utilisation de UserRepository pour se connecter
+            # Visualiser la méthode loadUserByUsername dans UserRepository pour mieux comprendre
+            entity: { class: troiswaBackBundle:User }
+
+    # sert à définir les zone à bloquer ou non
     firewalls:
         dev:
-            pattern: ^/(_(profiler|wdt|error)|css|images|js)/
+            pattern: ^/(_(profiler|wdt|error)|css|images|js)/ # ne pas toucher !
             security: false
 
-        main:
-            anonymous: ~
+        # ce firewall permet de ne pas avoir de boucle de redirection quand le parametre
+        # anonymous du firewall administration est a false.
+        # ( tu veux rentrer sur admin/login , non tu ne peu pas avoir acces aux page admin,
+        # je te redirise sur admin/login )
+        login_firewall:
+            pattern: ^/admin/login$
+            anonymous: true
+
+        administration:
+
+            # signifie : toute les url qui commence par admin ( comme pour les regex )
+            pattern: ^/admin
+
+            # signifie : impossible d'accéder aux urls qui commence par admin si l'on est pas connecté
+            anonymous: false
+
+            form_login:
+                check_path: troiswa_back_login_check
+                login_path: troiswa_back_login
+
+                # route vers laquel l'utilisateur va etre redirigé apres sa connexion
+                # éviter d'utiliser directement l'url , préférer le nom de la route ( l'url peu changer )
+                default_target_path: troiswa_back_administration
+
+                # ce parametre permet de forcer la redirection vers la page default_target
+                # plutot que d'etre redirigé vers la page demander par l'utilisateur qui a
+                # oublier de se connecter. ( un utilisateur non connecter veux accéder a la page admin/product
+                # , il est rediriger vers admin/login , a sa connection , il seras redirigé vers admin/product
+                # si on ne spécifie pas le always_use_default_target )
+                always_use_default_target_path: true
+
+            logout:
+                path: troiswa_back_logout
+                # route vers laquel l'utilisateur va etre redirigé apres sa déconnexion
+                # ici on ne peu pas utiliser le nom de route , on utilise l'url
+                target: /admin
+
+            provider: provider_back
+
+            # permet de switcher la conection d'un admin avec celle d'un user pour prendre sa place
+            # et vérifier les problemes comme si l'on été connecté avec son compte user
+            # exemple : http://localhost/projet3wa/web/app_dev.php/admin/?_switch_user=toto
+            # pour sortir : http://localhost/projet3wa/web/app_dev.php/admin/?_switch_user=_exit
+            switch_user: { role: ROLE_USER }
+
+    # gestion des acces en fonction des page ( quel user à droit d'accéder à tel page )
+    access_control:
+        - { path: ^/admin/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/user/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin, role: ROLE_USER }
+        #- { path: ^/admin/product$, role: ROLE_ADMIN }
+        #- { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+

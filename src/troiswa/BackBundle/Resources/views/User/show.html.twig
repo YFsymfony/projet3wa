@@ -59,25 +59,44 @@
                 <th>Adress</th>
                 <td>{{ entity.adress }}</td>
             </tr>
-            <tr>
-                <th>Password</th>
-                <td>{{ entity.password }}</td>
-            </tr>
+
         </tbody>
     </table>
 
-        <ul class="record_actions">
+    <hr/>
+
+        <h3>Coupon possédé par {{ entity.firstname }} {{ entity.lastname }}:</h3>
+
+        {% if entity.coupon != null %}
+            {% for usercoupon in entity.coupon %}
+                {%  dump(usercoupon) %}
+                <div class="panel panel-body panel-default">
+                    <h4>Numéro de coupon:</h4>
+                    <p>{{ usercoupon.coupon.code }}</p>
+                    <h4>Détail du coupon:</h4>
+                    <p>{{ usercoupon.coupon.detail }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="panel panel-body panel-default">
+                <p>Cet utilisateur ne possède pas de coupon</p>
+            </div>
+        {% endif %}
+
+    <hr/>
+
+        <ul class="record_actions list-unstyled list-inline">
     <li>
-        <a href="{{ path('user') }}">
-            Back to the list
+        <a class="btn btn-primary" href="{{ path('user') }}">
+            Retour à la liste
         </a>
     </li>
     <li>
-        <a href="{{ path('user_edit', { 'id': entity.id }) }}">
+        <a class="btn btn-primary" href="{{ path('user_edit', { 'id': entity.id }) }}">
             Edit
         </a>
     </li>
-    <li>{{ form(delete_form) }}</li>
+
 </ul>
 {% endblock %}
 

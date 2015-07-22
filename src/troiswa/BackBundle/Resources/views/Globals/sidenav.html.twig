@@ -62,6 +62,18 @@ si on doit modifier la class="active" des élément du menu de la side bar -->
         </li>
 
         <li>
+            <a href="javascript:;" data-toggle="collapse" data-target="#tag"><i class="fa fa-tag"></i> tags <i class="fa fa-fw fa-caret-down"></i></a>
+            <ul id="tag" class="collapse nav navbar-nav ">
+                <li class="">
+                    <a href="{{ path('tag') }}">Tous les tags</a>
+                </li>
+                <li>
+                    <a href="{{ path('tag_new') }}">Ajouter un tag</a>
+                </li>
+            </ul>
+        </li>
+
+        <li>
             <a href="javascript:;" data-toggle="collapse" data-target="#clients"><i class="fa fa-fw fa-users"></i> Clients <i class="fa fa-fw fa-caret-down"></i></a>
             <ul id="clients" class="collapse nav navbar-nav ">
                 <li class="">

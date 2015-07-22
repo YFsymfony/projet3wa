@@ -1,0 +1,51 @@
+{% extends "troiswaBackBundle::layout_admin.html.twig" %}
+
+{% block stylesheet %}
+    {{ parent() }}
+    <link href="{{ asset("assets/css/jquery.datetimepicker.css") }}" rel="stylesheet">
+{% endblock stylesheet %}
+
+{% block title %}
+    <h1>Modifier les Tags</h1>
+{% endblock title %}
+
+{% block breadcrumb %}
+
+    <ol class="breadcrumb">
+        {{ parent() }}
+        <li class="">
+            <i class="fa fa-cube"></i> <a href="{{ path("tag") }}">Tags</a>
+        </li>
+        <li class="active">
+            <i class="fa fa-plus-square-o"></i> edition de tag
+        </li>
+    </ol>
+
+{% endblock breadcrumb %}
+
+{% block contenu%}
+
+    {{ form_start(edit_form) }}
+
+    <div class="form-group">
+        {{ form_label(edit_form.word, "Entrez la désignation du tag :" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(edit_form.word) }}
+        {{ form_widget( edit_form.word, {attr:{class:" form-control "}} ) }}
+    </div>
+
+    {{ form_end(edit_form) }}
+
+    <hr/>
+
+        <ul class="record_actions list-unstyled">
+    <li>
+        <a class="btn btn-primary" href="{{ path('tag') }}">
+            Back to the list
+        </a>
+    </li>
+</ul>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock javascripts %}

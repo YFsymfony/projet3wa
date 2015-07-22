@@ -5,6 +5,7 @@ namespace troiswa\BackBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
+use troiswa\BackBundle\Entity\User;
 use troiswa\BackBundle\Form\ContactType;
 
 //use Symfony\Component\HttpFoundation\Response;
@@ -14,6 +15,18 @@ class MainController extends Controller
 {
     public function indexAction()
     {
+        /*
+         *
+         * code pour afficher un mot de passe crypté
+         *
+        $user = new User();
+        $factory = $this->get('security.encoder_factory');
+
+        $encoder = $factory->getEncoder($user);
+        $password = $encoder->encodePassword('admin', null);
+        echo $password;
+        die;
+        */
 
         $em = $this->getDoctrine()->getManager();
 
@@ -65,6 +78,9 @@ class MainController extends Controller
         $countProductInAllCategory = $em->getRepository("troiswaBackBundle:Product")
                                         ->countProductInAllCategory();
 
+        $productOutOfStock = $em->getRepository("troiswaBackBundle:Product")
+                                ->productOutOfStock();
+
 
 
 
@@ -88,6 +104,7 @@ class MainController extends Controller
                 "countProductInCategory"=>$countProductInCategory,
                 "countProductInBrand"=>$countProductInBrand,
                 "countProductInAllCategory"=>$countProductInAllCategory,
+                "productOutOfStock"=>$productOutOfStock,
 
             ]
         );
@@ -323,6 +340,17 @@ class MainController extends Controller
         }
 
         return $this->render("troiswaBackBundle:Main:feedback.html.twig",["formfeedback"=>$formfeedback->createView()]);
+    }
+
+    public function displayProductExceptionAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $ProctBetweenPrice = $em->getRepository("troiswaBackBundle:Product")
+            ->findProctBetweenPrice(300,1500);
+
+        return $this->render('troiswaBackBundle:Product:ExceptionProduct.html.twig',["ProctBetweenPrice"=>$ProctBetweenPrice]);
+
     }
 
     public function dqlTrainAction()

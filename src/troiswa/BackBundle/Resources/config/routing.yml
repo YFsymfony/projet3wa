@@ -1,6 +1,4 @@
-troiswa_back_user:
-    resource: "@troiswaBackBundle/Resources/config/routing/user.yml"
-    prefix:   /user
+
 
 #troiswa_back_homepage:
 #    path:     /hello/{name}
@@ -21,6 +19,18 @@ troiswa_back_resource_product:
 
 troiswa_back_resource_category:
     resource: "@troiswaBackBundle/Resources/config/routing/category.yml"
+
+troiswa_back_tag:
+    resource: "@troiswaBackBundle/Resources/config/routing/tag.yml"
+    prefix:   /tag
+
+troiswa_back_user:
+    resource: "@troiswaBackBundle/Resources/config/routing/user.yml"
+    prefix:   /user
+
+
+
+
 
 
 
@@ -53,7 +63,15 @@ troiswa_back_brand_delete:
 
 
 
+troiswa_back_login:
+    pattern:   /login
+    defaults:  { _controller: troiswaBackBundle:Security:login }
 
+troiswa_back_login_check:
+    pattern:   /login_check
+
+troiswa_back_logout:
+    pattern:   /logout
 
 
 

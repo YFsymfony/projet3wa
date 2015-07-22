@@ -7,6 +7,7 @@ use troiswa\BackBundle\Entity\Product;
 use Symfony\Component\HttpFoundation\Request;
 use troiswa\BackBundle\Form\ProductType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;   // grisé car ce service est en annotation
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 
 class ProductController extends Controller
@@ -16,6 +17,17 @@ class ProductController extends Controller
 
     public function addProductAction(Request $request) // ne pas oublier l'objet request sinon on ne peu pas utiliser POST
     {
+        /*
+
+        // test pour l'acces à la page , ici la page n'est accessible que par l'utilisateur admin
+        if (!$this->get('security.context')->isGranted('ROLE_ADMIN'))
+        {
+            throw $this->createAccessDeniedException('Vous ne pouvez pas accéder à cette page');
+        }
+
+        */
+
+
         $product = new Product();
 
         //$product->setTitle("titre de l'article");
@@ -198,8 +210,12 @@ class ProductController extends Controller
      * @param Product $product
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      * @ParamConverter("product", options={ "mapping":{"idprod":"id"} } )
+     *
+     * controle d'acces , ici seul l'administrateur à accès
+     * arobase Security("has_role('ROLE_ADMIN')")
+     * ne pas oublier ce use :
+     * use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
      */
-
     public function editProductAction(Request $request, Product $product)// ne pas oublier l'objet request sinon on ne peu pas utiliser POST
     {
 
@@ -453,8 +469,6 @@ class ProductController extends Controller
 
         return $this->render('troiswaBackBundle:Product:productInfoTrain.html.twig',array("product"=>$product));
     }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 

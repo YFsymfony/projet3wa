@@ -86,6 +86,12 @@
     </div>
 
     <div class="form-group">
+        {{ form_label(formUpdateProduct.tag, "Choisissez les tags ( ctrl + click ):" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(formUpdateProduct.tag) }}
+        {{ form_widget(formUpdateProduct.tag, {attr:{class:"form-control"}} ) }}
+    </div>
+
+    <div class="form-group">
         {{ form_widget(formUpdateProduct.envoyer, {label:"Envoyer",attr:{class:"btn btn-warning"}} ) }}
     </div>
 

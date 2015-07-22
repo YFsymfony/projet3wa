@@ -1,0 +1,31 @@
+{% extends "troiswaBackBundle::layout_admin.html.twig" %}
+
+{% block stylesheet %}
+    {{ parent() }}
+{% endblock stylesheet %}
+
+{% block title %}
+    <h1 class="main-heading text-center"><i class="fa fa-exclamation-circle"></i> Oups , une erreur est survenue ! <i class="fa fa-exclamation-circle"></i></h1>
+{% endblock title %}
+
+{% block contenu %}
+
+        <h2>Le server retourne "{{ status_code }} {{ status_text }}".</h2>
+
+        <div>
+            <p>Désolé du désagrément , vous pouvez expliquer ce que vous avez fait pour voir cette erreur</p>
+            <p>Envoyez nous un email , nous réparrerons ceci au plus vite. <a class="btn btn-primary" href="{{ path('troiswa_back_feedback') }}"> Faire un rapport d 'erreur</a></p>
+        </div>
+
+        <hr/>
+
+        <h2 class="main-heading">Vous pouvez voir également :</h2>
+
+    {{ render(controller('troiswaBackBundle:Main:displayProductException')) }}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+{% endblock javascripts %}

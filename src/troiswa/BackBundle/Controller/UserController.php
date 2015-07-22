@@ -29,6 +29,29 @@ class UserController extends Controller
             'entities' => $entities,
         ));
     }
+
+    /**
+     *
+     */
+    public function loginAction(Request $request)
+    {
+        $entity = new User();
+        $formLogin = $this->createCreateForm($entity);
+        $formLogin->handleRequest($request);
+
+        if ($formLogin->isValid())
+        {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($entity);
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('troiswa_back_administration'));
+        }
+
+        return $this->render("troiswaBackBundle:User:login.html.twig",['entity' => $entity,'formLogin'=> $formLogin->createView()]);
+
+    }
+
     /**
      * Creates a new User entity.
      *
@@ -94,9 +117,15 @@ class UserController extends Controller
      */
     public function showAction($id)
     {
+
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('troiswaBackBundle:User')->find($id);
+
+        // appel de la requete qui permet d'afficher tous les coupons lié à l'utilisateur
+        // utiliser juste pour dump le résultat , on a utilisé twig pour affiché ces informations
+        // dans la vue.
+        //$testCoupon = $em->getRepository('troiswaBackBundle:UserCoupon')->findAllCouponForOneUser($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find User entity.');
