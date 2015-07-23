@@ -30,6 +30,10 @@ user_delete:
     methods:  [POST, DELETE]
 
 user_login:
-    path:     /login
-    defaults: { _controller: "troiswaBackBundle:User:login" }
+    path:     /signin
+    defaults: { _controller: "troiswaBackBundle:User:signin" }
+
+user_edit_by_admin:
+    path:     /{id}/editbyadmin
+    defaults: { _controller: "troiswaBackBundle:User:editUserByAdmin" }
 

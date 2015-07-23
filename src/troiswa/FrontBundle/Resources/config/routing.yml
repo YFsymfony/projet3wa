@@ -1,0 +1,4 @@
+
+troiswa_front_home:
+    path: /front/home
+    defaults: { _controller: troiswaFrontBundle:Home:index }

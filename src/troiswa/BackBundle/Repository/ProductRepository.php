@@ -189,7 +189,19 @@ class ProductRepository extends EntityRepository
 
         return $query->getResult();
 
+    }
 
+    public function lastTreeActiveProduct()
+    {
+        $query = $this->createQueryBuilder("prod")
+            ->select('prod')
+            ->where("prod.quantity> :qtyValue")
+            ->orderBy('prod.created', 'DESC')
+            ->setParameter("qtyValue",0)
+            ->setMaxResults(3);
+
+        //dump($query->getQuery()->getResult());die;
+        return $query->getQuery()->getResult();
     }
 
 

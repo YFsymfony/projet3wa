@@ -19,10 +19,21 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity(repositoryClass="troiswa\BackBundle\Repository\UserRepository")
  * @UniqueEntity("email")
  * @UniqueEntity("pseudo")
+ *
+ * Afin d'utiliser une instance de la classe troiswaBackBundle:User
+ * dans la couche de sécurité de Symfony, la classe entité doit
+ * implémenter l'interface UserInterface. Cette interface force
+ * la classe à implémenter les méthodes suivantes :
+ * getRoles(),
+ * getPassword(),
+ * getSalt(),
+ * getUsername(),
+ * eraseCredentials()
+ * ect ect
  */
 // implements UserInterface permet de définir la class user comme provider pour la sécurité
 // cliquer sur le surlignage rouge , puis sur l'ampoule rouge et add methode.
-class User implements UserInterface
+class User implements UserInterface, \Serializable
 {
 
     /**
@@ -100,7 +111,7 @@ class User implements UserInterface
     /**
      * @var string
      * @Assert\NotBlank(message=" Champ obligatoire ")
-     * @passwordChecker(regex="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{4,8}", minimum=10)
+     * @passwordChecker(regex="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{4,8}^", minimum=6)
      * @ORM\Column(name="password", type="string", length=255)
      */
     private $password;
@@ -110,6 +121,11 @@ class User implements UserInterface
      */
     private $coupon;
 
+    /**
+    * @ORM\ManyToMany(targetEntity="Role")
+    *
+    */
+    private $roles;
 
     /**
      * Get id
@@ -310,8 +326,6 @@ class User implements UserInterface
      */
     public function validate(ExecutionContextInterface $message)
     {
-
-
         if (strtolower($this->getPseudo()) == "admin"){
 
             // pour le paramettre entre acolade , attention aux espaces ,
@@ -341,7 +355,14 @@ class User implements UserInterface
      */
     public function getRoles()
     {
-        return ['ROLE_USER'];
+        // attention this->roles retourne un tableau d'objet de l'entitée ,
+        // return ['ROLE_USER'];
+        // donc pour le getter on doit préciser qu'on cherche un tableau simple
+
+        // toArray() transforme donc un tableau d'objet en tableau simple.
+
+        // on dois aussi mettre dans __construct : $this->roles = new ArrayCollection();
+        return $this->roles->toArray();
     }
 
     /**
@@ -382,7 +403,10 @@ class User implements UserInterface
     public function __construct()
     {
         $this->coupon = new \Doctrine\Common\Collections\ArrayCollection();
+
+        $this->roles = new \Doctrine\Common\Collections\ArrayCollection();
     }
+
 
     /**
      * Add coupon
@@ -415,5 +439,59 @@ class User implements UserInterface
     public function getCoupon()
     {
         return $this->coupon;
+    }
+
+    /**
+     * Add roles
+     *
+     * @param \troiswa\BackBundle\Entity\Role $roles
+     * @return User
+     */
+    public function addRole(\troiswa\BackBundle\Entity\Role $roles)
+    {
+        $this->roles[] = $roles;
+
+        return $this;
+    }
+
+    /**
+     * Remove roles
+     *
+     * @param \troiswa\BackBundle\Entity\Role $roles
+     */
+    public function removeRole(\troiswa\BackBundle\Entity\Role $roles)
+    {
+        $this->roles->removeElement($roles);
+    }
+
+    /**
+     * (PHP 5 &gt;= 5.1.0)<br/>
+     * String representation of object
+     * @link http://php.net/manual/en/serializable.serialize.php
+     * @return string the string representation of the object or null
+     */
+    public function serialize()
+    {
+        // obligatoire pour l'utilisation des cookies
+        // $_cookie ne comprend pas les objets ,
+        // on doit transformer les objets en chaine de caractère
+        // serialize() transforme un objet en chaine de caractères
+        return serialize([$this->id]);
+    }
+
+    /**
+     * (PHP 5 &gt;= 5.1.0)<br/>
+     * Constructs the object
+     * @link http://php.net/manual/en/serializable.unserialize.php
+     * @param string $serialized <p>
+     * The string representation of the object.
+     * </p>
+     * @return void
+     */
+    public function unserialize($serialized)
+    {
+        // obligatoire pour l'utilisation des cookies
+        // transforme une chaine de caractère en objet
+        list($this->id) = unserialize($serialized);
     }
 }

@@ -183,7 +183,7 @@ class TagController extends Controller
     }
     /**
      * Deletes a Tag entity.
-     *
+     * @Security("has_role('ROLE_SUPER_ADMIN')")
      */
     public function deleteAction(Request $request, $id)
     {

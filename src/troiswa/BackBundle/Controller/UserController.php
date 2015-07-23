@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use troiswa\BackBundle\Entity\User;
 use troiswa\BackBundle\Form\UserType;
+use troiswa\BackBundle\Form\UserEditAdminType;
 
 /**
  * User controller.
@@ -31,30 +32,117 @@ class UserController extends Controller
     }
 
     /**
-     *
+     * formulaire de création d'un compte coté admin
+     * @Security("has_role('ROLE_ADMIN')")
      */
-    public function loginAction(Request $request)
+    public function signinAction(Request $request)
     {
         $entity = new User();
-        $formLogin = $this->createCreateForm($entity);
-        $formLogin->handleRequest($request);
+        $formSignin = $this->createCreateForm($entity);
+        $formSignin->handleRequest($request);
 
-        if ($formLogin->isValid())
+        if ($formSignin->isValid())
         {
             $em = $this->getDoctrine()->getManager();
+
+            // cryptage du mot de passe
+            $factory = $this->get('security.encoder_factory');
+            $encoder = $factory->getEncoder($entity);
+            $newPassword = $encoder->encodePassword($entity->getPassword(), $entity->getSalt());
+            $entity->setPassword($newPassword);
+
+            //attribution du role
+            $roles = $em->getRepository('troiswaBackBundle:Role')->findOneByName('client');
+            $entity->addRole($roles);
+
             $em->persist($entity);
             $em->flush();
 
             return $this->redirect($this->generateUrl('troiswa_back_administration'));
         }
 
-        return $this->render("troiswaBackBundle:User:login.html.twig",['entity' => $entity,'formLogin'=> $formLogin->createView()]);
+        return $this->render("troiswaBackBundle:User:signin.html.twig",['entity' => $entity,'formSignin'=> $formSignin->createView()]);
 
     }
 
+
+    ///////////////////////////////// EDITION ADMIN //////////////////////////////////////////
+    /**
+     *@Security("has_role('ROLE_ADMIN')")
+     */
+    public function editUserByAdminAction($id, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $entity = $em->getRepository('troiswaBackBundle:User')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('id inexistante pour cet utilisateur');
+        }
+
+        $formedituserbyadmin = $this->createEditByAdminForm( $entity);
+
+        $formedituserbyadmin->handleRequest($request);
+
+        if ($formedituserbyadmin->isValid())
+        {
+            $em->flush();
+        }
+
+        return $this->render("troiswaBackBundle:User:editUserByAdmin.html.twig",['entity' => $entity,'formedituserbyadmin'=> $formedituserbyadmin->createView()]);
+    }
+
+    private function createEditByAdminForm(User $entity)
+    {
+        $form = $this->createForm(new UserEditAdminType, $entity, array(
+            'action' => $this->generateUrl('user_edit_by_admin', array('id' => $entity->getId())),
+            'method' => 'PUT',
+        ));
+
+        $form->add('submit', 'submit', array('label' => 'Update'));
+
+        return $form;
+    }
+
+    ///////////////////////////////// EDITION USER //////////////////////////////////////////////
+
+
+    public function editAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $entity = $em->getRepository('troiswaBackBundle:User')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find User entity.');
+        }
+
+        $editForm = $this->createEditForm($entity);
+        $deleteForm = $this->createDeleteForm($id);
+
+        return $this->render('troiswaBackBundle:User:edit.html.twig', array(
+            'entity'      => $entity,
+            'edit_form'   => $editForm->createView(),
+            'delete_form' => $deleteForm->createView(),
+        ));
+    }
+
+
+    private function createEditForm(User $entity)
+    {
+        $form = $this->createForm(new UserType(), $entity, array(
+            'action' => $this->generateUrl('user_update', array('id' => $entity->getId())),
+            'method' => 'PUT',
+        ));
+
+        $form->add('submit', 'submit', array('label' => 'Update'));
+
+        return $form;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+
     /**
      * Creates a new User entity.
-     *
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function createAction(Request $request)
     {
@@ -63,7 +151,19 @@ class UserController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+
             $em = $this->getDoctrine()->getManager();
+
+            // cryptage du mot de passe
+            $factory = $this->get('security.encoder_factory');
+            $encoder = $factory->getEncoder($entity);
+            $newPassword = $encoder->encodePassword($entity->getPassword(), $entity->getSalt());
+            $entity->setPassword($newPassword);
+
+            //attribution du role
+            $roles = $em->getRepository('troiswaBackBundle:Role')->findOneByName('client');
+            $entity->addRole($roles);
+
             $em->persist($entity);
             $em->flush();
 
@@ -98,7 +198,7 @@ class UserController extends Controller
 
     /**
      * Displays a form to create a new User entity.
-     *
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function newAction()
     {
@@ -127,60 +227,32 @@ class UserController extends Controller
         // dans la vue.
         //$testCoupon = $em->getRepository('troiswaBackBundle:UserCoupon')->findAllCouponForOneUser($id);
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find User entity.');
+        if (!$entity)
+        {
+            throw $this->createNotFoundException('Utilisateur inexistant pour cette id');
         }
+
+        /**
+        if ($this->get('security.context')->isGranted('ROLE_ADMIN') === true)
+        {
+            $role = true;
+        }
+        else
+        {
+            $role = false;
+        }
+        */
 
         $deleteForm = $this->createDeleteForm($id);
 
-        return $this->render('troiswaBackBundle:User:show.html.twig', array(
+        return $this->render('troiswaBackBundle:User:show.html.twig',[
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
-        ));
+            //'role' => $role,
+        ]);
     }
 
-    /**
-     * Displays a form to edit an existing User entity.
-     *
-     */
-    public function editAction($id)
-    {
-        $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('troiswaBackBundle:User')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find User entity.');
-        }
-
-        $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($id);
-
-        return $this->render('troiswaBackBundle:User:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
-    }
-
-    /**
-    * Creates a form to edit a User entity.
-    *
-    * @param User $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
-    private function createEditForm(User $entity)
-    {
-        $form = $this->createForm(new UserType(), $entity, array(
-            'action' => $this->generateUrl('user_update', array('id' => $entity->getId())),
-            'method' => 'PUT',
-        ));
-
-        $form->add('submit', 'submit', array('label' => 'Update'));
-
-        return $form;
-    }
     /**
      * Edits an existing User entity.
      *
@@ -213,7 +285,7 @@ class UserController extends Controller
     }
     /**
      * Deletes a User entity.
-     *
+     * @Security("has_role('ROLE_SUPER_ADMIN')")
      */
     public function deleteAction(Request $request, $id)
     {

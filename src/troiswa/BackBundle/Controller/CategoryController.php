@@ -12,12 +12,9 @@ class CategoryController extends Controller
 {
 
 
-
-
-
-
-
-
+    /**
+     *@Security("has_role('ROLE_ADMIN')")
+     */
     public function addCategoryAction(Request $request)
     {
         // j'instancie un nouvel objet category que je stock dans la variable $category
@@ -109,8 +106,6 @@ class CategoryController extends Controller
 
 
     /**
-     * @param $idcat
-     * @return \Symfony\Component\HttpFoundation\Response
      * @ParamConverter("category", options={ "mapping":{"idcat":"id"} } )
      */
     public function categoryInfoAction(Category $category)
@@ -157,9 +152,7 @@ class CategoryController extends Controller
 
 
     /**
-     * @param Request $request
-     * @param Category $category
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @Security("has_role('ROLE_ADMIN')")
      * @ParamConverter("category", options={ "mapping":{"idcat":"id"} } )
      */
 
@@ -228,8 +221,7 @@ class CategoryController extends Controller
 
 
     /**
-     * @param $idcat
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @Security("has_role('ROLE_SUPER_ADMIN')")
      * @ParamConverter("category", options={ "mapping":{"idcat":"id"} } )
      */
     public function deleteCategoryAction(Category $category)

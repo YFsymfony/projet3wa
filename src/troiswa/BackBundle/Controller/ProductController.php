@@ -14,7 +14,9 @@ class ProductController extends Controller
 {
 
 
-
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     */
     public function addProductAction(Request $request) // ne pas oublier l'objet request sinon on ne peu pas utiliser POST
     {
         /*
@@ -206,13 +208,10 @@ class ProductController extends Controller
 
 
     /**
-     * @param Request $request
-     * @param Product $product
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      * @ParamConverter("product", options={ "mapping":{"idprod":"id"} } )
      *
      * controle d'acces , ici seul l'administrateur à accès
-     * arobase Security("has_role('ROLE_ADMIN')")
+     * @Security("has_role('ROLE_ADMIN')")
      * ne pas oublier ce use :
      * use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
      */
@@ -269,10 +268,8 @@ class ProductController extends Controller
 
 
     /**
-     * @param Request $request
-     * @param $idprod
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      * @ParamConverter("product", options={ "mapping":{"idprod":"id"} } )
+     * @Security("has_role('ROLE_SUPER_ADMIN')")
      */
     public  function deleteProductAction(Request $request, Product $product)
     {
@@ -304,18 +301,9 @@ class ProductController extends Controller
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     */
     public function productActiveAction(Request $request)
     {
         // utilisation de la fonction php intval() pour parser , si string la fonction zero
@@ -340,18 +328,10 @@ class ProductController extends Controller
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+    /**
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @Security("has_role('ROLE_ADMIN')")
+     */
     public function changeActiveProductAction(Request $request,$idprod,$changeAction)
     {
         $em = $this->getDoctrine()->getManager();

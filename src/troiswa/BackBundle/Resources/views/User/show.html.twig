@@ -92,9 +92,15 @@
         </a>
     </li>
     <li>
-        <a class="btn btn-primary" href="{{ path('user_edit', { 'id': entity.id }) }}">
-            Edit
-        </a>
+        {% if is_granted('ROLE_ADMIN') %}
+            <a class="btn btn-primary" href="{{ path('user_edit_by_admin', { 'id': entity.id }) }}">
+                Editer ( admin)
+            </a>
+        {% elseif is_granted('ROLE_USER') %}
+            <a class="btn btn-primary" href="{{ path('user_edit', { 'id': entity.id }) }}">
+                Editer
+            </a>
+        {% endif %}
     </li>
 
 </ul>
@@ -102,4 +108,5 @@
 
 {% block javascripts %}
     {{ parent() }}
+
 {% endblock javascripts %}

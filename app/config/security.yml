@@ -10,8 +10,9 @@ security:
 
     role_hierarchy:
         ROLE_SUPER_ADMIN: [ROLE_ADMIN]
-        ROLE_ADMIN: [ROLE_USER, ROLE_ALLOWED_TO_SWITCH]
-        ROLE_ADMIN: [ROLE_ALLOWED_TO_SWITCH]
+        ROLE_ADMIN: [ROLE_CLIENT, ROLE_ALLOWED_TO_SWITCH]
+        ROLE_CLIENT: [ROLE_USER]
+
 
 
     # sert à savoir ou aller chercher les utilisateurs
@@ -59,6 +60,7 @@ security:
             form_login:
                 check_path: troiswa_back_login_check
                 login_path: troiswa_back_login
+                csrf_provider: security.csrf.token_manager
 
                 # route vers laquel l'utilisateur va etre redirigé apres sa connexion
                 # éviter d'utiliser directement l'url , préférer le nom de la route ( l'url peu changer )
@@ -70,6 +72,12 @@ security:
                 # , il est rediriger vers admin/login , a sa connection , il seras redirigé vers admin/product
                 # si on ne spécifie pas le always_use_default_target )
                 always_use_default_target_path: true
+
+            remember_me:
+                key: "%secret%" # token du parameters.yml
+                lifetime: 172800 # 2 jours
+                path: / # accessible sur toutes les urls
+                domain: ~ # valeur par defaut : accessible partout sur mon site
 
             logout:
                 path: troiswa_back_logout
@@ -83,7 +91,7 @@ security:
             # et vérifier les problemes comme si l'on été connecté avec son compte user
             # exemple : http://localhost/projet3wa/web/app_dev.php/admin/?_switch_user=toto
             # pour sortir : http://localhost/projet3wa/web/app_dev.php/admin/?_switch_user=_exit
-            switch_user: { role: ROLE_USER }
+            switch_user: { role: ROLE_ADMIN }
 
     # gestion des acces en fonction des page ( quel user à droit d'accéder à tel page )
     access_control:

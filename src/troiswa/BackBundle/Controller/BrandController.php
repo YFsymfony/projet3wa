@@ -10,6 +10,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class BrandController extends Controller
 {
+    /**
+     *@Security("has_role('ROLE_ADMIN')")
+     */
     public function addBrandAction(Request $request)
     {
         $brand = new Brand();
@@ -52,6 +55,7 @@ class BrandController extends Controller
 
     /**
      * @ParamConverter("brand", options={ "mapping":{"idbrand":"id"} } )
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public  function editBrandAction(Request $request, Brand $brand)
     {
@@ -87,8 +91,6 @@ class BrandController extends Controller
     }
 
     /**
-     * @param $idbrand
-     * @return \Symfony\Component\HttpFoundation\Response
      * @ParamConverter("brand", options={ "mapping":{"idbrand":"id"} } )
      */
     public function brandInfoAction(Brand $brand)
@@ -100,8 +102,7 @@ class BrandController extends Controller
     }
 
     /**
-     * @param $idbrand
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @Security("has_role('ROLE_SUPER_ADMIN')")
      * @ParamConverter("brand", options={ "mapping":{"idbrand":"id"} } )
      */
     public function deleteBrandAction(Brand $brand)

@@ -30,6 +30,7 @@ class Tag
 
     /**
      * @ORM\ManyToMany(targetEntity="troiswa\BackBundle\Entity\Product", mappedBy="tag")
+     * ne pas oublier remover et adder pour product et referenced by pour tagtype
      */
     private $product;
 
@@ -66,6 +67,7 @@ class Tag
     {
         return $this->word;
     }
+
     /**
      * Constructor
      */
@@ -83,6 +85,8 @@ class Tag
     public function addProduct(\troiswa\BackBundle\Entity\Product $product)
     {
         $this->product[] = $product;
+        // ne pas oublier cette ligne pour l'action bidirectionnel
+        $product->addTag($this);
 
         return $this;
     }
@@ -95,6 +99,8 @@ class Tag
     public function removeProduct(\troiswa\BackBundle\Entity\Product $product)
     {
         $this->product->removeElement($product);
+        // ne pas oublier cette ligne pour l'action bidirectionnel
+        $product->removeTag($this);
     }
 
     /**

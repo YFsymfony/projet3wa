@@ -1,0 +1,104 @@
+{% extends "troiswaBackBundle::layout_admin.html.twig" %}
+
+{% block stylesheet %}
+    {{ parent() }}
+    <link href="{{ asset("assets/css/jquery.datetimepicker.css") }}" rel="stylesheet">
+{% endblock stylesheet %}
+
+{% block title %}
+    <h1>Modifier les informations client ( ADMIN )</h1>
+{% endblock title %}
+
+{% block breadcrumb %}
+
+    <ol class="breadcrumb">
+        {{ parent() }}
+        <li class="">
+            <i class="fa fa-cube"></i> <a href="{{ path("user") }}">Clients</a>
+        </li>
+        <li class="active">
+            <i class="fa fa-plus-square-o"></i> edition de client ( ADMIN )
+        </li>
+    </ol>
+
+{% endblock breadcrumb %}
+
+{% block contenu%}
+
+
+    {# form(edit_form) #}
+
+    {{ form_start(formedituserbyadmin) }}
+
+    <div class="form-group">
+        {{ form_label(formedituserbyadmin.firstname, "Entrez le nom du client" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(formedituserbyadmin.firstname) }}
+        {{ form_widget( formedituserbyadmin.firstname, {attr:{class:"form-control "}} ) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(formedituserbyadmin.lastname, "Entrez le prénom du client" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(formedituserbyadmin.lastname) }}
+        {{ form_widget( formedituserbyadmin.lastname, {attr:{class:"form-control "}} ) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(formedituserbyadmin.email, "Entrez l'email du client" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(formedituserbyadmin.email) }}
+        {{ form_widget( formedituserbyadmin.email, {attr:{class:"form-control "}} ) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(formedituserbyadmin.birthday, "Entrez la date de naissance" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(formedituserbyadmin.birthday) }}
+        {{ form_widget( formedituserbyadmin.birthday, {id:"datetimepicker",attr:{class:""}} ) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(formedituserbyadmin.telephone, "Entrez le numéro de téléphone" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(formedituserbyadmin.telephone) }}
+        {{ form_widget( formedituserbyadmin.telephone, {attr:{class:"form-control "}} ) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(formedituserbyadmin.pseudo, "Entrez le pseudo du client" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(formedituserbyadmin.pseudo) }}
+        {{ form_widget( formedituserbyadmin.pseudo, {attr:{class:"form-control "}} ) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(formedituserbyadmin.adress, "Entrez l'adresse du client" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(formedituserbyadmin.adress) }}
+        {{ form_widget( formedituserbyadmin.adress, {attr:{class:"form-control "}} ) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(formedituserbyadmin.roles, "Entrez les droits" , { label_attr:{class:"class_du_label"}} ) }}
+        {{ form_errors(formedituserbyadmin.roles) }}
+        {{ form_widget( formedituserbyadmin.roles, {attr:{class:"form-control "}} ) }}
+    </div>
+
+    {{ form_end(formedituserbyadmin) }}
+
+    <hr/>
+
+    <ul class="record_actions list-unstyled">
+        <li>
+            <a class="btn btn-primary" href="{{ path('user') }}">
+                Retour à la liste des clients
+            </a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="{{ asset("assets/js/jquery.datetimepicker.js") }}"></script>
+    <script>
+        $(function()
+        {
+            $('#datetimepicker').datetimepicker();
+        });
+    </script>
+{% endblock javascripts %}

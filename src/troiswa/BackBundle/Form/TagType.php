@@ -23,6 +23,7 @@ class TagType extends AbstractType
                     "expanded"=>false,
                     "multiple"=>true,
                     "required" => false,
+                    "by_reference" => false
                 ]
             )
         ;
