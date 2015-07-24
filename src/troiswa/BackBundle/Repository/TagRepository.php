@@ -12,5 +12,70 @@ use Doctrine\ORM\EntityRepository;
  */
 class TagRepository extends EntityRepository
 {
+    public function findAllTagForOneProduct($id)
+    {
+        // appeler le service entitymanager pour ne pas écraser le from
+        // et partir d'une create querybuilder vide
+        // $this->creatQueryBuilder() fait automatiquement un select et un from
+        // sur l'entité du repository : ici sur tag repository
+        $query = $this->getEntityManager()->createQueryBuilder()
+            ->select('tag, prod')
+            ->from('troiswaBackBundle:Product','prod')
+            // prod.id = tag.product_id
+            ->leftJoin('prod.tag', 'tag')
+            ->where('prod.id = :value')
+            ->setParameter('value',$id);
+
+        //dump($query->getQuery()->getSingleResult());
+        //die();
+
+        return $query->getQuery()->getsingleResult();
+    }
+
+    // selectionner les deux produits avec le plus de tags
+    // grouper par produit puis compter les tags
+    public function findTwoProductWithMoreTag()
+    {
+
+    /**
+    * SELECT COUNT('tag') as nb, prod = select les tag en les comptant alissé par nb et les produits
+    *
+    *FROM troiswaBackBundle:Product as prod = from L'ENTITE product aliassé prod
+    *
+    *LEFT JOIN prod.tag tag = partant de l'entité prod qui à la propriété tag (private $tag;) aliassé tag
+    *
+    * WHERE est apres le left join
+    *
+    *GROUP BY prod.id  = groupé par l'id des produit
+    *
+    *ORDER BY nb DESC = ordonée par nb en descendant
+    */
+
+
+
+        // SI erreur : Key "cover" for array with keys "0, nb" does not exist in
+        // troiswaFrontBundle:Globals:productFooter.html.twig at line 5
+
+        // Utiliser HIDDEN sur la valeur qui pose probleme ici nb
+
+        $em = $this->getEntityManager();
+
+        $query = $em->createQuery("
+
+            SELECT COUNT('tag') as  HIDDEN nb, prod
+            FROM troiswaBackBundle:Product as prod
+            LEFT JOIN prod.tag tag
+            WHERE prod.active = true
+            GROUP BY prod.id
+            ORDER BY nb DESC
+        ")->setMaxResults(2);
+
+        $products=$query->getResult();
+
+        //dump($products);
+        //die;
+
+        return $products;
+    }
 
 }

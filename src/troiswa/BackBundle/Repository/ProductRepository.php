@@ -204,5 +204,38 @@ class ProductRepository extends EntityRepository
         return $query->getQuery()->getResult();
     }
 
+    public function findAllActiveProduct()
+    {
+        $query = $this->createQueryBuilder('prod')
+                      ->select('prod')
+                      ->where('prod.active = :value')
+                      ->setParameter('value',true);
+
+        return $query->getQuery()->getResult();
+    }
+
+    public function findSixActiveProduct()
+    {
+        $query = $this->createQueryBuilder('prod')
+            ->select('prod')
+            ->where('prod.active = :value')
+            ->setParameter('value',true)
+            ->setMaxResults(6);
+
+        return $query->getQuery()->getResult();
+    }
+
+    public function findProductInCart($id)
+    {
+        $query = $this->createQueryBuilder('prod')
+            ->select('prod')
+            ->where('prod.id in (:ids)')
+            ->setParameter('ids',$id);
+
+        //dump($query->getQuery()->getResult());die;
+
+        return $query->getQuery()->getResult();
+    }
+
 
 }

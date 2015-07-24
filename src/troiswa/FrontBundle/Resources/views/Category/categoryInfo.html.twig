@@ -1,0 +1,93 @@
+{% extends "troiswaFrontBundle::layout_front.html.twig" %}
+
+
+
+{% block stylesheet %}
+    {{ parent() }}
+{% endblock stylesheet %}
+
+{% block title %}
+    <h1>Information:</h1>
+{% endblock title %}
+
+{% block breadcrumb %}
+
+    <ol class="breadcrumb">
+        {{ parent() }}
+        <li class="">
+            <i class="fa fa-cube"></i> <a href="{{ path('troiswa_front_product') }}">Produits</a>
+        </li>
+        <li class="active">
+            <i class="fa fa-info"></i> Info
+        </li>
+    </ol>
+
+{% endblock breadcrumb %}
+
+{%  block contenu %}
+
+    <!--div class="row"-->
+    <div class="col-md-9">
+        <h2>Information sur la categorie {{ category.title|upper }}</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>TITRE</th>
+                    <th>Position</th>
+                    <th>Description</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr>
+                    <td>{{ category.id }}</td>
+                    <td>{{ category.title }}</td>
+                    <td>{{ category.position }}</td>
+                    <td>{{ category.description }}</td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <hr/>
+
+        <h2>Produits dans la categorie :  {{ category.title|upper }}</h2>
+
+        <table class="table table-bordered table-hover">
+            <thead>
+
+            <tr>
+                <th{% if pagination.isSorted('prod.Title') %} class="sorted"{% endif %}>
+                    {{ knp_pagination_sortable(pagination, 'Titre', 'prod.title') }}
+                </th>
+                <th>{{ knp_pagination_sortable(pagination, 'Prix', 'prod.price') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Quantité', 'prod.quantity') }}</th>
+            </tr>
+
+            </thead>
+            <tbody>
+
+            {% for prod in pagination %}
+                <tr>
+                    <td>{{ prod.title }}</td>
+                    <td>{{ prod.price }}</td>
+                    <td>{{ prod.quantity }}</td>
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+
+    </div>
+    <!--/div row-->
+
+
+
+{% endblock contenu %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock javascripts %}

@@ -89,6 +89,50 @@ class CategoryRepository extends EntityRepository
         return $query->getResult();
     }
 
+    public function findAllProductInOneCategory($id)
+    {
+
+        // si ma requette me retourne un objet contenant un tableau d'objet
+        // il devien compliquer de traverser le résultat
+        //
+        // On voit ceci dans le dump , le tableau commence par une clef 0 qui
+        // renvois un autre tableau ( on a donc un tableau a deux dimension pénible
+        // à parcourir )
+        //
+        // on passera donc par l'entité inverse ( donc la liaison doit etre bidirectionel )
+        // pour notre requete ( on inverse au niveau du from et de la jointure )
+        //
+        // Avant :  SELECT cat,prod
+        //          FROM troiswaBackBundle:Category cat
+        //          LEFT JOIN cat.products prod
+        //          WHERE cat.id = :id
+        //
+        // Apres :  SELECT cat,prod
+        //          FROM troiswaBackBundle:Product prod
+        //          LEFT JOIN prod.categ cat
+        //          WHERE cat.id = :id
+        //
+        // exemple d'erreur : Method "price" for object "troiswa\BackBundle\Entity\Category"
+        // does not exist in troiswaFrontBundle:Category:categoryInfo.html.twig at line 74
+        //
+        $query = $this->getEntityManager()
+            ->createQuery
+            ("
+
+               SELECT cat,prod
+               FROM troiswaBackBundle:Product prod
+               LEFT JOIN prod.categ cat
+               WHERE cat.id = :id
+            ")->setParameter('id',$id);
+
+        //dump($query->getSQL());
+        //die();
+
+        //dump($query->getResult());die;
+
+        return $query;
+    }
+
     public function displayCategoryWhereProductsBrandIsApple(){
 
         $query = $this->getEntityManager()

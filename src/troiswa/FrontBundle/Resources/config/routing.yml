@@ -2,3 +2,34 @@
 troiswa_front_home:
     path: /front/home
     defaults: { _controller: troiswaFrontBundle:Home:index }
+
+troiswa_front_product:
+    path: /front/product
+    defaults: { _controller: troiswaFrontBundle:Product:allProduct}
+
+troiswa_front_product_info:
+    path: /front/product/{idprod}
+    defaults: { _controller: troiswaFrontBundle:Product:productInfo}
+    requirements:
+        idprod: \d+
+
+
+troiswa_front_category:
+    path: /front/category
+    defaults: { _controller: troiswaFrontBundle:Category:allCategory}
+
+troiswa_front_category_info:
+    path: /front/category/{idcat}
+    defaults: { _controller: troiswaFrontBundle:Category:categoryInfo}
+    requirements:
+        idcat: \d+
+
+troiswa_front_cart_add:
+    path: /cart/add/{idprod}
+    defaults: { _controller: troiswaFrontBundle:Product:addCart}
+    requirements:
+        idprod: \d+
+
+troiswa_front_cart:
+    path: /cart
+    defaults: {_controller: troiswaFrontBundle:Product:Cart}

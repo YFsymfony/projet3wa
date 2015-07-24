@@ -111,7 +111,7 @@ class CategoryController extends Controller
     public function categoryInfoAction(Category $category)
     {
         // appel du service doctrine et entity manager
-        $em = $this->getDoctrine()->getManager();
+        //$em = $this->getDoctrine()->getManager();
 
 
 ////////////////////////////////////Ancienne methode remplacé par param converter///////////////////////////////////////////////////////
@@ -277,6 +277,19 @@ class CategoryController extends Controller
         ->findAll();
 
         return $this->render('troiswaBackBundle:Category:listCategoryNav.html.twig',["category"=>$category]);
+    }
+
+    public function listCategoryNavFrontAction()
+    {
+        // appel du service doctrine et entity manager
+        $em = $this->getDoctrine()->getManager();
+
+        // get repository est comme le from en sql , car ici on parle en objet
+        // DOC fonction native doctrine (find) : http://www.doctrine-project.org/api/orm/2.2/class-Doctrine.ORM.EntityRepository.html
+        $category = $em->getRepository("troiswaBackBundle:Category")
+            ->findAll();
+
+        return $this->render('troiswaBackBundle:Category:listCategoryNavFront.html.twig',["category"=>$category]);
     }
 
 

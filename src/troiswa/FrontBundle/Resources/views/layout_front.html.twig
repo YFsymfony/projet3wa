@@ -16,7 +16,6 @@
 
     <div id="wrapper">
 
-
         <!-- Navigation -->
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <div class="container">
@@ -28,7 +27,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">Start Bootstrap</a>
+                    <a class="navbar-brand" href="#">Navigation</a>
                 </div>
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -88,11 +87,11 @@
 
                         <!-- ici faire une include et utiliser render de twig pour afficher les categorie -->
                         <div class="col-md-3">
-                            <p class="lead">3WA E-Commerce</p>
+                            <p class="lead">Categories</p>
                             <div class="list-group">
-                                <a href="#" class="list-group-item">Category 1</a>
-                                <a href="#" class="list-group-item">Category 2</a>
-                                <a href="#" class="list-group-item">Category 3</a>
+
+                                {{ render(controller('troiswaBackBundle:Category:listCategoryNavFront')) }}
+
                             </div>
                         </div>
 
@@ -102,20 +101,65 @@
 
                 </div>  <!-- container -->
 
-                <div class="container">
+            <!--/////////////////////////////////// footer /////////////////////-->
+            <footer>
 
-                    <hr>
-
-                    <!-- Footer -->
-                    <footer>
+             <hr/>
                         <div class="row">
                             <div class="col-lg-12">
-                                <p>Copyright &copy; Your Website 2014</p>
+                                <div class="col-lg-3 col-md-6">
+                                    <div class="container">
+
+
+                                        {{ render(controller('troiswaFrontBundle:Home:footerProduct')) }}
+
+                                        <!--div class="col-lg-3">
+                                            <div class="cuadro_intro_hover " style="background-color:#cccccc;">
+                                                <p style="text-align:center; margin-top:20px;">
+                                                    <img src="http://placehold.it/500x330" class="img-responsive" alt="">
+                                                </p>
+                                                <div class="caption">
+                                                    <div class="blur"></div>
+                                                    <div class="caption-text">
+                                                        <h3 style="border-top:2px solid white; border-bottom:2px solid white; padding:10px;">THIS IS H3</h3>
+                                                        <p>Loren ipsum dolor si amet ipsum dolor si amet ipsum dolor...</p>
+                                                        <a class=" btn btn-default" href="#"><span class="glyphicon glyphicon-plus"> INFO</span></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div-->
+
+
+                                        <div class="col-lg-3 col-md-6">
+                                            <h3>Categories:</h3>
+                                            <ul>
+                                                <li><a href=""><i class="fa fa-file"></i> News</a></li>
+                                                <li><a href=""><i class="fa fa-android"></i> Android</a></li>
+                                                <li><a href=""><i class="fa fa-code"></i> C#</a></li>
+                                                <li><a href=""><i class="fa fa-code"></i> Java</a></li>
+                                                <li><a href=""><i class="fa fa-book"></i> Books</a></li>
+                                                <li><a href=""><i class="fa fa-globe"></i> Web</a></li>
+                                                <li><a href=""><i class="fa fa-windows"></i> Windows</a></li>
+                                            </ul>
+                                        </div>
+
+                                        <div class="col-lg-3 col-md-6">
+                                            <h3>Contact:</h3>
+                                            <p>Have a question or feedback? Contact me!</p>
+                                            <p><a href="" title="Contact me!"><i class="fa fa-envelope"></i> Contact</a></p>
+                                            <h3>Follow:</h3>
+
+                                        <hr>
+                                        <p>Copyright © Your Website | <a href="">Privacy Policy</a> | <a href="">Terms of Use</a></p>
+
+                                        </div>
+
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </footer>
 
-                </div>
+                    </footer><!--////////////////////////////////////////////////////////////////-->
 
     </div> <!-- wrapper -->
 
@@ -126,4 +170,7 @@
     <script src="{{ asset("assets/front/js/jquery.js") }}"></script>
     <!-- Bootstrap Core JavaScript -->
     <script src="{{ asset("assets/front/js/bootstrap.min.js") }}"></script>
+
+
+
 {% endblock javascripts%}

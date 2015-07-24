@@ -1,0 +1,4 @@
+
+{% for onecategory in category %}
+        <a class="list-group-item" href="{{ path('troiswa_back_category_info',{ idcat: onecategory.id}) }}">{{ onecategory.title }}</a>
+{% endfor %}

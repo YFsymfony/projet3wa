@@ -1,0 +1,97 @@
+{% extends "troiswaFrontBundle::layout_front.html.twig" %}
+
+
+
+{% block stylesheet %}
+    {{ parent() }}
+{% endblock stylesheet %}
+
+{% block title %}
+    <h1>Information:</h1>
+{% endblock title %}
+
+{% block breadcrumb %}
+
+    <ol class="breadcrumb">
+        {{ parent() }}
+        <li class="">
+            <i class="fa fa-cube"></i> <a href="{{ path('troiswa_front_product') }}">Produits</a>
+        </li>
+        <li class="active">
+            <i class="fa fa-info"></i> Info
+        </li>
+    </ol>
+
+{% endblock breadcrumb %}
+
+{%  block contenu %}
+
+    <!--div class="row"-->
+        <div class="col-md-9">
+            <h2>Information sur le produit {{ product.title|upper }}</h2>
+            <hr/>
+            {# asset(product.cover.WebPath) = asset(product.cover.getWebPath)
+               car twig traverse les méthodes une par une j'usqu'a trouver la bonne
+               ici , il seras capable de faire la relation entre WebPath et getWebPath
+               dans l'entité productCover #}
+            {% if product.cover != null %}
+                <div class="">
+                    <img class="img-responsive center-block" src="{{ asset(product.cover.webPath("thumb-medium")) }}" alt="{{ product.cover.alt }}"/>
+                </div>
+            {% else %}
+                <p class="text-center">Ce produit n'a pas d'image associé</p>
+            {% endif %}
+            <hr/>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th>Produit</th>
+                        <th>Prix</th>
+                        <th>Description</th>
+                        <th>Quantité</th>
+                        <th>Categorie</th>
+                        <th>Acheter</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <tr>
+                        <td>{{ product.title }}</td>
+                        <td>{{ product.price }}</td>
+                        <td>{{ product.description }}</td>
+                        <td>{{ product.quantity }}</td>
+                        {% if product.categ is null%}
+                            <td> Acune catégorie n'est associée à ce produit</td>
+                        {% else %}
+                            <td><a class="btn btn-primary" href="{{ path('troiswa_back_category_info',{idcat: product.categ.id} ) }}">{{ product.categ.title }}</a></td>
+                        {% endif %}
+                        <td>
+                            <form action="{{ path('troiswa_front_cart_add',{idprod:product.id}) }}" method="POST"> <!-- /cart/add/id -->
+                                <label>quantité:</label>
+                                <input type="text" name="quantity"/><br/><br/>
+                                <input type="submit" value="ajouter au panier"/>
+                            </form>
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+            <div>
+                <ul class="list-unstyled list-inline">
+                    {% for onetag in findAllTagForOneProduct.tag %}
+                    <li><a class="btn btn-primary" href="#"><i class="fa fa-tag"></i> {{ onetag.word }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    <!--/div-->
+
+{% endblock contenu %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock javascripts %}

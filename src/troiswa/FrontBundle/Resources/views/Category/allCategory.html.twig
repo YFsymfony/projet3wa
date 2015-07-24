@@ -1,0 +1,73 @@
+{% extends "troiswaFrontBundle::layout_front.html.twig" %}
+
+
+
+{% block stylesheet %}
+    {{ parent() }}
+{% endblock stylesheet %}
+
+{% block title %}
+    <h1>Information:</h1>
+{% endblock title %}
+
+{% block breadcrumb %}
+
+    <ol class="breadcrumb">
+        {{ parent() }}
+        <li class="">
+            <i class="fa fa-cube"></i> <a href="{{ path('troiswa_front_product') }}">Produits</a>
+        </li>
+        <li class="active">
+            <i class="fa fa-info"></i> Info
+        </li>
+    </ol>
+
+{% endblock breadcrumb %}
+
+{%  block contenu %}
+
+    <div class="col-lg-9 col-md-9">
+        <div class="jumbotron hero-spacer">
+            <h1>A Warm Welcome!</h1>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa, ipsam, eligendi, in quo sunt possimus non incidunt odit vero aliquid similique quaerat nam nobis illo aspernatur vitae fugiat numquam repellat.</p>
+            <p><a class="btn btn-primary btn-large">Call to action!</a>
+            </p>
+        </div>
+
+        <hr>
+
+        <!-- Title -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h3>Latest Features</h3>
+            </div>
+        </div>
+        <!-- /.row -->
+
+        <!-- Page Features -->
+        <div class="row text-center">
+
+            {% for onecategory in allCategory %}
+            <div class="col-md-4 col-sm-12">
+                <div class="thumbnail">
+                    <!--img src="http://placehold.it/800x500" alt=""-->
+                    <div class="">
+                        <h3>{{ onecategory.title }}</h3>
+                        <p>{{ onecategory.description }}</p>
+                        <p>
+                            <a href="{{ path('troiswa_front_category_info',{idcat: onecategory.id} ) }}" class="btn btn-primary">Détails</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+
+        </div>
+    </div>
+
+{% endblock contenu %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock javascripts %}

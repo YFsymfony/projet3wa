@@ -39,6 +39,7 @@ twig:
         resource:
             - "troiswaBackBundle:Form:fields.html.twig"
 
+
 # Assetic Configuration
 assetic:
     debug:          "%kernel.debug%"
@@ -100,3 +101,5 @@ knp_paginator:
     template:
         pagination: troiswaBackBundle:Pagination:sliding.html.twig     # sliding pagination controls template
         sortable: KnpPaginatorBundle:Pagination:sortable_link.html.twig # sort link template
+
+
