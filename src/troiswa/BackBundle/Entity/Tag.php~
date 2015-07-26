@@ -3,12 +3,13 @@
 namespace troiswa\BackBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Tag
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="troiswa\BackBundle\Entity\TagRepository")
+ * @ORM\Entity(repositoryClass="troiswa\BackBundle\Repository\TagRepository")
  */
 class Tag
 {
@@ -30,8 +31,25 @@ class Tag
 
     /**
      * @ORM\ManyToMany(targetEntity="troiswa\BackBundle\Entity\Product", mappedBy="tag")
+     * ne pas oublier remover et adder pour product et referenced by pour tagtype
      */
     private $product;
+
+    /**
+     * @var \DateTime $created
+     *
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime")
+     */
+    private $created;
+
+    /**
+     * @var \DateTime $updated
+     *
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime")
+     */
+    private $updated;
 
 
     /**
@@ -66,6 +84,7 @@ class Tag
     {
         return $this->word;
     }
+
     /**
      * Constructor
      */
@@ -83,6 +102,8 @@ class Tag
     public function addProduct(\troiswa\BackBundle\Entity\Product $product)
     {
         $this->product[] = $product;
+        // ne pas oublier cette ligne pour l'action bidirectionnel
+        $product->addTag($this);
 
         return $this;
     }
@@ -95,6 +116,8 @@ class Tag
     public function removeProduct(\troiswa\BackBundle\Entity\Product $product)
     {
         $this->product->removeElement($product);
+        // ne pas oublier cette ligne pour l'action bidirectionnel
+        $product->removeTag($this);
     }
 
     /**

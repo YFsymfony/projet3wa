@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use troiswa\BackBundle\Entity\User;
 use troiswa\BackBundle\Form\UserType;
 use troiswa\BackBundle\Form\UserEditAdminType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * User controller.
@@ -52,7 +53,7 @@ class UserController extends Controller
             $entity->setPassword($newPassword);
 
             //attribution du role
-            $roles = $em->getRepository('troiswaBackBundle:Role')->findOneByName('client');
+            $roles = $em->getRepository('troiswaBackBundle:Roles')->findOneByName('client');
             $entity->addRole($roles);
 
             $em->persist($entity);
@@ -116,12 +117,12 @@ class UserController extends Controller
         }
 
         $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($id);
+        //$deleteForm = $this->createDeleteForm($id);
 
         return $this->render('troiswaBackBundle:User:edit.html.twig', array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            //'delete_form' => $deleteForm->createView(),
         ));
     }
 
@@ -133,7 +134,7 @@ class UserController extends Controller
             'method' => 'PUT',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
+        //$form->add('submit', 'submit', array('label' => 'Update'));
 
         return $form;
     }
@@ -161,7 +162,7 @@ class UserController extends Controller
             $entity->setPassword($newPassword);
 
             //attribution du role
-            $roles = $em->getRepository('troiswaBackBundle:Role')->findOneByName('client');
+            $roles = $em->getRepository('troiswaBackBundle:Roles')->findOneByName('client');
             $entity->addRole($roles);
 
             $em->persist($entity);
@@ -267,7 +268,7 @@ class UserController extends Controller
             throw $this->createNotFoundException('Unable to find User entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
+        //$deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
 
@@ -280,7 +281,7 @@ class UserController extends Controller
         return $this->render('troiswaBackBundle:User:edit.html.twig', array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            //'delete_form' => $deleteForm->createView(),
         ));
     }
     /**
@@ -322,5 +323,18 @@ class UserController extends Controller
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
         ;
+    }
+
+    public function logoutBackAction(Request $request)
+    {
+        $session = $request->getSession();
+
+        if($session->get('pseudo'))
+        {
+            return $this->render('troiswaBackBundle:User:logoutBack.html.twig');
+        }else
+        {
+            return $this->render('troiswaBackBundle:User:log.html.twig');
+        }
     }
 }

@@ -13,7 +13,7 @@ use troiswa\BackBundle\Form\ContactType;
 
 class MainController extends Controller
 {
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         /*
          *
@@ -29,6 +29,12 @@ class MainController extends Controller
         */
 
         $em = $this->getDoctrine()->getManager();
+
+        $session = $request->getSession();
+
+        $userPseudo = $session->get('pseudo');
+
+        //dump($userPseudo);die;
 
         $productsByQuantity = $em->getRepository("troiswaBackBundle:Product")
                                  ->findProductByQuantity(100);
@@ -105,6 +111,7 @@ class MainController extends Controller
                 "countProductInBrand"=>$countProductInBrand,
                 "countProductInAllCategory"=>$countProductInAllCategory,
                 "productOutOfStock"=>$productOutOfStock,
+                "userPseudo"=>$userPseudo
 
             ]
         );

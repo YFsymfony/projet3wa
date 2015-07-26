@@ -2,12 +2,13 @@
 namespace troiswa\BackBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Coupon
  *
  * @ORM\Table(name="user_coupon")
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="troiswa\BackBundle\Repository\UserCouponRepository")
  */
 class UserCoupon
 {
@@ -35,6 +36,22 @@ class UserCoupon
      * @ORM\Column(name="used", type="boolean")
      */
     private $used;
+
+    /**
+     * @var \DateTime $created
+     *
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime")
+     */
+    private $created;
+
+    /**
+     * @var \DateTime $updated
+     *
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime")
+     */
+    private $updated;
 
 
 

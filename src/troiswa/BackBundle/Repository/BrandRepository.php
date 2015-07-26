@@ -33,6 +33,62 @@ class BrandRepository extends EntityRepository
         return $query->getResult();
     }
 
+    public function findAllProductInOneBrand($id)
+    {
+
+        $idprod = $id->getId();
+
+        /*
+        $query = $this->getEntityManager()
+            ->createQuery
+            ("
+                SELECT brand,prod
+                FROM troiswaBackBundle:Brand brand
+                LEFT JOIN brand.products prod
+                WHERE brand.id = :id
+             ")->setParameter('id',$idprod);
+        */
+
+
+
+        // si ma requette me retourne un objet contenant un tableau d'objet
+        // il devien compliquer de traverser le résultat
+        //
+        // On voit ceci dans le dump , le tableau commence par une clef 0 qui
+        // renvois un autre tableau ( on a donc un tableau a deux dimension pénible
+        // à parcourir )
+        //
+        // on passera donc par l'entité inverse ( donc la liaison doit etre bidirectionel )
+        // pour notre requete ( on inverse au niveau du from et de la jointure )
+        //
+        // Avant :  SELECT brand,prod
+        //          FROM troiswaBackBundle:Brand brand
+        //          LEFT JOIN brand.products prod
+        //          WHERE brand.id = :id
+        //
+        // Apres :   SELECT prod,brand
+        //           FROM troiswaBackBundle:Product prod
+        //           LEFT JOIN prod.brand brand
+        //           WHERE brand.id = :id
+        //
+        // exemple d'erreur : Method "quantity" for object "troiswa\BackBundle\Entity\Brand"
+        // does not exist in troiswaBackBundle:Brand:brandInfo.html.twig at line 92
+
+
+        $query = $this->getEntityManager()
+            ->createQuery
+            ("
+                SELECT prod,brand
+                FROM troiswaBackBundle:Product prod
+                LEFT JOIN prod.brand brand
+                WHERE brand.id = :id
+             ")->setParameter('id',$idprod);
+
+        //dump($query->getResult());die;
+
+        return $query->getResult();
+    }
+
     public function countProductInBrand($brandtitle)
     {
 

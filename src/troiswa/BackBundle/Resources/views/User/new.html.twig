@@ -6,7 +6,7 @@
 {% endblock stylesheet %}
 
 {% block title %}
-    <h1>Création d'un nouveau client</h1>
+    <h1 class="text-uppercase main-heading text-center">Section utilisateurs:</h1>
 {% endblock title %}
 
 {% block breadcrumb %}
@@ -14,10 +14,10 @@
     <ol class="breadcrumb">
         {{ parent() }}
         <li class="">
-            <i class="fa fa-cube"></i> <a href="{{ path("user") }}">Clients</a>
+            <i class="fa fa-cube"></i> <a href="{{ path("user") }}">Utilisateurs</a>
         </li>
         <li class="active">
-            <i class="fa fa-plus-square-o"></i> ajouter un client
+            <i class="fa fa-plus-square-o"></i> ajouter un utilisateurs
         </li>
     </ol>
 
@@ -27,6 +27,7 @@
 
     {# form(form) #}
 
+    <h2 class="main-heading"><i class="fa fa-fw fa-cube"></i> Ajout d' utilisateurs:</h2>
     {{ form_start(form) }}
 
     <div class="form-group">
@@ -90,7 +91,7 @@
         <ul class="record_actions list-unstyled">
     <li>
         <a class="btn btn-primary" href="{{ path('user') }}">
-            Retour à la liste des clients
+            Retour à la liste des utilisateurs
         </a>
     </li>
 </ul>

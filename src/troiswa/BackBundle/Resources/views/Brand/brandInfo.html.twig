@@ -7,7 +7,7 @@
 {% endblock stylesheet %}
 
 {% block title %}
-    <h1>Information:</h1>
+    <h1 class="text-uppercase main-heading text-center">Section marque</h1>
 {% endblock title %}
 
 {% block breadcrumb %}
@@ -28,7 +28,8 @@
 
     <div class="row">
         <div class="col-lg-12">
-            <h2>Information sur la marque {{ brand.title|upper }}</h2>
+
+            <h2 class="main-heading"><i class="fa fa-info-circle"></i> Information sur la marque {{ brand.title|upper }}</h2>
             <hr/>
 
             {% if brand.logo != null %}
@@ -41,6 +42,7 @@
             {% endif %}
             <hr/>
             <div class="table-responsive">
+
                 <table class="table table-bordered table-hover">
                     <thead>
                     <tr>
@@ -56,11 +58,60 @@
                         <td>{{ brand.title }}</td>
                         <td>{{ brand.description }}</td>
                     </tr>
-
-
                     </tbody>
                 </table>
+
             </div>
+
+            <div class="tab-pane" id="panel-198157">
+                <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12">
+                        <h3 class="text-center main-heading">Produits de la marque : {{ brand.title }}</h3>
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">Produits</h4>
+                            </div>
+                            <div class="panel-body">
+                                <input type="text" class="form-control" id="task-table-filter" data-action="filter" data-filters="#task-table" placeholder="Filtre des Produits" />
+                            </div>
+                            <table class="table table-hover" id="task-table">
+                                <thead>
+                                <tr>
+                                    <th># ID</th>
+                                    <th>Désignation / Edition</th>
+                                    <th>Quantitée</th>
+                                    <th>Status</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                {% for product in brandproducts %}
+                                    <tr>
+                                        <td>{{ product.id }}</td>
+                                        <td><a class="btn btn-primary" href="{{ path('troiswa_back_product_edit',{idprod: product.id} ) }}">{{ product.title }}</a></td>
+                                        <td>{{ product.quantity }}</td>
+                                        {% if product.quantity == 0 %}
+                                            <td class="danger text-center">Rupture de stock</td>
+                                        {% elseif product.quantity <5 and product.quantity != 0%}
+                                            <td class="warning text-center">A commander</td>
+                                        {% else %}
+                                            <td class="success text-center">OK</td>
+                                        {% endif %}
+                                    </tr>
+                                {% endfor %}
+
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
         </div>
     </div>
 
@@ -68,4 +119,5 @@
 
 {% block javascripts %}
     {{ parent() }}
+    <script src="{{ asset('assets/js/PanelFilter.js') }}"></script>
 {% endblock javascripts %}

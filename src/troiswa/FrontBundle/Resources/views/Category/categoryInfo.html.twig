@@ -56,6 +56,10 @@
 
         <h2>Produits dans la categorie :  {{ category.title|upper }}</h2>
 
+        <div class="count">
+            <p>Total des produits : {{ pagination.getTotalItemCount }}</p>
+        </div>
+
         <table class="table table-bordered table-hover">
             <thead>
 
@@ -80,6 +84,10 @@
 
             </tbody>
         </table>
+
+        <div class="navigation">
+            {{ knp_pagination_render(pagination) }}
+        </div>
 
     </div>
     <!--/div row-->

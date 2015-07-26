@@ -7,7 +7,7 @@
 {% endblock stylesheet %}
 
 {% block title %}
-    <h1>modifier une marque</h1>
+    <h1 class="text-uppercase main-heading text-center">Section marque</h1>
 {% endblock title %}
 
 {% block breadcrumb %}
@@ -15,7 +15,7 @@
     <ol class="breadcrumb">
         {{ parent() }}
         <li class="">
-            <i class="fa fa-cube"></i> <a href="{# path("troiswa_back_product") #}">marques</a>
+            <i class="fa fa-cube"></i> <a href="{{  path("troiswa_back_brand") }}">marques</a>
         </li>
         <li class="active">
             <i class="fa fa-plus-square-o"></i> modifier une marque
@@ -28,7 +28,7 @@
 {% block contenu %}
 
 
-
+    <h2 class="main-heading"><i class="fa fa-fw fa-cube"></i> Edition de marque:</h2>
     {{ form_start(formUpdateBrand) }}
 
     <div class="form-group">

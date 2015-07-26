@@ -3,14 +3,17 @@
 namespace troiswa\BackBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\Role\RoleInterface;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Role
  *
  * @ORM\Table(name="role")
  * @ORM\Entity(repositoryClass="troiswa\BackBundle\Repository\RoleRepository")
+ *
  */
-class Role
+class Role implements RoleInterface
 {
     /**
      * @var integer
@@ -35,4 +38,91 @@ class Role
      */
     private $name;
 
+    /**
+     * @var \DateTime $created
+     *
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime")
+     */
+    private $created;
+
+    /**
+     * @var \DateTime $updated
+     *
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime")
+     */
+    private $updated;
+
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set droit
+     *
+     * @param string $droit
+     * @return Role
+     */
+    public function setDroit($droit)
+    {
+        $this->droit = $droit;
+
+        return $this;
+    }
+
+    /**
+     * Get droit
+     *
+     * @return string 
+     */
+    public function getDroit()
+    {
+        return $this->droit;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return Role
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Returns the role.
+     *
+     * This method returns a string representation whenever possible.
+     *
+     * When the role cannot be represented with sufficient precision by a
+     * string, it should return null.
+     *
+     * @return string|null A string representation of the role, or null
+     */
+    public function getRole()
+    {
+        return $this->droit;
+    }
 }

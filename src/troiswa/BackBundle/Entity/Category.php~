@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface; // use du cal
  * Category
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="troiswa\BackBundle\Entity\CategoryRepository")
+ * @ORM\Entity(repositoryClass="troiswa\BackBundle\Repository\CategoryRepository")
  */
 class Category
 {
@@ -69,10 +69,26 @@ class Category
     private $products;
 
     /**
-     * @Gedmo\Slug(fields={"title","id"})
+     * @Gedmo\Slug(fields={"title","id"}, updatable=true)
      * @ORM\Column(length=128, unique=true)
      */
     private $slug;
+
+    /**
+     * @var \DateTime $created
+     *
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime")
+     */
+    private $created;
+
+    /**
+     * @var \DateTime $updated
+     *
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime")
+     */
+    private $updated;
 
 
     /**

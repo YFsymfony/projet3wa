@@ -4,15 +4,16 @@ namespace troiswa\BackBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\Role\RoleInterface;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Role
  *
- * @ORM\Table(name="role")
+ * @ORM\Table(name="roles")
  * @ORM\Entity(repositoryClass="troiswa\BackBundle\Repository\RoleRepository")
  *
  */
-class Role implements RoleInterface
+class Roles implements RoleInterface
 {
     /**
      * @var integer
@@ -36,6 +37,22 @@ class Role implements RoleInterface
      * @ORM\Column(name="name", type="string", length=100)
      */
     private $name;
+
+    /**
+     * @var \DateTime $created
+     *
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime")
+     */
+    private $created;
+
+    /**
+     * @var \DateTime $updated
+     *
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime")
+     */
+    private $updated;
 
 
     /**
@@ -107,5 +124,51 @@ class Role implements RoleInterface
     public function getRole()
     {
         return $this->droit;
+    }
+
+    /**
+     * Set created
+     *
+     * @param \DateTime $created
+     * @return Role
+     */
+    public function setCreated($created)
+    {
+        $this->created = $created;
+
+        return $this;
+    }
+
+    /**
+     * Get created
+     *
+     * @return \DateTime 
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * Set updated
+     *
+     * @param \DateTime $updated
+     * @return Role
+     */
+    public function setUpdated($updated)
+    {
+        $this->updated = $updated;
+
+        return $this;
+    }
+
+    /**
+     * Get updated
+     *
+     * @return \DateTime 
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
     }
 }

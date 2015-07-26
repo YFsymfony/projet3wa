@@ -36,7 +36,7 @@ class CategoryController extends Controller
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
             $sortable,
-            $request->query->getInt('page', 1),3
+            $request->query->getInt('page', 1),8
 
         );
 

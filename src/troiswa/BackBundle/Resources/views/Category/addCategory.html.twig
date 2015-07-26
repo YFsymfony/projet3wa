@@ -7,7 +7,7 @@
 {% endblock stylesheet %}
 
 {% block title %}
-    <h1>Ajoutez une categorie</h1>
+    <h1 class="text-uppercase main-heading text-center">Section categories</h1>
 {% endblock title %}
 
 {% block breadcrumb %}
@@ -27,6 +27,7 @@
 
 {% block contenu %}
 
+    <h2 class="main-heading"><i class="fa fa-fw fa-cube"></i> Ajout de categories:</h2>
     {{ form_start(formCategory) }}
 
     {# affiche les erreur qui invalide la totalité du formulaire et non un seul champ

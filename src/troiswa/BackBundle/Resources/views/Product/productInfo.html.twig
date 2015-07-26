@@ -7,7 +7,7 @@
 {% endblock stylesheet %}
 
 {% block title %}
-    <h1>Information:</h1>
+    <h1 class="text-uppercase main-heading text-center">Section produits:</h1>
 {% endblock title %}
 
 {% block breadcrumb %}
@@ -28,7 +28,7 @@
 
     <div class="row">
         <div class="col-lg-12">
-            <h2>Information sur le produit {{ product.title|upper }}</h2>
+            <h2 class="main-heading">Information sur le produit {{ product.title|upper }}</h2>
             <hr/>
             {# asset(product.cover.WebPath) = asset(product.cover.getWebPath)
                car twig traverse les méthodes une par une j'usqu'a trouver la bonne

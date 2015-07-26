@@ -6,7 +6,7 @@
 {% endblock stylesheet %}
 
 {% block title %}
-    Bienvenue <span style="color: blue">John Smith</span> (Admin)!
+    Bienvenue <span style="color: blue">{{ userPseudo }}</span>!
 {% endblock title %}
 
 {% block breadcrumb %}
@@ -44,7 +44,7 @@
                             <i class="fa fa-info-circle fa-3x"></i>
                         </div>
                         <div class="col-xs-9 text-right">
-                            <div class="huge">{{ countActiveProduct }}</div>
+                            <div id="activeProd" class="huge" data-activeProd="{{ countActiveProduct }}">{{ countActiveProduct }}</div>
                             <div>Produits actifs</div>
                         </div>
                     </div>
@@ -92,7 +92,7 @@
                             <i class="fa fa-exclamation-triangle fa-3x"></i>
                         </div>
                         <div class="col-xs-9 text-right">
-                            <div class="huge">{{ countProductOutOfStock }}</div>
+                            <div id="outProd" class="huge">{{ countProductOutOfStock }}</div>
                             <div>Produits épuisés</div>
                         </div>
                     </div>
@@ -116,7 +116,7 @@
                             <i class="fa fa-exclamation-triangle fa-3x"></i>
                         </div>
                         <div class="col-xs-9 text-right">
-                            <div class="huge">{{ countProductToOrder }}</div>
+                            <div id="orderProd" class="huge">{{ countProductToOrder }}</div>
                             <div> à commander</div>
                         </div>
                     </div>

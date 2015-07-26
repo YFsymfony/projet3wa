@@ -3,6 +3,7 @@
 namespace troiswa\BackBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use troiswa\BackBundle\Entity\Category;
 use Symfony\Component\HttpFoundation\Request;
 use troiswa\BackBundle\Form\CategoryType;
@@ -102,42 +103,20 @@ class CategoryController extends Controller
 
 
 
-
-
-
     /**
      * @ParamConverter("category", options={ "mapping":{"idcat":"id"} } )
      */
     public function categoryInfoAction(Category $category)
     {
-        // appel du service doctrine et entity manager
-        //$em = $this->getDoctrine()->getManager();
+
+        $em = $this->getDoctrine()->getManager();
+
+        $catProducts = $em->getRepository("troiswaBackBundle:Product")
+            ->findAllProductInOneCategory($category);
 
 
-////////////////////////////////////Ancienne methode remplacé par param converter///////////////////////////////////////////////////////
-//
-//        // on stock dans $category le résultat de la recherche en BDD
-//        // DOC fonction native doctrine (find) : http://www.doctrine-project.org/api/orm/2.2/class-Doctrine.ORM.EntityRepository.html
-//        $category = $em->getRepository("troiswaBackBundle:Category")
-//        ->find($idcat);
-//
-//        // pour comperendre ce test , on doit dump $product avec un id faux en url ( ../info/9999 par exemple )
-//        // le dump retourne alors null , donc on écris une condition :
-//        // si $product est null , alors effiche moi le NotFoundException.
-//        // cette condition verifie si l'id demandée en url existe bien ,
-//        // et renvois un message d'erreur grace a throw + creatNotFoundException
-//
-//        //!$category équivaut à $category == false ou empty($category)
-//        // ou null == false ( verifie si $category est NULL )
-//        if(!$category)
-//        {
-//            throw $this->createNotFoundException("cette id n'existe pas");
-//        }
-//
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        // redirection vers la vu avec les résultats en parametres
-        return $this->render('troiswaBackBundle:Category:categoryInfo.html.twig',array("category"=>$category));
+        return $this->render('troiswaBackBundle:Category:categoryInfo.html.twig',["category"=>$category,"catProducts"=>$catProducts]);
 
     }
 

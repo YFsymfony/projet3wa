@@ -26,7 +26,7 @@ class UserEditAdminType extends AbstractType
             //->add('roles', new RoleType());
 
             ->add('roles', 'entity',[
-                'class' => 'troiswaBackBundle:Role',
+                'class' => 'troiswaBackBundle:Roles',
                 // multiple a true car la propriété roles est en ManyToMany et doit renvoyer un tableau d'objet
                 'multiple'=>true,
                 'property' => 'name',

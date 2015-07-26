@@ -6,7 +6,7 @@
 {% endblock stylesheet %}
 
 {% block title %}
-    <h1>Création d'un Compte utilisateur</h1>
+    <h1 class="text-uppercase main-heading text-center">Section utilisateurs:</h1>
 {% endblock title %}
 
 {% block breadcrumb %}
@@ -17,6 +17,7 @@
 
     {{ form_start(formSignin) }}
 
+    <h2 class="main-heading"><i class="fa fa-cube"></i> Création d'un compte utilisateur</h2>
     <div class="form-group">
         {{ form_label(formSignin.firstname, "Entrez le nom de l' utilisateur" , { label_attr:{class:"class_du_label"}} ) }}
         {{ form_errors(formSignin.firstname) }}

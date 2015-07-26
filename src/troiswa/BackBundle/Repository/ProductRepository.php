@@ -220,7 +220,7 @@ class ProductRepository extends EntityRepository
             ->select('prod')
             ->where('prod.active = :value')
             ->setParameter('value',true)
-            ->setMaxResults(6);
+            ->setMaxResults(30);
 
         return $query->getQuery()->getResult();
     }
@@ -237,5 +237,23 @@ class ProductRepository extends EntityRepository
         return $query->getQuery()->getResult();
     }
 
+    public function findAllProductInOneCategory($id)
+    {
+
+        $idcat = $id->getId();
+
+        $query = $this->getEntityManager()
+            ->createQuery
+            ("
+                SELECT prod,cat
+                FROM troiswaBackBundle:Product prod
+                LEFT JOIN prod.categ cat
+                WHERE cat.id = :id
+             ")->setParameter('id',$idcat);
+
+        //dump($query->getResult());die;
+
+        return $query->getResult();
+    }
 
 }

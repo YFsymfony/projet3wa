@@ -6,7 +6,7 @@
 {% endblock stylesheet %}
 
 {% block title %}
-    <h1>Modifier les informations client</h1>
+    <h1 class="text-uppercase main-heading text-center">Section utilisateurs:</h1>
 {% endblock title %}
 
 {% block breadcrumb %}
@@ -14,10 +14,10 @@
     <ol class="breadcrumb">
         {{ parent() }}
         <li class="">
-            <i class="fa fa-cube"></i> <a href="{{ path("user") }}">Clients</a>
+            <i class="fa fa-cube"></i> <a href="{{ path("user") }}">Utilisateurs</a>
         </li>
         <li class="active">
-            <i class="fa fa-plus-square-o"></i> edition de client
+            <i class="fa fa-plus-square-o"></i> edition d' utilisateurs
         </li>
     </ol>
 
@@ -25,9 +25,9 @@
 
 {% block contenu%}
 
-
     {# form(edit_form) #}
 
+    <h2 class="main-heading"><i class="fa fa-fw fa-cube"></i> Edition d' utilisateurs:</h2>
     {{ form_start(edit_form) }}
 
     <div class="form-group">
@@ -86,16 +86,15 @@
 
     {{ form_end(edit_form) }}
 
-
-
+    <hr/>
 
         <ul class="record_actions list-unstyled">
     <li>
         <a class="btn btn-primary" href="{{ path('user') }}">
-            Retour à la liste des clients
+            Retour à la liste des utilisateurs
         </a>
     </li>
-    <li>{{ form(delete_form) }}</li>
+
 </ul>
 {% endblock %}
 

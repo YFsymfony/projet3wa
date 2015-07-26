@@ -283,6 +283,8 @@ class Brand
 
 
 
+
+
     /**
      * Set logo
      *

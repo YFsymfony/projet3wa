@@ -64,18 +64,38 @@ $(function() {
         resize: true
     });
 
+
+
+    /*$('#activeProd').val()*/
+    /*$('#orderProd').val()*/
+    /*$('#outProd').val()*/
+
+    /*
+
+    <div class="iddata" data-videoid={{ video.id }}></div>
+     var test = $(".iddata").data("videoid");
+
+    <div id="activeProd" class="huge" data-activeProd={{ countActiveProduct }}>{{ countActiveProduct }}</div>
+     var activeProd = $("#activeProd").data("activeProd");
+
+    */
+
+    var activeProd = $("#activeProd").data("activeProd");
+
     // Donut Chart
     Morris.Donut({
+
         element: 'morris-donut-chart',
+
         data: [{
-            label: "Download Sales",
-            value: 12
+            label: "Actif",
+            value: 26 /*activeProd*/
         }, {
-            label: "In-Store Sales",
-            value: 30
+            label: "A commander",
+            value: 13 /*activeProd*/
         }, {
-            label: "Mail-Order Sales",
-            value: 20
+            label: "Rupture",
+            value: 5 /*activeProd*/
         }],
         resize: true
     });

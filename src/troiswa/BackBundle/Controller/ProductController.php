@@ -136,7 +136,7 @@ class ProductController extends Controller
         $pagination = $paginator->paginate(
             $sortable,
             $request->query->getInt('page', 1),
-            3
+            8
         );
 
         //dump($products);

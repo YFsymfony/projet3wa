@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use troiswa\BackBundle\Entity\Brand;
 use troiswa\BackBundle\Form\BrandType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 class BrandController extends Controller
 {
@@ -25,7 +26,7 @@ class BrandController extends Controller
             /////////////////////////////// Partie UPLOAD d'image ////////////////////////////////////
 
             // on récupère le logo grace au getter et on le stock dans $logo
-            $logofile = $brand->getLogofile();
+            $logofile = $brand->getLogo();
 
 
 
@@ -97,7 +98,10 @@ class BrandController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        return $this->render('troiswaBackBundle:Brand:brandInfo.html.twig',array("brand"=>$brand));
+        $brandproducts = $em->getRepository("troiswaBackBundle:Brand")
+            ->findAllProductInOneBrand($brand);
+
+        return $this->render('troiswaBackBundle:Brand:brandInfo.html.twig',["brand"=>$brand,"brandproducts"=>$brandproducts]);
 
     }
 
