@@ -6,6 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use troiswa\BackBundle\Entity\Product;
+use troiswa\BackBundle\Entity\Coupon;
+use troiswa\FrontBundle\Util\Utility;
 
 class ProductController extends Controller
 {
@@ -14,6 +16,30 @@ class ProductController extends Controller
      */
     public function productInfoAction(Product $product)
     {
+
+        /*//////////////////////////Appel de services///////////////////////////////
+
+        //DEBUT ICI
+        $util = new Utility();
+
+        dump($util->bonjour());
+        //FIN ICI
+
+        // MISE EN SERVICE
+        $util2 = $this->get('troiswa_front.monservice');
+        dump($util2);
+        dump($util2->bonjour());
+
+        $util3 = $this->get('troiswa_front.monservice');
+        dump($util3);
+
+        // FIN DE MISE EN SERVICE
+
+        die;
+
+        ////////////////////////////////////////////////////////////////////*/
+
+
         $em = $this->getDoctrine()->getManager();
 
         $findAllTagForOneProduct = $em->getRepository("troiswaBackBundle:Tag")
@@ -26,7 +52,7 @@ class ProductController extends Controller
             ]);
     }
 
-    /*
+    /* ////////////////////////////// ANCIEN SYSTEM CART /////////////////////////////////
 
     @ParamConverter("product", options={ "mapping":{"idprod":"id"} } )
 
@@ -87,49 +113,6 @@ class ProductController extends Controller
     }
     */
 
-    /**
-     * @param Product $product
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     * @ParamConverter("product", options={ "mapping":{"idprod":"id"} } )
-     */
-    public function addCartAction(Product $product, Request $request)
-    {
-        // Récupération des informations du formulaire d'ajout au panier
-        $qty = $request->request->getInt('qty');
-
-        if ($qty > 0)
-        {
-            $session = $request->getSession();
-            $session->remove('cart');
-
-            if ($session->get('cart'))
-            {
-                $cart = json_decode($session->get('cart'), true);
-            }
-            else
-            {
-                $cart = [];
-            }
-
-            if (array_key_exists($product->getId(), $cart))
-            {
-                $qty = $qty +  $cart[$product->getId()]['quantity'];
-            }
-
-            $cart[$product->getId()] = ['quantity' => $qty];
-
-
-        $session->set('cart', json_encode($cart));
-
-    }
-
-        return $this->redirectToRoute('troiswa_front_cart');
-
-    }
-
-
-
     /*
     public function cartAction(Request $request)
     {
@@ -143,7 +126,7 @@ class ProductController extends Controller
 
         foreach( $cart as $idprod)
         {
-            $id = $idprod->id_product;
+           $id = $idprod->id_product;
 
             array_push($idproducts,$id);
         }
@@ -171,10 +154,67 @@ class ProductController extends Controller
                 "productInCart"=>$productInCart,
             ]);
     }
-    */
+    //////////////////////////////////////////////////////////////////////////////*/
 
+    /**
+     * @param Product $product
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @ParamConverter("product", options={ "mapping":{"idprod":"id"} } )
+     */
+    public function addCartAction(Product $product, Request $request)
+    {
+        // Récupération des informations du formulaire d'ajout au panier
+        $qty = $request->request->getInt('quantity');
+
+        // appel du service cart
+        $cartService = $this->get('troiswa_front.cart');
+
+        // appel de la methode add du service cart ()
+        $cartService->add($product, $qty);
+
+
+        /*//////////////////////////////////////////////////////////////////////
+                                  UTILISER EN SERVICE !
+        if ($qty > 0)
+        {
+            // recupération de la session
+            $session = $request->getSession();
+
+            //$session->remove('cart');
+
+            if ($session->get('cart'))
+            {
+                $cart = json_decode($session->get('cart'), true);
+            }
+            else
+            {
+                $cart = [];
+            }
+
+            if (array_key_exists($product->getId(), $cart))
+            {
+                $qty = $qty +  $cart[$product->getId()]['quantity'];
+            }
+
+            $cart[$product->getId()] = ['quantity' => $qty];
+
+            $session->set('cart', json_encode($cart));
+
+        }
+        ////////////////////////////////////////////////////////////////*/
+
+        return $this->redirectToRoute('troiswa_front_cart');
+
+    }
+
+
+    // l'objet request est utiliser uniquement si on utilise pas les service
+    // je le laisse quand meme pour garder l'exemple commenté cohérent
     public function cartAction(Request $request)
     {
+
+        /*///////////////////// UTILISé EN SERVICE ////////////////////////
         $session = $request->getSession();
         $cart = json_decode($session->get('cart'), true);
         $products = [];
@@ -182,13 +222,122 @@ class ProductController extends Controller
         if ($cart) {
             $em = $this->getDoctrine()->getManager();
             $idProducts = array_keys($cart);
-            $products = $em->getRepository('')->fonction($idProducts);
+
+            $products = $em->getRepository('troiswaBackBundle:Product')
+                           ->findProductInCart($idProducts);
+
         }
+        ////////////////////////////////////////////////////////////////*/
 
-        return $this->render('', ['products' => $products, 'panier' => $cart]);
+        //dump($products);die;
+        //dump($cart);die;
+
+        // appel du service cart
+        $cartService = $this->get('troiswa_front.cart');
+
+        $products = $cartService->getProducts();
+
+        $cart = $cartService->getCart();
+
+        return $this->render('troiswaFrontBundle:Product:cart.html.twig', ['products' => $products, 'panier' => $cart]);
+    }
+
+    // l'objet request est utiliser uniquement si on utilise pas les service
+    // je le laisse quand meme pour garder l'exemple commenté cohérent
+    public function deleteOneProductInCartAction(Request $request, $id)
+    {
+
+        $cartDelete = $this->get('troiswa_front.cart');
+
+        $cartDelete->delete($id);
+
+        /*///////////////////// UTILISé EN SERVICE ////////////////////////
+
+        $session = $request->getSession();
+        $cart = json_decode($session->get('cart'), true);
 
 
-}
+        unset($cart[$id]);
+
+        $session->set('cart', json_encode($cart));
+
+        //dump($cart);die;
+
+        ////////////////////////////////////////////////////////////////////*/
+
+        return $this->redirectToRoute('troiswa_front_cart');
+    }
+
+
+    // l'objet request est utiliser uniquement si on utilise pas les service
+    // je le laisse quand meme pour garder l'exemple commenté cohérent
+    public function productPlusCartAction(Request $request, $id)
+    {
+
+        $cartPlus = $this->get('troiswa_front.cart');
+
+        $cartPlus->plus($id);
+
+        /*///////////////////// UTILISé EN SERVICE ////////////////////////
+        $session = $request->getSession();
+        $cart = json_decode($session->get('cart'), true);
+
+        $qty = $cart[$id]['quantity'] + 1;
+
+        //dump($qty);die;
+
+        $cart[$id] = ['quantity' => $qty];
+
+        $session->set('cart', json_encode($cart));
+
+        ////////////////////////////////////////////////////////////////////*/
+
+        return $this->redirectToRoute('troiswa_front_cart');
+    }
+
+    // l'objet request est utiliser uniquement si on utilise pas les service
+    // je le laisse quand meme pour garder l'exemple commenté cohérent
+    public function productMinusCartAction(Request $request, $id)
+    {
+
+        $cartMinus = $this->get('troiswa_front.cart');
+
+        $cartMinus->minus($id);
+
+        /*///////////////////// UTILISé EN SERVICE ////////////////////////
+        $session = $request->getSession();
+        $cart = json_decode($session->get('cart'), true);
+
+        $qty = $cart[$id]['quantity'] - 1;
+
+        if($qty <= 0)
+        {
+            unset($cart[$id]);
+
+            $session->set('cart', json_encode($cart));
+        }else
+        {
+            $cart[$id] = ['quantity' => $qty];
+
+            $session->set('cart', json_encode($cart));
+        }
+        ///////////////////////////////////////////////////////////////////*/
+
+        return $this->redirectToRoute('troiswa_front_cart');
+    }
+
+    public  function deleteCartAction()
+    {
+
+        $cartDeleteAll = $this->get('troiswa_front.cart');
+
+        $cartDeleteAll->deleteAll();
+
+        return $this->redirectToRoute('troiswa_front_cart');
+    }
+
+
+
 
 
 

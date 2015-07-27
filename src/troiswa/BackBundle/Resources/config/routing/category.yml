@@ -14,7 +14,7 @@ troiswa_back_category_edit:
 
 troiswa_back_category_info:
     path: /category/info/{idcat}
-    defaults: { _controller: troiswaBackBundle:Category:categoryInfo }
+    defaults: { _controller: troiswaBackBundle:Category:categoryInfoFront }
     requirements:
         idcat: \d+
 

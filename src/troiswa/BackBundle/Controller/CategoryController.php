@@ -120,6 +120,23 @@ class CategoryController extends Controller
 
     }
 
+    /**
+     * @ParamConverter("category", options={ "mapping":{"idcat":"id"} } )
+     */
+    public function categoryInfoFrontAction(Category $category)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $catProducts = $em->getRepository("troiswaBackBundle:Product")
+            ->findAllProductInOneCategory($category);
+
+
+
+        return $this->render('troiswaFrontBundle:Category:categoryInfo.html.twig',["category"=>$category,"catProducts"=>$catProducts]);
+
+    }
+
 
 
 

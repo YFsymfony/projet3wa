@@ -1,4 +1,6 @@
 
+
+
 troiswa_front_home:
     path: /front/home
     defaults: { _controller: troiswaFrontBundle:Home:index }
@@ -12,6 +14,31 @@ troiswa_front_product_info:
     defaults: { _controller: troiswaFrontBundle:Product:productInfo}
     requirements:
         idprod: \d+
+
+troiswa_front_product_remove_cart:
+    path: /cart/remove/{id}
+    defaults: { _controller: troiswaFrontBundle:Product:deleteOneProductInCart}
+    requirements:
+        id: \d+
+
+troiswa_front_product_plus:
+    path: /cart/plus/{id}
+    defaults: { _controller: troiswaFrontBundle:Product:productPlusCart}
+    requirements:
+        id: \d+
+
+troiswa_front_product_minus:
+    path: /cart/minus/{id}
+    defaults: { _controller: troiswaFrontBundle:Product:productMinusCart}
+    requirements:
+        id: \d+
+
+troiswa_front_product_delete_cart:
+    path: /cart/delete
+    defaults: { _controller: troiswaFrontBundle:Product:deleteCart}
+
+
+
 
 
 troiswa_front_category:

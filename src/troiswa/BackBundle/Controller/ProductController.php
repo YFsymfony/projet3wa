@@ -372,6 +372,8 @@ class ProductController extends Controller
 
 
 
+
+
     ///////////////////////////////// methode d'entrainement ///////////////////////////////////
     public function allProductTrainAction()
     {

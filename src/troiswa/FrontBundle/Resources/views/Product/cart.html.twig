@@ -39,93 +39,63 @@
                 </thead>
 
                 <tbody>
+
+                {% set totalPriceProduct = 0 %}
+
+                {% for onproduct in products %}
                 <tr>
                     <td class="col-sm-8 col-md-6">
                         <div class="media">
-                            <a class="thumbnail pull-left" href="#"> <img class="media-object" src="http://icons.iconarchive.com/icons/custom-icon-design/flatastic-2/72/product-icon.png" style="width: 72px; height: 72px;"> </a>
+                            <a class="thumbnail pull-left" href="#"> <img class="media-object" src="{{ asset(onproduct.cover.webPath) }}" > </a>
                             <div class="media-body">
-                                <h4 class="media-heading"><a href="#">Product name</a></h4>
-                                <h5 class="media-heading"> by <a href="#">Brand name</a></h5>
-                                <span>Status: </span><span class="text-success"><strong>In Stock</strong></span>
+                                <h4 class="media-heading"><i class="fa fa-minus"></i> <a href="#"> {{ onproduct.title }}</a></h4>
+                                <h4 class="media-heading"><i class="fa fa-minus"></i> by <a href="#"> {{ onproduct.brand.title }}</a></h4>
+                                <span><i class="fa fa-info-circle"></i> Status: </span><span class="text-success"><strong>In Stock</strong></span>
                             </div>
                         </div></td>
                     <td class="col-sm-1 col-md-1" style="text-align: center">
-                        <input type="email" class="form-control" id="exampleInputEmail1" value="3">
+                        <input type="text" class="form-control" value="{{ panier[onproduct.id].quantity }}">
+
+                        <a class="btn-warning btn-xs" href="{{ path('troiswa_front_product_minus',{id: onproduct.id}) }}"><i class="fa fa-minus"></i></a>
+                        <a class="btn-success btn-xs" href="{{ path('troiswa_front_product_plus',{id: onproduct.id}) }}"><i class="fa fa-plus"></i></a>
+
                     </td>
-                    <td class="col-sm-1 col-md-1 text-center"><strong>$4.87</strong></td>
-                    <td class="col-sm-1 col-md-1 text-center"><strong>$14.61</strong></td>
-                    <td class="col-sm-1 col-md-1">
-                        <button type="button" class="btn btn-danger">
-                            <span class="glyphicon glyphicon-remove"></span> Remove
-                        </button></td>
+                    <td class="col-sm-1 col-md-1 text-center"><strong>{{ onproduct.price }} €</strong></td>
+                    <td class="col-sm-1 col-md-1 text-center"><strong>{{ panier[onproduct.id].quantity * onproduct.price  }}</strong></td>
+                    <td class="col-sm-1 col-md-1 disablable">
+                        <a href="{{ path('troiswa_front_product_remove_cart',{id: onproduct.id}) }}" class="btn btn-danger"> Remove </a>
+                    </td>
                 </tr>
 
+                    {% set totalPriceProduct = totalPriceProduct + panier[onproduct.id].quantity * onproduct.price %}
 
-
-                <tr>
-                    <td class="col-md-6">
-                        <div class="media">
-                            <a class="thumbnail pull-left" href="#"> <img class="media-object" src="http://icons.iconarchive.com/icons/custom-icon-design/flatastic-2/72/product-icon.png" style="width: 72px; height: 72px;"> </a>
-                            <div class="media-body">
-                                <h4 class="media-heading"><a href="#">Product name</a></h4>
-                                <h5 class="media-heading"> by <a href="#">Brand name</a></h5>
-                                <span>Status: </span><span class="text-warning"><strong>Leaves warehouse in 2 - 3 weeks</strong></span>
-                            </div>
-                        </div></td>
-                    <td class="col-md-1" style="text-align: center">
-                        <input type="email" class="form-control" id="exampleInputEmail1" value="2">
-                    </td>
-                    <td class="col-md-1 text-center"><strong>$4.99</strong></td>
-                    <td class="col-md-1 text-center"><strong>$9.98</strong></td>
-                    <td class="col-md-1">
-                        <button type="button" class="btn btn-danger">
-                            <span class="glyphicon glyphicon-remove"></span> Remove
-                        </button></td>
-                </tr>
-
-                {#
-                {% for onproduct in products %}
-                    {{ panier[onproduct.id].quantity }}
                 {% endfor %}
-                #}
 
-
-
-                <tr>
-                    <td>   </td>
-                    <td>   </td>
-                    <td>   </td>
-                    <td><h5>Subtotal</h5></td>
-                    <td class="text-right"><h5><strong>$24.59</strong></h5></td>
-                </tr>
-                <tr>
-                    <td>   </td>
-                    <td>   </td>
-                    <td>   </td>
-                    <td><h5>Estimated shipping</h5></td>
-                    <td class="text-right"><h5><strong>$6.94</strong></h5></td>
-                </tr>
                 <tr>
                     <td>   </td>
                     <td>   </td>
                     <td>   </td>
                     <td><h3>Total</h3></td>
-                    <td class="text-right"><h3><strong>$31.53</strong></h3></td>
+                    <td class="text-right">
+                        <h3><strong>{{ totalPriceProduct }}</strong></h3>
+                    </td>
                 </tr>
                 <tr>
                     <td>   </td>
                     <td>   </td>
                     <td>   </td>
                     <td>
-                        <button type="button" class="btn btn-default">
+                        <a href="{{ path('troiswa_front_home') }}" class="btn btn-primary">
                             <span class="glyphicon glyphicon-shopping-cart"></span> Continue Shopping
-                        </button></td>
+                        </a></td>
                     <td>
                         <button type="button" class="btn btn-success">
                             Checkout <span class="glyphicon glyphicon-play"></span>
                         </button></td>
                 </tr>
                 </tbody>
+
+                <a class="btn btn-danger" href="{{ path('troiswa_front_product_delete_cart') }}"> éffacer tous le panier</a>
 
 
             </table>
@@ -137,4 +107,5 @@
 
 {% block javascripts %}
     {{ parent() }}
+    <script src="{{ asset('assets/js/confirmRemove.js') }}"></script>
 {% endblock javascripts %}

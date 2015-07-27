@@ -12,5 +12,8 @@ use Doctrine\ORM\EntityRepository;
  */
 class CouponRepository extends EntityRepository
 {
+    public function findCouponByCode()
+    {
 
+    }
 }
