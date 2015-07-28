@@ -21,6 +21,7 @@ class AppKernel extends Kernel
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new troiswa\FrontBundle\troiswaFrontBundle(),
+            new FOS\UserBundle\FOSUserBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test', 'benchmark'))) {

@@ -4,6 +4,7 @@ namespace troiswa\FrontBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use troiswa\BackBundle\Entity\Product;
 use troiswa\BackBundle\Entity\Coupon;
@@ -247,10 +248,6 @@ class ProductController extends Controller
     public function deleteOneProductInCartAction(Request $request, $id)
     {
 
-        $cartDelete = $this->get('troiswa_front.cart');
-
-        $cartDelete->delete($id);
-
         /*///////////////////// UTILISé EN SERVICE ////////////////////////
 
         $session = $request->getSession();
@@ -264,6 +261,19 @@ class ProductController extends Controller
         //dump($cart);die;
 
         ////////////////////////////////////////////////////////////////////*/
+
+        $cartDelete = $this->get('troiswa_front.cart');
+
+        $cartDelete->delete($id);
+
+        // si je suis en ajax :
+        // Attention , le fichier cart.js contien un preventDefault() sur le
+        // lien de suppression , on doit donc placer le test isXmlHttpRequest
+        // apres le traitement php du lien de suppression.
+        if($request->isXmlHttpRequest())
+        {
+            return new JsonResponse("votre produit à bien été supprimé");
+        }
 
         return $this->redirectToRoute('troiswa_front_cart');
     }
@@ -291,6 +301,11 @@ class ProductController extends Controller
         $session->set('cart', json_encode($cart));
 
         ////////////////////////////////////////////////////////////////////*/
+
+        if($request->isXmlHttpRequest())
+        {
+            return new JsonResponse("votre produit à bien été incrémenté");
+        }
 
         return $this->redirectToRoute('troiswa_front_cart');
     }
@@ -322,6 +337,13 @@ class ProductController extends Controller
             $session->set('cart', json_encode($cart));
         }
         ///////////////////////////////////////////////////////////////////*/
+
+
+        if($request->isXmlHttpRequest())
+        {
+            return new JsonResponse("votre produit à bien été incrémenté");
+        }
+
 
         return $this->redirectToRoute('troiswa_front_cart');
     }

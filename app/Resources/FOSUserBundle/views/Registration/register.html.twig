@@ -1,0 +1,22 @@
+{% extends "troiswaFrontBundle::layout_front.html.twig" %}
+
+{% block stylesheet %}
+    {{ parent() }}
+{% endblock stylesheet %}
+
+{% block title %}
+    <h1 class="main-heading text-center">3WA E-Commerce</h1>
+
+    <hr/>
+{% endblock title %}
+
+{% block breadcrumb %}
+{% endblock breadcrumb %}
+
+{% block contenu %}
+{% include "FOSUserBundle:Registration:register_content.html.twig" %}
+{% endblock contenu %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock javascripts %}

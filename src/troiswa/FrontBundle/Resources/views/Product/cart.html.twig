@@ -6,7 +6,7 @@
 {% endblock stylesheet %}
 
 {% block title %}
-    <h1>Information:</h1>
+    <h1 class="main-heading">Panier de commande:</h1>
 {% endblock title %}
 
 {% block breadcrumb %}
@@ -24,10 +24,11 @@
 {% endblock breadcrumb %}
 
 {% block contenu %}
-<div class="container">
-    <div class="row">
+<!--div class="container"-->
+    <!--div class="row"-->
         <div class="col-sm-12 col-md-10 col-md-offset-1">
-            <table class="table table-hover">
+            <div id="ajaxMessage"></div>
+            <table class="table table-hover" id="detailCart">
                 <thead>
                 <tr>
                     <th>Product</th>
@@ -43,27 +44,27 @@
                 {% set totalPriceProduct = 0 %}
 
                 {% for onproduct in products %}
-                <tr>
-                    <td class="col-sm-8 col-md-6">
+                <tr class="item-product">
+                    <td class="col-sm-8 col-md-8">
                         <div class="media">
-                            <a class="thumbnail pull-left" href="#"> <img class="media-object" src="{{ asset(onproduct.cover.webPath) }}" > </a>
+                            <a class="thumbnail pull-left" href="#"> <img class="media-object img-responsive" src="{{ asset(onproduct.cover.webPath) }}" style=" height: 60px; width: 82px; "> </a>
                             <div class="media-body">
                                 <h4 class="media-heading"><i class="fa fa-minus"></i> <a href="#"> {{ onproduct.title }}</a></h4>
                                 <h4 class="media-heading"><i class="fa fa-minus"></i> by <a href="#"> {{ onproduct.brand.title }}</a></h4>
-                                <span><i class="fa fa-info-circle"></i> Status: </span><span class="text-success"><strong>In Stock</strong></span>
+                                <span> Stock: </span><span class="text-success"><strong>{{ onproduct.quantity }}</strong></span>
                             </div>
                         </div></td>
-                    <td class="col-sm-1 col-md-1" style="text-align: center">
-                        <input type="text" class="form-control" value="{{ panier[onproduct.id].quantity }}">
+                    <td class="col-sm-1 col-md-1 traversing" style="text-align: center">
+                        <input type="text" class="form-control quantity" value="{{ panier[onproduct.id].quantity }}">
 
-                        <a class="btn-warning btn-xs" href="{{ path('troiswa_front_product_minus',{id: onproduct.id}) }}"><i class="fa fa-minus"></i></a>
-                        <a class="btn-success btn-xs" href="{{ path('troiswa_front_product_plus',{id: onproduct.id}) }}"><i class="fa fa-plus"></i></a>
+                        <a class="btn-warning btn-xs minus" href="{{ path('troiswa_front_product_minus',{id: onproduct.id}) }}"><i class="fa fa-minus"></i></a>
+                        <a class="btn-success btn-xs plus" href="{{ path('troiswa_front_product_plus',{id: onproduct.id}) }}"><i class="fa fa-plus"></i></a>
 
                     </td>
-                    <td class="col-sm-1 col-md-1 text-center"><strong>{{ onproduct.price }} €</strong></td>
-                    <td class="col-sm-1 col-md-1 text-center"><strong>{{ panier[onproduct.id].quantity * onproduct.price  }}</strong></td>
+                    <td class="col-sm-1 col-md-1 text-center oneprice"><strong>{{ onproduct.price }} €</strong></td>
+                    <td class="col-sm-1 col-md-1 text-center price"><strong>{{ panier[onproduct.id].quantity * onproduct.price  }}</strong></td>
                     <td class="col-sm-1 col-md-1 disablable">
-                        <a href="{{ path('troiswa_front_product_remove_cart',{id: onproduct.id}) }}" class="btn btn-danger"> Remove </a>
+                        <a href="{{ path('troiswa_front_product_remove_cart',{id: onproduct.id}) }}" class="btn btn-danger trigger"> Remove </a>
                     </td>
                 </tr>
 
@@ -77,35 +78,40 @@
                     <td>   </td>
                     <td><h3>Total</h3></td>
                     <td class="text-right">
-                        <h3><strong>{{ totalPriceProduct }}</strong></h3>
+                        <h3 class="totalPrice"><strong>{{ totalPriceProduct }}</strong></h3>
                     </td>
                 </tr>
                 <tr>
                     <td>   </td>
                     <td>   </td>
-                    <td>   </td>
+                    <td>
+                        <a class="btn btn-danger pull-right" href="{{ path('troiswa_front_product_delete_cart') }}">
+                            <span class="glyphicon glyphicon-trash"></span> éffacer tous le panier
+                        </a>
+                    </td>
                     <td>
                         <a href="{{ path('troiswa_front_home') }}" class="btn btn-primary">
-                            <span class="glyphicon glyphicon-shopping-cart"></span> Continue Shopping
-                        </a></td>
+                            <span class="glyphicon glyphicon-shopping-cart"></span> Continuer d'acheter
+                        </a>
+                    </td>
                     <td>
                         <button type="button" class="btn btn-success">
-                            Checkout <span class="glyphicon glyphicon-play"></span>
-                        </button></td>
+                            Payer <span class="glyphicon glyphicon-play"></span>
+                        </button>
+                    </td>
                 </tr>
                 </tbody>
 
-                <a class="btn btn-danger" href="{{ path('troiswa_front_product_delete_cart') }}"> éffacer tous le panier</a>
-
-
             </table>
+
         </div>
-    </div>
-</div>
+    <!--/div-->
+<!--/div-->
 
 {% endblock contenu %}
 
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('assets/js/confirmRemove.js') }}"></script>
+    <script src="{{ asset('assets/js/cart.js') }}" ></script>
 {% endblock javascripts %}

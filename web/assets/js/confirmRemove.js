@@ -33,6 +33,7 @@ $(document).ready(function()
                 if(stop == false)
                 {
                     event.preventDefault();
+                    event.stopPropagation();
                 }
 
             }

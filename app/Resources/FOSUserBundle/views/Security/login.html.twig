@@ -1,0 +1,85 @@
+{% extends "troiswaFrontBundle::layout_front.html.twig" %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block stylesheet %}
+    {{ parent() }}
+{% endblock stylesheet %}
+
+{% block title %}
+    <h1 class="main-heading text-center">3WA E-Commerce</h1>
+
+    <hr/>
+{% endblock title %}
+
+{% block breadcrumb %}
+{% endblock breadcrumb %}
+
+{% block contenu %}
+    {% if error %}
+        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+    <div class="col-md-9">
+
+        <div class="col-sm-8 col-md-8 col-md-offset-1">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <strong> Connectez vous !</strong>
+                </div>
+                <div class="panel-body">
+                    <form role="form" action="{{ path("fos_user_security_check") }}" method="POST">
+                        <fieldset>
+                            <div class="row">
+                                <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+                                <div class="text-center">
+                                    <i class="fa fa-user fa-5x"></i>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-10  col-md-offset-1 ">
+                                    <div class="form-group">
+                                        <div class="input-group">
+												<span class="input-group-addon">
+													<i class="glyphicon glyphicon-user"></i>
+												</span>
+                                            <input class="form-control" id="username" name="_username" value="{{ last_username }}" required="required" type="text" autofocus>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="input-group">
+												<span class="input-group-addon">
+													<i class="glyphicon glyphicon-lock"></i>
+												</span>
+                                            <input class="form-control" id="password" name="_password" required="required" type="password" value="">
+                                        </div>
+                                        <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
+                                        <label for="remember_me">{{ 'security.login.remember_me'|trans }}</label>
+
+
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+                <div class="panel-footer ">
+                    Pas encore de compte ? <a href="{{ path('fos_user_registration_register') }}"> Creer un compte </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+{% endblock contenu %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock javascripts %}

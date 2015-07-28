@@ -7,6 +7,7 @@ security:
             #iteration: 5
             encode_as_base64: true
         #troiswa\BackBundle\Entity\User: plaintext
+        FOS\UserBundle\Model\UserInterface: bcrypt
 
     role_hierarchy:
         ROLE_SUPER_ADMIN: [ROLE_ADMIN]
@@ -34,6 +35,9 @@ security:
             # Utilisation de UserRepository pour se connecter
             # Visualiser la méthode loadUserByUsername dans UserRepository pour mieux comprendre
             entity: { class: troiswaBackBundle:User }
+
+        fos_userbundle:
+                        id: fos_user.user_provider.username
 
     # sert à définir les zone à bloquer ou non
     firewalls:
@@ -93,11 +97,34 @@ security:
             # pour sortir : http://localhost/projet3wa/web/app_dev.php/admin/?_switch_user=_exit
             switch_user: { role: ROLE_ADMIN }
 
+        front_login:
+            pattern: ^/login$
+            anonymous: true
+
+        main:
+            pattern: ^/
+            form_login:
+                provider: fos_userbundle
+                csrf_provider: security.csrf.token_manager # Use form.csrf_provider instead for Symfony <2.4
+
+            logout:       true
+            anonymous:    false
+
+            remember_me:
+                key: "%secret%" # token du parameters.yml
+                lifetime: 172800 # 2 jours
+                path: / # accessible sur toutes les urls
+                domain: ~ # valeur par defaut : accessible partout sur mon site
+
+
+
     # gestion des acces en fonction des page ( quel user à droit d'accéder à tel page )
     access_control:
         - { path: ^/admin/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/user/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin, role: ROLE_USER }
-        #- { path: ^/admin/product$, role: ROLE_ADMIN }
-        #- { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+
 

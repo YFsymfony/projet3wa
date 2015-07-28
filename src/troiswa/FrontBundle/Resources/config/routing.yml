@@ -41,6 +41,13 @@ troiswa_front_product_delete_cart:
 
 
 
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+
+
+
+
+
 troiswa_front_category:
     path: /front/category
     defaults: { _controller: troiswaFrontBundle:Category:allCategory}

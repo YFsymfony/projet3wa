@@ -70,10 +70,10 @@
                         <img src={{ asset(oneproduct.cover.webpath) }} alt="{{ oneproduct.cover.alt }}">
                         <div class="caption">
                             <h4 class="pull-right">{{ oneproduct.price }} &euro; </h4>
-                            <h4><a href="#">{{ oneproduct.title }}</a>
+                            <h4><a href="{{ path('troiswa_front_product_info',{idprod: oneproduct.id} ) }}">{{ oneproduct.title }}</a>
                             </h4>
                             <p>{{ oneproduct.description }}</p>
-                            <a  href="{{ path('troiswa_front_product_info',{idprod: oneproduct.id} ) }}">détails</a>
+                            <a class="btn btn-success" href="{{ path('troiswa_front_product_info',{idprod: oneproduct.id} ) }}">Acheter</a>
                         </div>
                         <div class="ratings">
                             <p class="pull-right">15 reviews</p>

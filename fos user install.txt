@@ -1,0 +1,100 @@
+
+
+------------------------------------------------------------------------------
+
+1) dans le terminal taper : php composer.phar require friendsofsymfony/user-bundle "~2.0@dev"
+
+2) dans le kernel mettre :  new FOS\UserBundle\FOSUserBundle(),
+
+3) si une erreur apparait dans le terminal :
+
+   - mettre dans config.yml :
+       fos_user:
+           db_driver: orm
+           firewall_name: main
+           user_class: AppBundle\Entity\User
+
+4) faire un : php composer.phar update
+
+5) Creer l'entité USER dans le dossier entity et coller :   /!\ changer de namespace /!\
+
+        <?php
+
+        namespace CHANGER LE NAME SPACE\Entity;
+
+        use FOS\UserBundle\Model\User as BaseUser;
+        use Doctrine\ORM\Mapping as ORM;
+
+        /**
+         * @ORM\Entity
+         * @ORM\Table(name="fos_user")
+         */
+        class User extends BaseUser
+        {
+            /**
+             * @ORM\Id
+             * @ORM\Column(type="integer")
+             * @ORM\GeneratedValue(strategy="AUTO")
+             */
+            protected $id;
+
+            public function __construct()
+            {
+                parent::__construct();
+                // your own logic
+            }
+        }
+
+6) configurer le fichier secutiry.yml :
+
+            # app/config/security.yml
+            security:
+                encoders:
+                    FOS\UserBundle\Model\UserInterface: bcrypt
+
+                role_hierarchy:
+                    ROLE_ADMIN:       ROLE_USER
+                    ROLE_SUPER_ADMIN: ROLE_ADMIN
+
+                providers:
+                    fos_userbundle:
+                        id: fos_user.user_provider.username
+
+                firewalls:
+                    main:
+                        pattern: ^/
+                        form_login:
+                            provider: fos_userbundle
+                            csrf_provider: security.csrf.token_manager # Use form.csrf_provider instead for Symfony <2.4
+
+                        logout:       true
+                        anonymous:    true
+
+                access_control:
+                    - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+                    - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+                    - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+                    - { path: ^/admin/, role: ROLE_ADMIN }
+
+7) si pas d'erreur a l'étape 3 et pas de configuration entrer dabns config.yml , coller dedans :
+
+        fos_user:
+            db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
+            firewall_name: main
+            user_class: MONBUNDLE\Entity\User
+
+8) importer les routes :
+
+        # src/MONBUNDLE/config/routing.yml
+        fos_user:
+            resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+
+9) update la database : php app/console doctrine:schema:udpdate --force.
+
+10) changer dans config.yml :
+
+parameters:
+    locale: fr
+
+decommenter ceci : #translator:      { fallbacks: ["%locale%"] }
+

@@ -1,0 +1,41 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+<div class="col-lg-9">
+
+    <h2 class="main-heading"><i class="fa fa-sign-in"></i> Creer un compte !</h2>
+
+    <form action="{{ path('fos_user_registration_register') }}" {{ form_enctype(form) }} method="POST" class="fos_user_registration_register">
+
+
+        <div class="form-group">
+            {{ form_label(form.email, "Entrer votre email:" , { label_attr:{class:"class_du_label"}} ) }}
+            {{ form_errors(form.email) }}
+            {{ form_widget(form.email, {attr:{class:"form-control"}} ) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.username, "Entrer votre nom:" , { label_attr:{class:"class_du_label"}} ) }}
+            {{ form_errors(form.username) }}
+            {{ form_widget(form.username, {attr:{class:"form-control"}} ) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.plainPassword.first, "Entrer votre mote de passe:" , { label_attr:{class:"class_du_label"}} ) }}
+            {{ form_errors(form.plainPassword.first) }}
+            {{ form_widget(form.plainPassword.first, {attr:{class:"form-control"}} ) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.plainPassword.second, "Confirmer mote de passe:" , { label_attr:{class:"class_du_label"}} ) }}
+            {{ form_errors(form.plainPassword.second) }}
+            {{ form_widget(form.plainPassword.second, {attr:{class:"form-control"}} ) }}
+        </div>
+
+        {{ form_end(form) }}
+
+        <div>
+            <input type="submit" value="{{ 'registration.submit'|trans }}" />
+        </div>
+    </form>
+
+</div>
