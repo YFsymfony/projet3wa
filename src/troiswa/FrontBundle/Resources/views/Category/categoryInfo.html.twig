@@ -76,7 +76,7 @@
 
             {% for prod in pagination %}
                 <tr>
-                    <td>{{ prod.title }}</td>
+                    <td><a href="{{ path('troiswa_front_product_info',{idprod: prod.id} ) }}">{{ prod.title }}</a></td>
                     <td>{{ prod.price }}</td>
                     <td>{{ prod.quantity }}</td>
                 </tr>

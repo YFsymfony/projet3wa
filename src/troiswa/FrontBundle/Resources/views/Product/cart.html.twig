@@ -61,8 +61,8 @@
                         <a class="btn-success btn-xs plus" href="{{ path('troiswa_front_product_plus',{id: onproduct.id}) }}"><i class="fa fa-plus"></i></a>
 
                     </td>
-                    <td class="col-sm-1 col-md-1 text-center oneprice"><strong>{{ onproduct.price }} €</strong></td>
-                    <td class="col-sm-1 col-md-1 text-center price"><strong>{{ panier[onproduct.id].quantity * onproduct.price  }}</strong></td>
+                    <td class="col-sm-1 col-md-1 text-center oneprice"><strong>{{ onproduct.price|price }} </strong></td>
+                    <td class="col-sm-1 col-md-1 text-center price"><strong>{{ (panier[onproduct.id].quantity * onproduct.price)|price  }}</strong></td>
                     <td class="col-sm-1 col-md-1 disablable">
                         <a href="{{ path('troiswa_front_product_remove_cart',{id: onproduct.id}) }}" class="btn btn-danger trigger"> Remove </a>
                     </td>
@@ -78,7 +78,7 @@
                     <td>   </td>
                     <td><h3>Total</h3></td>
                     <td class="text-right">
-                        <h3 class="totalPrice"><strong>{{ totalPriceProduct }}</strong></h3>
+                        <h3 class="totalPrice"><strong>{{ totalPriceProduct|price }}</strong></h3>
                     </td>
                 </tr>
                 <tr>

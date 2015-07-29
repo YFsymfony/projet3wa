@@ -53,7 +53,7 @@ class Product
     /**
      * @var float
      * @Assert\NotBlank(message=" Champ obligatoire ")
-     * @Assert\Type(type="float", message="La valeur {{ value }} n'est pas un type {{ type }} valide.")
+     * @Assert\Type(type="float", message="La valeur {{ value }} n'est pas un type {{ type }} valide.")* @Assert\Type(type="float", message="La valeur {{ value }} n'est pas un type {{ type }} valide.")
      * @Assert\GreaterThanOrEqual(
      *     value = 0
      * )
@@ -84,12 +84,12 @@ class Product
     /**
      * @ORM\ManyToOne(targetEntity="troiswa\BackBundle\Entity\Category", inversedBy="products")
      *
-     * incersed coté maitre et mappedby coté esclave sont nécéssaire pour le bidirectionnel
+     * inversed coté maitre et mappedby coté esclave sont nécéssaire pour le bidirectionnel
      *
      * Pour le many to one , le coté maitre et l'endroit ou on à la clé étrangère
      * ici l'entité produit aurra une clé étrangère $categ (categorie_id), produit sera maitre
      *
-     * paramètres: change la clé nommée automatiquement par celle que l'on veux , ici transforme categ_id en id category
+     * paramètres: change la clé nommée automatiquement par celle que l'on veux , ici transforme categ_id en id_category
      * @ORM\JoinColumn(name="id_category",referencedColumnName="id")
      */
     private $categ;

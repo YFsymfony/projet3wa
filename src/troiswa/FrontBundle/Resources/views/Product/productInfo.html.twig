@@ -27,67 +27,171 @@
 {%  block contenu %}
 
     <!--div class="row"-->
-        <div class="col-md-9">
-            <h2>Information sur le produit {{ product.title|upper }}</h2>
-            <hr/>
-            {# asset(product.cover.WebPath) = asset(product.cover.getWebPath)
-               car twig traverse les méthodes une par une j'usqu'a trouver la bonne
-               ici , il seras capable de faire la relation entre WebPath et getWebPath
-               dans l'entité productCover #}
-            {% if product.cover != null %}
-                <div class="">
-                    <img class="img-responsive center-block" src="{{ asset(product.cover.webPath("thumb-medium")) }}" alt="{{ product.cover.alt }}"/>
-                </div>
-            {% else %}
-                <p class="text-center">Ce produit n'a pas d'image associé</p>
-            {% endif %}
-            <hr/>
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover">
-                    <thead>
-                    <tr>
-                        <th>Produit</th>
-                        <th>Prix</th>
-                        <th>Description</th>
-                        <th>Quantité</th>
-                        <th>Categorie</th>
-                        <th>Acheter</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-
-                    <tr>
-                        <td>{{ product.title }}</td>
-                        <td>{{ product.price }}</td>
-                        <td>{{ product.description }}</td>
-                        <td>{{ product.quantity }}</td>
-                        {% if product.categ is null%}
-                            <td> Acune catégorie n'est associée à ce produit</td>
-                        {% else %}
-                            <td><a class="btn btn-primary" href="{{ path('troiswa_back_category_info',{idcat: product.categ.id} ) }}">{{ product.categ.title }}</a></td>
-                        {% endif %}
-                        <td>
-                            <form action="{{ path('troiswa_front_cart_add',{idprod:product.id}) }}" method="POST"> <!-- /cart/add/id -->
-                                <label>quantité:</label>
-                                <input type="text" name="quantity" value="1"/><br/><br/>
-                                <input type="submit" value="ajouter au panier"/>
-                            </form>
-                        </td>
-
-                    </tr>
-
-                    </tbody>
-                </table>
+    <div class="col-md-9">
+        <h2>Information sur le produit {{ product.title|upper }}</h2>
+        <hr/>
+        {# asset(product.cover.WebPath) = asset(product.cover.getWebPath)
+           car twig traverse les méthodes une par une j'usqu'a trouver la bonne
+           ici , il seras capable de faire la relation entre WebPath et getWebPath
+           dans l'entité productCover #}
+        {% if product.cover != null %}
+            <div class="">
+                <img class="img-responsive center-block" src="{{ asset(product.cover.webPath("thumb-medium")) }}" alt="{{ product.cover.alt }}"/>
             </div>
+        {% else %}
+            <p class="text-center">Ce produit n'a pas d'image associé</p>
+        {% endif %}
+        <hr/>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>Produit</th>
+                    <th>Prix</th>
+                    <th>Description</th>
+                    <th>Quantité</th>
+                    <th>Categorie</th>
+                    <th>Acheter</th>
+                </tr>
+                </thead>
+                <tbody>
 
-            <div>
-                <ul class="list-unstyled list-inline">
-                    {% for onetag in findAllTagForOneProduct.tag %}
+                <tr>
+                    <td>{{ product.title }}</td>
+                    <td>{{ product.price }}</td>
+                    <td>{{ product.description }}</td>
+                    <td>{{ product.quantity }}</td>
+                    {% if product.categ is null%}
+                        <td> Acune catégorie n'est associée à ce produit</td>
+                    {% else %}
+                        <td><a class="btn btn-primary" href="{{ path('troiswa_back_category_info',{idcat: product.categ.id} ) }}">{{ product.categ.title }}</a></td>
+                    {% endif %}
+                    <td>
+                        <form action="{{ path('troiswa_front_cart_add',{idprod:product.id}) }}" method="POST"> <!-- /cart/add/id -->
+                            <label>quantité:</label>
+                            <input type="text" name="quantity" value="1"/><br/><br/>
+                            <input type="submit" value="ajouter au panier"/>
+                        </form>
+                    </td>
+
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div>
+            <ul class="list-unstyled list-inline">
+                {% for onetag in findAllTagForOneProduct.tag %}
                     <li><a class="btn btn-primary" href="#"><i class="fa fa-tag"></i> {{ onetag.word }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <hr/>
+
+        <div class="col-lg-12 col-md-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <div class="row">
+                        <h5 class="text-center text-uppercase">commentaires</h5>
+                    </div>
+                </div>
+
+                <div class="panel-body">
+
+                    {% for comment in findAllComment %}
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <div class="thumbnail">
+                                <img class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+                            </div><!-- /thumbnail -->
+                        </div><!-- /col-sm-1 -->
+
+                        <div class="col-lg-9">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <strong>{{ comment.author.username }}</strong> <span class="pull-right">Note: {{ comment.note }}/5</span>
+                                </div>
+                                <div class="panel-body">
+                                    <p>{{ comment.content|trunk(50) }}</p>
+                                </div><!-- /panel-body -->
+                                <div class="panel-footer clearfix">
+                                    <span class="text-muted">{{ comment.created|date("d/m/Y") }}</span>
+                                </div><!-- /panel-body -->
+
+                            </div><!-- /panel panel-default -->
+                        </div><!-- /col-sm-5 -->
+                    </div><!-- /row -->
+
+                    <!--div class="row">
+                        <div class="col-lg-12">
+
+
+                                <div class="panel panel-default">
+                                    <div class="panel-heading clearfix">
+                                        <a class="btn btn-success" data-toggle="collapse" data-parent="#panel-126451" href="#panel-element-117023">Editer le commentaire</a>
+                                        <a class="btn btn-warning pull-right" href="#">supprimer</a>
+                                    </div>
+                                    <div id="panel-element-117023" class="panel-collapse collapse">
+                                        <div class="panel-body">
+
+                                            {# form_start(formUpdateComment) #}
+
+                                            <!div class="form-group">
+                                                {# form_label(formUpdateComment.note, "Noter le produits de 1 à 5" , { label_attr:{class:"class_du_label"}} ) #}
+                                                {# form_errors(formUpdateComment.note) #}
+                                                {# form_widget( formUpdateComment.note, {id:'monid',attr:{class:"form-control toto"}} ) #}
+                                            </div>
+
+                                            <div class="form-group">
+                                                {# form_label(formUpdateComment.content, "Entrer votre commentaire" , { label_attr:{class:"class_du_label"}} ) #}
+                                                {# form_errors(formUpdateComment.content) #}
+                                                {# form_widget( formUpdateComment.content, {id:'monid',attr:{class:"form-control toto"}} ) #}
+                                            </div>
+
+                                            {# form_end(formUpdateComment) #}
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                        </div>
+                    </div>
+
+                    <hr/-->
+
                     {% endfor %}
-                </ul>
+
+
+                </div>
+
+                <div class="panel-footer">
+                    {{ form_start(formComment) }}
+
+                    <div class="form-group">
+                        {{ form_label(formComment.note, "Noter le produits de 1 à 5" , { label_attr:{class:"class_du_label"}} ) }}
+                        {{ form_errors(formComment.note) }}
+                        {{ form_widget( formComment.note, {id:'monid',attr:{class:"form-control toto"}} ) }}
+                    </div>
+
+
+                    <div class="form-group">
+                        {{ form_label(formComment.content, "Entrer votre commentaire" , { label_attr:{class:"class_du_label"}} ) }}
+                        {{ form_errors(formComment.content) }}
+                        {{ form_widget( formComment.content, {id:'monid',attr:{class:"form-control toto"}} ) }}
+                    </div>
+
+                    {{ form_end(formComment) }}
+
+                </div>
+
             </div>
         </div>
+
+    </div>
     <!--/div-->
 
 {% endblock contenu %}

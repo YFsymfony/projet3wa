@@ -12,3 +12,14 @@ services:
         class: troiswa\FrontBundle\Util\Cart
         # argument permet de spécifier les injection de dépendances
         arguments: ["@session","@doctrine.orm.entity_manager"]
+
+    troiswa_front.twig_twig_extension:
+        class: troiswa\FrontBundle\Twig\Extension
+        tags:
+            - { name: twig.extension}
+
+    troiswa_front.maintenance:
+        class: troiswa\FrontBundle\Listener\MaintenanceListener
+        arguments: ["%ismaintenance%","@twig"]
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onMaintenance}

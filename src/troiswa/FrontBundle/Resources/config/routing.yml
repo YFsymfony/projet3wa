@@ -48,6 +48,23 @@ fos_user:
 
 
 
+troiswa_front_comment_edit:
+    path: /comment/edit/{id}
+    defaults: { _controller: troiswaFrontBundle:Product:editComment}
+    requirements:
+        id: \d+
+
+
+troiswa_front_comment_delete:
+    path: /comment/delete/{id}
+    defaults: { _controller: troiswaFrontBundle:Comment:deleteComment}
+    requirements:
+        id: \d+
+
+
+
+
+
 troiswa_front_category:
     path: /front/category
     defaults: { _controller: troiswaFrontBundle:Category:allCategory}

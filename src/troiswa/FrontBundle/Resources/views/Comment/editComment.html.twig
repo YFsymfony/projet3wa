@@ -1,0 +1,15 @@
+{{ form_start(formUpdateComment) }}
+
+<div class="form-group">
+    {{ form_label(formUpdateComment.note, "Noter le produits de 1 à 5" , { label_attr:{class:"class_du_label"}} ) }}
+    {{ form_errors(formUpdateComment.note) }}
+    {{ form_widget( formUpdateComment.note, {id:'monid',attr:{class:"form-control toto"}} ) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(formUpdateComment.content, "Entrer votre commentaire" , { label_attr:{class:"class_du_label"}} ) }}
+    {{ form_errors(formUpdateComment.content) }}
+    {{ form_widget( formUpdateComment.content, {id:'monid',attr:{class:"form-control toto"}} ) }}
+</div>
+
+{{ form_end(formUpdateComment) }}
